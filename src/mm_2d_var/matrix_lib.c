@@ -4,6 +4,8 @@
 
 #include "matrix_lib.h"
 
+#include <math.h>
+
 void mm(
     const float* A,
     const float* B,
@@ -40,10 +42,10 @@ void mm_tile(
       int jmax = j0 + b_size_B > cols_B ? cols_B : j0 + b_size_B;
       for (int k0 = 0; k0 < c_A_r_B; ++k0) {
         for (int j1 = j0; j1 < jmax; ++j1) {
+          int kj = k0 * cols_B + j1;
           for (int i1 = i0; i1 < imax; ++i1) {
             int ij = i1 * cols_B + j1;
             int ik = i1 * c_A_r_B + k0;
-            int kj = k0 * cols_B + j1;
             C[ij] += A[ik] * B[kj];
           }
         }
@@ -87,4 +89,20 @@ float sum_matrix(const float* matrix, const int rows, const int cols) {
     }
   }
   return sum;
+}
+
+float mean(double* res, const int n) {
+  double sum = 0.0;
+  for (int i = 0; i < n; ++i)
+    sum += res[i];
+  return sum / n; 
+}
+
+float std(double* res, const int n) {
+  double m = mean(res, n);
+  double std_value = 0.0;
+
+  for (int i = 0; i < n; ++i)
+    std_value += pow((res[i]-m),2);
+  return sqrt(std_value/n);
 }

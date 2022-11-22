@@ -16,20 +16,26 @@ int main(int argc, char** argv) {
   float* C = init_matrix(rows_A, cols_B, 0.0F);
   clock_t start, end;
   double time;
+  
+  const int qtd = 10;
+  double res[qtd];
 
   for (int b_size_A = 0; b_size_A < max_block; b_size_A += block_step) {
     for (int b_size_B = 0; b_size_B < max_block; b_size_B += block_step) {
-      zero_matrix(C, rows_A, cols_B);
-      start = clock();
-      if (b_size_A * b_size_B) {
-        mm_tile(A, B, C, rows_A, c_A_r_B, cols_B, b_size_A, b_size_B);
-      } else {
-        mm(A, B, C, rows_A, c_A_r_B, cols_B);
+      for (int i = 0; i < qtd; ++i) {
+        zero_matrix(C, rows_A, cols_B);
+        start = clock();
+        if (b_size_A * b_size_B) {
+          mm_tile(A, B, C, rows_A, c_A_r_B, cols_B, b_size_A, b_size_B);
+        } else {
+          mm(A, B, C, rows_A, c_A_r_B, cols_B);
+        }
+        end = clock();
+        time = ((double) (end - start)) / CLOCKS_PER_SEC;
+        res[i] = time;
       }
-      end = clock();
-      time = ((double) (end - start)) / CLOCKS_PER_SEC;
       double sum = sum_matrix(C, rows_A, cols_B);
-      printf("%8.2f, %d, %d, %lf\n", sum, b_size_A, b_size_B, time);
+      printf("%8.2f, %d, %d, %lf, %lf\n", sum, b_size_A, b_size_B, mean(res,qtd), std(res,qtd));
     }
   }
 
