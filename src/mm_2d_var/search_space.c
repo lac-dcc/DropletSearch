@@ -35,7 +35,11 @@ int main(int argc, char** argv) {
         res[i] = time;
       }
       double sum = sum_matrix(C, rows_A, cols_B);
-      printf("%8.2f, %d, %d, %lf, %lf\n", sum, b_size_A, b_size_B, mean(res,qtd), std(res,qtd));
+      printf("%8.2f, %d, %d", sum, b_size_A, b_size_B);
+      for (int i = 0; i < qtd; i++) {
+        printf("%8.4lf", res[i]);
+      }
+      printf("\n");
     }
   }
 
