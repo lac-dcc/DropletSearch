@@ -29,8 +29,4 @@ float sum_matrix(const float* matrix, const int rows, const int cols);
 
 void zero_matrix(float* matrix, const int rows, const int cols);
 
-float mean(double* res, const int n);
-
-float std(double* res, const int n);
-
 #endif

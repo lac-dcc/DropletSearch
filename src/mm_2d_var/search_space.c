@@ -9,7 +9,7 @@ int main(int argc, char** argv) {
   const int c_A_r_B = 800;
   const int cols_B = 700;
   const int block_step = 8;
-  const int max_block = 80;
+  const int max_block = 130;
 
   float* A = init_matrix(rows_A, c_A_r_B, 1.0F);
   float* B = init_matrix(c_A_r_B, cols_B, 1.0F);
@@ -37,7 +37,7 @@ int main(int argc, char** argv) {
       double sum = sum_matrix(C, rows_A, cols_B);
       printf("%8.2f, %d, %d", sum, b_size_A, b_size_B);
       for (int i = 0; i < qtd; i++) {
-        printf("%8.4lf", res[i]);
+        printf(", %.4lf", res[i]);
       }
       printf("\n");
     }

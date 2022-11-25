@@ -90,19 +90,3 @@ float sum_matrix(const float* matrix, const int rows, const int cols) {
   }
   return sum;
 }
-
-float mean(double* res, const int n) {
-  double sum = 0.0;
-  for (int i = 0; i < n; ++i)
-    sum += res[i];
-  return sum / n; 
-}
-
-float std(double* res, const int n) {
-  double m = mean(res, n);
-  double std_value = 0.0;
-
-  for (int i = 0; i < n; ++i)
-    std_value += pow((res[i]-m),2);
-  return sqrt(std_value/n);
-}
