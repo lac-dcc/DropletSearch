@@ -9,7 +9,11 @@ if __name__ == "__main__":
     
     size = 0
     lista = []
+    c = 0
     for l in f.readlines():
+        if c == 0:
+            c += 1
+            continue
         l = l.strip().replace(" ", "").split(",")
         lista.append(l)
         size += 1
