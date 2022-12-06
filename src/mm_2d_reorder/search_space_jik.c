@@ -26,9 +26,9 @@ int main(int argc, char** argv) {
         zero_matrix(C, rows_A, cols_B);
         start = clock();
         if (b_size_A * b_size_B) {
-          mm_tile(A, B, C, rows_A, c_A_r_B, cols_B, b_size_A, b_size_B);
+          mm_tile_jik(A, B, C, rows_A, c_A_r_B, cols_B, b_size_A, b_size_B);
         } else {
-          mm(A, B, C, rows_A, c_A_r_B, cols_B);
+          mm_jik(A, B, C, rows_A, c_A_r_B, cols_B);
         }
         end = clock();
         time = ((double) (end - start)) / CLOCKS_PER_SEC;
