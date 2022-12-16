@@ -5,9 +5,9 @@
 #include "matrix_lib.h"
 
 int main(int argc, char** argv) {
-  const int rows_A = 1000;
-  const int c_A_r_B = 800;
-  const int cols_B = 700;
+  const int rows_A = 10000;
+  const int c_A_r_B = 8000;
+  const int cols_B = 7000;
   const int block_step = 8;
   const int max_block = 130;
 
@@ -17,7 +17,7 @@ int main(int argc, char** argv) {
   clock_t start, end;
   double time;
   
-  const int qtd = 10;
+  const int qtd = 3;
   double res[qtd];
 
   for (int b_size_A = 0; b_size_A < max_block; b_size_A += block_step) {
