@@ -25,6 +25,8 @@ def processing_input(csv_file : str):
 def pvalue(data:dict, pos_i:int, pos_j:int, curr_i:int, curr_j:int):
     data_1 = np.array(data[pos_i][pos_j])
     data_2 = np.array(data[curr_i][curr_j])
+    if len(data_1) <= 1:
+    	return 0
     return stats.ttest_ind(data_1, data_2).pvalue
 
 
