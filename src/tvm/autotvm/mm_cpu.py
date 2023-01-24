@@ -63,7 +63,8 @@ if __name__ == "__main__":
         task = autotvm.task.create("template_matmul", args=(N, L, M, search_space, "float32", "ijk"), target="llvm")
         #print(task.config_space)
 
-        logging.getLogger("autotvm").setLevel(logging.DEBUG)
+        #logging.getLogger("autotvm").setLevel(logging.DEBUG)
+        logging.getLogger("autotvm").setLevel(logging.ERROR)
         logging.getLogger("autotvm").addHandler(logging.StreamHandler(sys.stdout))
 
         measure_option = autotvm.measure_option(builder="local", runner=autotvm.LocalRunner(number=5, repeat=3))
@@ -104,3 +105,5 @@ if __name__ == "__main__":
         evaluator = func.time_evaluator(func.entry_name, dev, number=10, repeat=3)
         time = evaluator(a_tvm, b_tvm, c_tvm)
         print(" %f, %f\n" % (time.mean, time.std))
+
+        break
