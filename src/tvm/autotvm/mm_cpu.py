@@ -21,18 +21,14 @@ def matmul(N, L, M, search_space, dtype="float", order="ijk"):
 
     # get the config object
     cfg = autotvm.get_config()
-    #cfg.define_split("tile_y", y, num_outputs=2)
-    #cfg.define_split("tile_x", x, num_outputs=2)
 
     # define search space
-    cfg.define_knob("tile_x", search_space)
     cfg.define_knob("tile_y", search_space)
+    cfg.define_knob("tile_x", search_space)
 
     # schedule according to config
-    xo, xi = s[C].split(x, cfg["tile_x"].val)
     yo, yi = s[C].split(y, cfg["tile_y"].val)
-    #yo, yi = cfg["tile_y"].apply(s, C, y)
-    #xo, xi = cfg["tile_x"].apply(s, C, x)
+    xo, xi = s[C].split(x, cfg["tile_x"].val)
 
     if order == "ijk":
         s[C].reorder(xo, xi, yo, yi, k)
@@ -59,28 +55,34 @@ if __name__ == "__main__":
 
     for ord in order:
 
-        save_log = "matmul_%s.log" % ord
+        save_log = "example.log"  #"matmul_%s.log" % ord
         task = autotvm.task.create("template_matmul", args=(N, L, M, search_space, "float32", "ijk"), target="llvm")
         #print(task.config_space)
+
+        n_trial = max(10, len(task.config_space))
 
         #logging.getLogger("autotvm").setLevel(logging.DEBUG)
         logging.getLogger("autotvm").setLevel(logging.ERROR)
         logging.getLogger("autotvm").addHandler(logging.StreamHandler(sys.stdout))
 
-        measure_option = autotvm.measure_option(builder="local", runner=autotvm.LocalRunner(number=5, repeat=3))
+        measure_option = autotvm.measure_option(builder="local", runner=autotvm.LocalRunner(number=2, repeat=5))
 
         #tuner = autotvm.tuner.RandomTuner(task)
-        tuner = autotvm.tuner.GridSearchTuner(task)
+        tuner = autotvm.tuner.DropletTuner(task)
+        #tuner = autotvm.tuner.GridSearchTuner(task)
+
         tuner.tune(
-            n_trial=20,
+            n_trial=n_trial,
             measure_option=measure_option,
             callbacks=[autotvm.callback.log_to_file(save_log)],
         )
 
+        break
+
         # inspect the best config
         dispatch_context = autotvm.apply_history_best(save_log)
         best_config = dispatch_context.query(task.target, task.workload)
-        print("\nBest config:", best_config, end="")
+        print("Best config:", best_config, end="")
 
         # apply history best from log file
         with autotvm.apply_history_best(save_log):
@@ -104,6 +106,4 @@ if __name__ == "__main__":
         # and the overhead of kernel launch. You can also use nvprof to validate the result.
         evaluator = func.time_evaluator(func.entry_name, dev, number=10, repeat=3)
         time = evaluator(a_tvm, b_tvm, c_tvm)
-        print(" %f, %f\n" % (time.mean, time.std))
-
-        break
+        print(", %f, %f, %s" % (time.mean, time.std, ord))
