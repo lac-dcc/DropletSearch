@@ -46,7 +46,7 @@
 # - ON: enable CUDA with cmake's auto search
 # - OFF: disable CUDA
 # - /path/to/cuda: use specific path to cuda toolkit
-set(USE_CUDA ON)
+set(USE_CUDA OFF)
 
 # Whether enable ROCM runtime
 #
