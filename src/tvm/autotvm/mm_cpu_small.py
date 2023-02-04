@@ -77,7 +77,7 @@ if __name__ == "__main__":
 
     for t in tool:
 
-        save_log = "results_%s_mm.log " % (t)
+        save_log = "results_%s_mm.log" % (t)
 
         with tvm.transform.PassContext(opt_level=3):
             task = autotvm.task.create("template_matmul", args=(N, L, M, search_space, "float32",), target="llvm")
