@@ -73,18 +73,20 @@ if __name__ == "__main__":
     b_np = np.random.uniform(size=(L, M)).astype(np.float32)
     c_np = a_np.dot(b_np)
 
-    tool = ["DropletTuner", "GridSearchTuner", "RandomTuner", "GATuner", "XGBTuner"]
+    #tool = ["DropletTuner", "GridSearchTuner", "RandomTuner", "GATuner", "XGBTuner"]
+
+    tool = ["XGBTuner"]
 
     for t in tool:
 
-        save_log = "results/%s/mm.log " % (t)
+        save_log = "results_%s_mm.log " % (t)
 
         with tvm.transform.PassContext(opt_level=3):
             task = autotvm.task.create("template_matmul", args=(N, L, M, search_space, "float32",), target="llvm")
 
         #print(task.config_space)
 
-        n_trial = len(task.config_space)
+        
 
         logging.getLogger("autotvm").setLevel(logging.ERROR)
         logging.getLogger("autotvm").addHandler(logging.StreamHandler(sys.stdout))
@@ -96,14 +98,19 @@ if __name__ == "__main__":
         with tvm.transform.PassContext(opt_level=3):
             
             if t == "DropletTuner":
+                n_trial = len(task.config_space)
                 tuner = autotvm.tuner.DropletTuner(task)
             elif t == "GridSearchTuner":
+                n_trial = len(task.config_space)            # 100% of search space
                 tuner = autotvm.tuner.GridSearchTuner(task)
             elif t == "RandomTuner":
+                n_trial = int(len(task.config_space) * 0.1) # %10% of search space
                 tuner = autotvm.tuner.RandomTuner(task)
             elif t == "GATuner":
+                n_trial = int(len(task.config_space) * 0.1) # %10% of search space
                 tuner = autotvm.tuner.GATuner(task)
             elif t == "XGBTuner":
+                n_trial = int(len(task.config_space) * 0.1) # %10% of search space
                 tuner = autotvm.tuner.XGBTuner(task, loss_type="rank")
 
             tuner.tune(
