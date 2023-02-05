@@ -13,7 +13,7 @@ class DropletTuner(Tuner):
 
     INPUTS: Task 
             start_position : [OPTIONAL] = position zero is default
-            trying : [OPTIONAL] = 3 is default  
+            trying : [OPTIONAL] = 1 is default  
     """
 
     def __init__(self, task, start_position=None, trying=1):
@@ -80,9 +80,8 @@ class DropletTuner(Tuner):
             for i in range(0, len(value)):
                 index += value[i] * exp
                 exp *= self.dims[i]
-            #print(value)
-            ret.append(self.space.get(index))
-        #print("-------------------")
+            if index >= 0:
+                ret.append(self.space.get(index))
         return ret
     
     '''
