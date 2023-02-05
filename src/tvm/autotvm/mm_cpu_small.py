@@ -65,8 +65,8 @@ if __name__ == "__main__":
     N, L, M = 1000, 800, 700
     search_space = [1] + [i for i in range(8,129,8)]
 
-    order = ["ijk", "ikj", "jik", "jki", "kij", "kji"]
     dev = tvm.cpu()
+    target = "llvm"
 
     np.random.seed(0)
     a_np = np.random.uniform(size=(N, L)).astype(np.float32)
@@ -77,10 +77,10 @@ if __name__ == "__main__":
 
     for t in tool:
 
-        save_log = "results_%s_mm.log" % (t)
+        save_log = "results/%s_mm.log" % (t)
 
         with tvm.transform.PassContext(opt_level=3):
-            task = autotvm.task.create("template_matmul", args=(N, L, M, search_space, "float32",), target="llvm")
+            task = autotvm.task.create("template_matmul", args=(N, L, M, search_space, "float32",), target=target)
 
         #print(task.config_space)
 
@@ -128,12 +128,13 @@ if __name__ == "__main__":
                 s, arg_bufs = matmul(N, L, M, search_space, "float32")
         
         with tvm.transform.PassContext(opt_level=3):
-            func = tvm.build(s, arg_bufs, target="llvm")
+            func = tvm.build(s, arg_bufs, target=target)
 
         # check correctness
-        a_tvm = tvm.nd.array(a_np)
-        b_tvm = tvm.nd.array(b_np)
-        c_tvm = tvm.nd.empty(c_np.shape)
+        # check correctness
+        a_tvm = tvm.nd.array(a_np, device=dev)
+        b_tvm = tvm.nd.array(b_np, device=dev)
+        c_tvm = tvm.nd.empty(c_np.shape, device=dev)
         func(a_tvm, b_tvm, c_tvm)
 
         tvm.testing.assert_allclose(c_np, c_tvm.numpy(), rtol=1e-4)
@@ -143,3 +144,8 @@ if __name__ == "__main__":
         evaluator = func.time_evaluator(func.entry_name, dev, number=10, repeat=3)
         eval = evaluator(a_tvm, b_tvm, c_tvm)
         print(", %f, %f, %f" % (eval.mean, eval.std, end-start))
+
+        print(c_tvm)
+        print(c_np)
+
+        break

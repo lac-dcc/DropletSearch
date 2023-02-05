@@ -1,0 +1,4 @@
+Best config: [('tile_x', 128), ('tile_y', 8), ('order', 2)],None,611, 0.006056, 0.000017, 52.778360
+Best config: [('tile_x', 128), ('tile_y', 8), ('order', 0)],None,33, 0.006119, 0.000025, 718.349630
+Best config: [('tile_x', 128), ('tile_y', 8), ('order', 1)],None,322, 0.006088, 0.000028, 213.292817
+Best config: [('tile_x', 128), ('tile_y', 8), ('order', 1)],None,322, 0.006107, 0.000016, 224.518761

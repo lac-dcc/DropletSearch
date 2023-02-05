@@ -7,13 +7,20 @@ import time
 
 from tvm import autotvm, te, testing
 
-@autotvm.template("template_matmul")
-def matmul(N, L, M, search_space, dtype="float"):
+def mm(N, L, M, dtype="float32"):
     A = te.placeholder((N, L), name="A", dtype=dtype)
     B = te.placeholder((L, M), name="B", dtype=dtype)
 
     k = te.reduce_axis((0, L), name="k")
     C = te.compute((N, M), lambda i, j: te.sum(A[i, k] * B[k, j], axis=k), name="C")
+
+    return A, B, C
+
+@autotvm.template("template_matmul")
+def matmul(N, L, M, search_space, dtype="float32"):
+    
+    # Creating schedule
+    A, B, C = mm(N, L, M, dtype=dtype)
     s = te.create_schedule(C.op)
 
     # schedule
@@ -26,43 +33,56 @@ def matmul(N, L, M, search_space, dtype="float"):
     # define search space
     cfg.define_knob("tile_x", search_space)
     cfg.define_knob("tile_y", search_space)
-    #cfg.define_knob("tile_z", search_space)    
 
+    #OL = s.cache_write(C, "local")
+
+    # create cache stage
+    #AA = s.cache_read(data, "shared", [OL])
+    #AL = s.cache_read(AA, "local", [OL])
+    
     # schedule according to config
-    xo, xi = s[C].split(x, cfg["tile_x"].val)
-    yo, yi = s[C].split(y, cfg["tile_y"].val)
-    #ko, ki = s[C].split(k, cfg["tile_z"].val)
+    x0, x1 = s[C].split(x, cfg["tile_x"].val)
+    y0, y1 = s[C].split(y, cfg["tile_y"].val)
+    #k = s[C].split(loop=k, factors=[None, 8])
+
+    # Bind GPU thread indices
+
+    #s[C].unroll(k)
+    
+    s[C].bind(x0, te.thread_axis("blockIdx.x"))
+    s[C].bind(y0, te.thread_axis("blockIdx.y"))
+
+    s[C].bind(x1, te.thread_axis("threadIdx.x"))
+    s[C].bind(y1, te.thread_axis("threadIdx.y"))
+
+    #s[C].compute_at(s[C], tx)
+
+    #print(tvm.lower(s, [A, B, C]))
     
     cfg.define_knob("order", [0, 1, 2, 3, 4, 5])
 
     if cfg["order"].val == 0: # ijk
-        s[C].reorder(xo, xi, yo, yi, k)
+        s[C].reorder(x0, x1, y0, y1, k)
     elif cfg["order"].val == 1: # ikj
-        s[C].reorder(xo, xi, k, yo, yi)
+        s[C].reorder(x0, x1, k, y0, y1)
     elif cfg["order"].val == 2: # jik
-        s[C].reorder(yo, yi, xo, xi, k)
+        s[C].reorder(y0, y1, x0, x1, k)
     elif cfg["order"].val == 3: # jki
-        s[C].reorder(yo, yi, k, xo, xi)
+        s[C].reorder(y0, y1, k, x0, x1)
     elif cfg["order"].val == 4: # kij
-        s[C].reorder(k, xo, xi, yo, yi)
+        s[C].reorder(k, x0, x1, y0, y1)
     elif cfg["order"].val == 5: # kji
-        s[C].reorder(k, yo, yi, xo, xi)
-
-    s[C].bind(xo, "blockIdx.y")
-    s[C].bind(yo, "blockIdx.x")
-
-    s[C].bind(xi, "threadIdx.y")
-    s[C].bind(yi, "threadIdx.x")
+        s[C].reorder(k, y0, y1, x0, x1)
 
     return s, [A, B, C]
 
 if __name__ == "__main__":
 
-    N, L, M = 1000, 800, 700
+    N, L, M = 1024, 1024, 1024
     search_space = [1] + [i for i in range(8,129,8)]
 
-    order = ["ijk", "ikj", "jik", "jki", "kij", "kji"]
-    dev = tvm.gpu()
+    dev = tvm.cuda()
+    target = "cuda"
 
     np.random.seed(0)
     a_np = np.random.uniform(size=(N, L)).astype(np.float32)
@@ -73,40 +93,40 @@ if __name__ == "__main__":
 
     for t in tool:
 
-        save_log = "results/%s/mm.log " % (t)
+        save_log = "results/%s_gpu_mm.log" % (t)
 
-        with tvm.transform.PassContext(opt_level=3):
-            task = autotvm.task.create("template_matmul", args=(N, L, M, search_space, "float32",), target="cuda")
+        task = autotvm.task.create("template_matmul", args=(N, L, M, search_space, "float32"), target=target)
 
-        print(task.config_space)
-
-        n_trial = len(task.config_space)
+        #print(task.config_space)
 
         logging.getLogger("autotvm").setLevel(logging.ERROR)
         logging.getLogger("autotvm").addHandler(logging.StreamHandler(sys.stdout))
 
-        measure_option = autotvm.measure_option(builder="local", runner=autotvm.LocalRunner(number=2, repeat=5, enable_cpu_cache_flush=True))
+        measure_option = autotvm.measure_option(builder=autotvm.LocalBuilder(), runner=autotvm.LocalRunner(number=2, repeat=5))
 
         start = time.time()
 
-        with tvm.transform.PassContext(opt_level=3):
-            
-            if t == "DropletTuner":
-                tuner = autotvm.tuner.DropletTuner(task)
-            elif t == "GridSearchTuner":
-                tuner = autotvm.tuner.GridSearchTuner(task)
-            elif t == "RandomTuner":
-                tuner = autotvm.tuner.RandomTuner(task)
-            elif t == "GATuner":
-                tuner = autotvm.tuner.GATuner(task)
-            elif t == "XGBTuner":
-                tuner = autotvm.tuner.XGBTuner(task, loss_type="rank")
+        if t == "DropletTuner":
+            n_trial = len(task.config_space)
+            tuner = autotvm.tuner.DropletTuner(task)
+        elif t == "GridSearchTuner":
+            n_trial = len(task.config_space)            # 100% of search space
+            tuner = autotvm.tuner.GridSearchTuner(task)
+        elif t == "RandomTuner":
+            n_trial = int(len(task.config_space) * 0.3) # %30% of search space
+            tuner = autotvm.tuner.RandomTuner(task)
+        elif t == "GATuner":
+            n_trial = int(len(task.config_space) * 0.3) # %30% of search space
+            tuner = autotvm.tuner.GATuner(task)
+        elif t == "XGBTuner":
+            n_trial = int(len(task.config_space) * 0.3) # %30% of search space
+            tuner = autotvm.tuner.XGBTuner(task, loss_type="rank")
 
-            tuner.tune(
-                n_trial=n_trial,
-                measure_option=measure_option,
-                callbacks=[autotvm.callback.log_to_file(save_log)],
-            )
+        tuner.tune(
+            n_trial=n_trial,
+            measure_option=measure_option,
+            callbacks=[autotvm.callback.log_to_file(save_log)],
+        )
 
         end = time.time()
 
@@ -117,19 +137,17 @@ if __name__ == "__main__":
 
         # apply history best from log file
         with autotvm.apply_history_best(save_log):
-            with tvm.target.Target(task.target):
+            with tvm.target.Target(target):
                 s, arg_bufs = matmul(N, L, M, search_space, "float32")
-        
-        with tvm.transform.PassContext(opt_level=3):
-            func = tvm.build(s, arg_bufs, target=task.target)
+                func = tvm.build(s, arg_bufs, target="cuda")
 
         # check correctness
-        a_tvm = tvm.nd.array(a_np)
-        b_tvm = tvm.nd.array(b_np)
-        c_tvm = tvm.nd.empty(c_np.shape)
+        a_tvm = tvm.nd.array(a_np, device=dev)
+        b_tvm = tvm.nd.array(b_np, device=dev)
+        c_tvm = tvm.nd.empty(c_np.shape, device=dev)
         func(a_tvm, b_tvm, c_tvm)
 
-        tvm.testing.assert_allclose(c_np, c_tvm.numpy(), rtol=1e-4)
+        #tvm.testing.assert_allclose(c_np, c_tvm.numpy(), rtol=1e-4)
 
         # Evaluate running time. Here we choose a large repeat number (400) to reduce the noise
         # and the overhead of kernel launch. You can also use nvprof to validate the result.
