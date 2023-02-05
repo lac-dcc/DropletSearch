@@ -8,4 +8,4 @@ docker-gpu:
 	docker build gpu-version/. -t garkain-gpu
 
 run-gpu:
-	docker run -ti garkain-gpu
+	docker run -it --gpus all garkain-gpu
