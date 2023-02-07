@@ -74,6 +74,7 @@ if __name__ == "__main__":
     c_np = a_np.dot(b_np)
 
     tool = ["DropletTuner", "GridSearchTuner", "RandomTuner", "GATuner", "XGBTuner"]
+    #tool = ["DropletTuner"]
 
     for t in tool:
 
@@ -84,8 +85,8 @@ if __name__ == "__main__":
 
         #print(task.config_space)
 
-        logging.getLogger("autotvm").setLevel(logging.ERROR)
-        logging.getLogger("autotvm").addHandler(logging.StreamHandler(sys.stdout))
+        #logging.getLogger("autotvm").setLevel(logging.disable)
+        #logging.getLogger("autotvm").addHandler(logging.StreamHandler(sys.stdout))
 
         measure_option = autotvm.measure_option(builder="local", runner=autotvm.LocalRunner(number=2, repeat=5, enable_cpu_cache_flush=True))
 
@@ -120,7 +121,7 @@ if __name__ == "__main__":
         # inspect the best config
         dispatch_context = autotvm.apply_history_best(save_log)
         best_config = dispatch_context.query(task.target, task.workload)
-        print("Best config:", best_config, end="")
+        print("%s, Best config:" %(t), best_config, end="")
 
         # apply history best from log file
         with autotvm.apply_history_best(save_log):
@@ -144,8 +145,3 @@ if __name__ == "__main__":
         evaluator = func.time_evaluator(func.entry_name, dev, number=10, repeat=3)
         eval = evaluator(a_tvm, b_tvm, c_tvm)
         print(", %f, %f, %f" % (eval.mean, eval.std, end-start))
-
-        print(c_tvm)
-        print(c_np)
-
-        break

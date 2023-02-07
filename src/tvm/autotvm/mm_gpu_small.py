@@ -78,7 +78,7 @@ def matmul(N, L, M, search_space, dtype="float32"):
 
 if __name__ == "__main__":
 
-    N, L, M = 1024, 1024, 1024
+    N, L, M = 1000, 800, 700
     search_space = [1] + [i for i in range(8,129,8)]
 
     dev = tvm.cuda()
