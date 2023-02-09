@@ -1,0 +1,5 @@
+DropletTuner, Best config: ,None, 1.069293, 0.000043, 115.316926
+GridSearchTuner, Best config: [('tile_x', 1), ('tile_y', 120), ('order', 3)],None,1122, 0.084351, 0.000008, 15048.224622
+RandomTuner, Best config: [('tile_x', 1), ('tile_y', 120), ('order', 3)],None,1122, 0.084526, 0.000012, 4536.580828
+GATuner, Best config: [('tile_x', 1), ('tile_y', 40), ('order', 3)],None,952, 0.084610, 0.000020, 3690.683145
+XGBTuner, Best config: [('tile_x', 1), ('tile_y', 120), ('order', 3)],None,1122, 0.084354, 0.000002, 3450.723300
