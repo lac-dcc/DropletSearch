@@ -16,7 +16,8 @@ RUN apt-get install -y gcc g++ graphviz vim python3 python3-pip python3-dev auto
     build-essential cmake llvm-dev clang cython3 python-is-python3 libedit-dev libxml2-dev libtinfo-dev \
     python3-setuptools
 
-RUN pip3 install numpy decorator scipy pytest psutil typing_extensions tornado cloudpickle 'xgboost<1.6.0'
+RUN pip3 install numpy decorator scipy pytest psutil typing_extensions tornado cloudpickle \ 
+    'xgboost<1.6.0' synr
 
 ########################################### COPY HAMSA ##################################################
 RUN cd $HOME && git clone https://github.com/lac-dcc/garkain 

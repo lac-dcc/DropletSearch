@@ -19,8 +19,9 @@ class DropletTuner(Tuner):
     def __init__(self, task, start_position=None, trying=1):
         super(DropletTuner, self).__init__(task)
         
+        self.max_value = 99999
         self.best_choice = []
-        self.best_res = [99999]
+        self.best_res = [self.max_value]
 
         # space info
         self.space = task.config_space
@@ -29,29 +30,36 @@ class DropletTuner(Tuner):
         self.next = []
         self.trying = trying
         self.number_execution = 1
+        self.start_pos = 1
 
         for k, v in self.space.space_map.items():
             self.keys.append(k)
             self.dims.append(len(v))
         
-        self.position = self.generate_search_space(len(self.keys)) 
+        self.position = self.generate_search_space() 
         self.next = [[0] * len(self.dims)] + self.position if start_position == None else start_position + self.position
 
         self.best_choice = [-1] * len(self.keys)
         self.visited = self.next
     
+    def create_space(self, value):
+        b = str(0) * (len(self.dims) - len(bin(value)[2:])) + bin(value)[2:]
+        v = []
+        for k in b:
+            v.append(int(k))
+        return v
+
     '''
         Return the search space 
     '''
-    def generate_search_space(self, size):
-        space_search = []
-        for i in range(1,2**size):
-            b = str(0) * (size - len(bin(i)[2:])) + bin(i)[2:]
-            v = []
-            for k in b:
-                v.append(int(k))
-            space_search.append(v)
-        return space_search
+    def generate_search_space(self, mult=1):
+        search_space = []
+        for i in range(1,2**len(self.keys)):
+            p = [mult * x for x in self.create_space(i)]
+            p_inv = [-mult * x for x in self.create_space(i)]
+            search_space.append(p)
+            search_space.append(p_inv)
+        return search_space
     
     def safe_space(self, data):
         for i, d in enumerate(data):
@@ -95,7 +103,7 @@ class DropletTuner(Tuner):
             try:
                 y = np.mean(res.costs)
             except:
-                y = 99999
+                y = self.max_value
             if np.mean(self.best_res) > y and self.p_value(self.best_res, res.costs) <= 0.5:
                 self.best_res = res.costs
                 self.best_choice = self.next[i]
@@ -116,9 +124,13 @@ class DropletTuner(Tuner):
                     self.visited.append(p)
                     next_set.append(p)
             self.next = next_set.copy()
+            self.number_execution += 1
 
             if not found_best_pos:
                 self.trying -= 1
+        elif self.best_res[0] == self.max_value:
+            self.start_pos += 1
+            self.next = self.generate_search_space(mult=self.start_pos)
         else:
             self.next = []
 
@@ -126,7 +138,6 @@ class DropletTuner(Tuner):
         Check for search space
     '''
     def has_next(self):
-        self.number_execution += 1
         return len(self.next) > 0 
 
     def load_history(self, data_set, min_seed_records=500):
