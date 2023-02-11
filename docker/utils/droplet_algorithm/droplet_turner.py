@@ -13,10 +13,9 @@ class DropletTuner(Tuner):
 
     INPUTS: Task 
             start_position : [OPTIONAL] = position zero is default
-            trying : [OPTIONAL] = 1 is default  
     """
 
-    def __init__(self, task, start_position=None, trying=1):
+    def __init__(self, task, start_position=None):
         super(DropletTuner, self).__init__(task)
         
         self.max_value = 99999
@@ -28,42 +27,55 @@ class DropletTuner(Tuner):
         self.keys = []
         self.dims = []
         self.next = []
-        self.trying = trying
-        self.number_execution = 1
         self.start_pos = 1
 
         for k, v in self.space.space_map.items():
             self.keys.append(k)
             self.dims.append(len(v))
         
-        self.position = self.generate_search_space() 
-        self.next = [[0] * len(self.dims)] + self.position if start_position == None else start_position + self.position
+        self.next = [[0] * len(self.dims)] if start_position == None else start_position
+        self.number_execution = 1
 
         self.best_choice = [-1] * len(self.keys)
         self.visited = self.next
     
     def create_space(self, value):
         b = str(0) * (len(self.dims) - len(bin(value)[2:])) + bin(value)[2:]
-        v = []
-        for k in b:
-            v.append(int(k))
-        return v
+        return [int(x) for x in b]
 
     '''
         Return the search space 
     '''
-    def generate_search_space(self, mult=1):
+    def generate_search_space(self):
         search_space = []
         for i in range(1,2**len(self.keys)):
-            p = [mult * x for x in self.create_space(i)]
-            p_inv = [-mult * x for x in self.create_space(i)]
+            p = [x for x in self.create_space(i)]
+            p_inv = [-x for x in self.create_space(i)]
             search_space.append(p)
             search_space.append(p_inv)
         return search_space
     
+    def generate_new_positions(self):
+        new_p = []
+        if self.number_execution < min(self.dims):
+            for p in self.generate_search_space():
+                new_p.append([i * self.number_execution for i in p])
+        return new_p
+    
+    def update_new_positions(self, new_positions):
+        next_set = []
+        for p in new_positions:
+            print(p, end=" => ")
+            p = [x + y for x, y in zip(p, self.best_choice)]
+            print(p)
+            if p not in self.visited and self.safe_space(p):
+                self.visited.append(p)
+                next_set.append(p)
+        return next_set
+    
     def safe_space(self, data):
         for i, d in enumerate(data):
-            if d >= self.dims[i]:
+            if d < 0 or d >= self.dims[i]:
                 return False
         return True
 
@@ -82,9 +94,9 @@ class DropletTuner(Tuner):
     '''
     def next_batch(self, batch_size):
         ret = []
+        print(self.next)
         for value in self.next:
-            index = 0
-            exp = 1
+            index, exp = 0, 1
             for i in range(0, len(value)):
                 index += value[i] * exp
                 exp *= self.dims[i]
@@ -97,7 +109,6 @@ class DropletTuner(Tuner):
     '''
     def update(self, inputs, results):
 
-        #print("tentativa: ", self.trying)
         found_best_pos = False
         for i, (inp, res) in enumerate(zip(inputs, results)):
             try:
@@ -109,30 +120,25 @@ class DropletTuner(Tuner):
                 self.best_choice = self.next[i]
                 found_best_pos = True
 
-        if found_best_pos or self.trying > 0:
-            # Update new positions
-            if self.number_execution < min(self.dims):
-                for p in self.position.copy():
-                    new_p = [i * self.number_execution for i in p]
-                    self.position.append(new_p)
-            
-            # Update the next positions
-            next_set = []
-            for p in self.position:
-                p = [x + y for x, y in zip(p, self.best_choice)]
-                if p not in self.visited and self.safe_space(p):
-                    self.visited.append(p)
-                    next_set.append(p)
-            self.next = next_set.copy()
-            self.number_execution += 1
-
-            if not found_best_pos:
-                self.trying -= 1
-        elif self.best_res[0] == self.max_value:
+        self.next = []
+        if self.best_res[0] == self.max_value:
             self.start_pos += 1
-            self.next = self.generate_search_space(mult=self.start_pos)
+            self.next = self.create_space(self.start_pos)
+        elif not found_best_pos:
+            # Update new positions
+            new_positions = self.generate_search_space()
+            # Update the next positions
+            self.next = self.update_new_positions(new_positions)
+            self.number_execution += 1
         else:
-            self.next = []
+            # Update new positions
+            new_positions = self.generate_new_positions()
+            # Update the next positions
+            self.next = self.update_new_positions(new_positions)
+
+        print("Best", self.best_choice, "n_exec", self.number_execution)
+        print("next", self.next)
+            
 
     '''
         Check for search space
