@@ -4,17 +4,23 @@ import sys
 import numpy as np
 import tvm
 import time
+import os
 
 from tvm import autotvm, te, testing
 
-@autotvm.template("template_matmul")
-def matmul(N, L, M, search_space, dtype="float"):
+def mm(N, L, M, dtype="float32"):
     A = te.placeholder((N, L), name="A", dtype=dtype)
     B = te.placeholder((L, M), name="B", dtype=dtype)
-
+    
     k = te.reduce_axis((0, L), name="k")
     C = te.compute((N, M), lambda i, j: te.sum(A[i, k] * B[k, j], axis=k), name="C")
-    s = te.create_schedule(C.op)
+
+    return A, B, C
+
+@autotvm.template("template_matmul")
+def matmul(N, L, M, search_space, dev, dtype="float"):
+    # function
+    A, B, C = mm(N, L, M, dtype=dtype)
 
     # schedule
     y, x = s[C].op.axis
@@ -25,38 +31,26 @@ def matmul(N, L, M, search_space, dtype="float"):
 
     # define search space
     cfg.define_knob("tile_x", search_space)
-    cfg.define_knob("tile_y", search_space)
-    #cfg.define_knob("tile_z", search_space)    
+    cfg.define_knob("tile_y", search_space)   
 
     # schedule according to config
-    xo, xi = s[C].split(x, cfg["tile_x"].val)
-    yo, yi = s[C].split(y, cfg["tile_y"].val)
-    #ko, ki = s[C].split(k, cfg["tile_z"].val)
-
-    #cfg.define_knob("vec", [0, 1, 2])
-
-    #if cfg["vec"].val == 1:
-    #    s[C].vectorize(xo)
-    #if cfg["vec"].val == 1:
-    #    s[C].vectorize(yo)
+    x0, x1 = s[C].split(x, cfg["tile_x"].val)
+    y0, y1 = s[C].split(y, cfg["tile_y"].val)
     
     cfg.define_knob("order", [0, 1, 2, 3, 4, 5])
 
     if cfg["order"].val == 0: # ijk
-        s[C].reorder(xo, xi, yo, yi, k)
+        s[C].reorder(x0, x1, y0, y1, k)
     elif cfg["order"].val == 1: # ikj
-        s[C].reorder(xo, xi, k, yo, yi)
+        s[C].reorder(x0, x1, k, y0, y1)
     elif cfg["order"].val == 2: # jik
-        s[C].reorder(yo, yi, xo, xi, k)
+        s[C].reorder(y0, y1, x0, x1, k)
     elif cfg["order"].val == 3: # jki
-        s[C].reorder(yo, yi, k, xo, xi)
+        s[C].reorder(y0, y1, k, x0, x1)
     elif cfg["order"].val == 4: # kij
-        s[C].reorder(k, xo, xi, yo, yi)
+        s[C].reorder(k, x0, x1, y0, y1)
     elif cfg["order"].val == 5: # kji
-        s[C].reorder(k, yo, yi, xo, xi)
-
-    #s[C].unroll(xo)
-    #s[C].vectorize(ki)
+        s[C].reorder(k, y0, y1, x0, x1)
 
     return s, [A, B, C]
 
@@ -73,17 +67,19 @@ if __name__ == "__main__":
     b_np = np.random.uniform(size=(L, M)).astype(np.float32)
     c_np = a_np.dot(b_np)
 
-    tool = ["DropletTuner", "GridSearchTuner", "RandomTuner", "GATuner", "XGBTuner"]
-    #tool = ["DropletTuner"]
+    #tool = ["DropletTuner", "GridSearchTuner", "RandomTuner", "GATuner", "XGBTuner"]
+    tool = ["DropletTuner"]
 
     for t in tool:
 
         save_log = "results/%s_mm.log" % (t)
+        if os.path.isfile(save_log):
+            os.remove(save_log)
 
         with tvm.transform.PassContext(opt_level=3):
-            task = autotvm.task.create("template_matmul", args=(N, L, M, search_space, "float32",), target=target)
+            task = autotvm.task.create("template_matmul", args=(N, L, M, search_space, dev, "float32"), target=target)
 
-        #print(task.config_space)
+        print(task.config_space)
 
         #logging.getLogger("autotvm").setLevel(logging.disable)
         #logging.getLogger("autotvm").addHandler(logging.StreamHandler(sys.stdout))
@@ -125,11 +121,10 @@ if __name__ == "__main__":
 
         # apply history best from log file
         with autotvm.apply_history_best(save_log):
-            with tvm.target.Target('llvm'):
-                s, arg_bufs = matmul(N, L, M, search_space, "float32")
-        
-        with tvm.transform.PassContext(opt_level=3):
-            func = tvm.build(s, arg_bufs, target=target)
+            with tvm.transform.PassContext(opt_level=3):
+                with tvm.target.Target('llvm'):
+                    s, arg_bufs = matmul(N, L, M, search_space, "float32")
+                    func = tvm.build(s, arg_bufs)
 
         # check correctness
         # check correctness
@@ -145,3 +140,5 @@ if __name__ == "__main__":
         evaluator = func.time_evaluator(func.entry_name, dev, number=10, repeat=3)
         eval = evaluator(a_tvm, b_tvm, c_tvm)
         print(", %f, %f, %f" % (eval.mean, eval.std, end-start))
+
+        break

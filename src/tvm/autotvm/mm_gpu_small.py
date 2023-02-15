@@ -89,7 +89,8 @@ if __name__ == "__main__":
     b_np = np.random.uniform(size=(L, M)).astype(np.float32)
     c_np = a_np.dot(b_np)
 
-    tool = ["DropletTuner", "GridSearchTuner", "RandomTuner", "GATuner", "XGBTuner"]
+    #tool = ["DropletTuner", "GridSearchTuner", "RandomTuner", "GATuner", "XGBTuner"]
+    tool = ["DropletTuner"]
 
     for t in tool:
 
@@ -139,7 +140,7 @@ if __name__ == "__main__":
         with autotvm.apply_history_best(save_log):
             with tvm.target.Target(target):
                 s, arg_bufs = matmul(N, L, M, search_space, "float32")
-                func = tvm.build(s, arg_bufs, target="cuda")
+                func = tvm.build(s, arg_bufs, target=target)
 
         # check correctness
         a_tvm = tvm.nd.array(a_np, device=dev)
