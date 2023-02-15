@@ -46,9 +46,6 @@ def matmul(N, L, M, search_space, dtype="float32"):
     #k = s[C].split(loop=k, factors=[None, 8])
 
     # Bind GPU thread indices
-
-    #s[C].unroll(k)
-    
     s[C].bind(x0, te.thread_axis("blockIdx.x"))
     s[C].bind(y0, te.thread_axis("blockIdx.y"))
 

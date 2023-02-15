@@ -54,8 +54,8 @@ if __name__ == "__main__":
 
     log_file = "matmul.json"
     tune_option = auto_scheduler.TuningOptions(
-        num_measure_trials=20000,  # change this to 20000 to achieve the best performance
-        runner=auto_scheduler.LocalRunner(number=2, repeat=5, enable_cpu_cache_flush=True),
+        num_measure_trials=2000,  # change this to 20000 to achieve the best performance
+        runner=auto_scheduler.LocalRunner(number=2, repeat=3, enable_cpu_cache_flush=True),
         measure_callbacks=[auto_scheduler.RecordToFile(log_file)],
         verbose=0
     )
