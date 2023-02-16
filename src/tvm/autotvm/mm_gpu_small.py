@@ -7,6 +7,25 @@ import time
 
 from tvm import autotvm, te, testing
 
+def get_best_time(log, ms=True):
+    import json
+
+    f = open(log, "r")
+    best_avg = 9999.0
+    best_std = 0.0
+    for line in f.readlines():
+        data = json.loads(line)
+        r = np.mean(data["result"][0])
+        if (best_avg > r):
+            best_avg = r
+            best_std = np.std(data["result"][0])
+    f.close()
+
+    if ms: # convet to ms
+        best_avg *= 1000
+        best_std *= 1000
+    return best_avg, best_std
+
 def mm(N, L, M, dtype="float32"):
     A = te.placeholder((N, L), name="A", dtype=dtype)
     B = te.placeholder((L, M), name="B", dtype=dtype)
@@ -102,22 +121,18 @@ if __name__ == "__main__":
 
         measure_option = autotvm.measure_option(builder=autotvm.LocalBuilder(), runner=autotvm.LocalRunner(number=2, repeat=5))
 
-        start = time.time()
+        n_trial = len(task.config_space)
 
+        start = time.time()
         if t == "DropletTuner":
-            n_trial = len(task.config_space)
             tuner = autotvm.tuner.DropletTuner(task)
         elif t == "GridSearchTuner":
-            n_trial = len(task.config_space)            # 100% of search space
             tuner = autotvm.tuner.GridSearchTuner(task)
         elif t == "RandomTuner":
-            n_trial = int(len(task.config_space) * 0.3) # %30% of search space
             tuner = autotvm.tuner.RandomTuner(task)
         elif t == "GATuner":
-            n_trial = int(len(task.config_space) * 0.3) # %30% of search space
             tuner = autotvm.tuner.GATuner(task)
         elif t == "XGBTuner":
-            n_trial = int(len(task.config_space) * 0.3) # %30% of search space
             tuner = autotvm.tuner.XGBTuner(task, loss_type="rank")
 
         tuner.tune(
@@ -151,4 +166,7 @@ if __name__ == "__main__":
         # and the overhead of kernel launch. You can also use nvprof to validate the result.
         evaluator = func.time_evaluator(func.entry_name, dev, number=10, repeat=3)
         eval = evaluator(a_tvm, b_tvm, c_tvm)
-        print(", %f, %f, %f" % (eval.mean, eval.std, end-start))
+
+        best_avg, best_std = get_best_time(save_log)
+
+        print(", %.4f, %.4f, %.4f, %.4f, %.2f" % (eval.mean, eval.std, best_avg, best_std, end-start))

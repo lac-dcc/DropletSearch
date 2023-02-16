@@ -40,9 +40,8 @@ from tvm.autotvm.tuner import XGBTuner, GATuner, RandomTuner, GridSearchTuner, D
 from tvm.autotvm.graph_tuner import DPTuner, PBQPTuner
 import tvm.contrib.graph_executor as runtime
 
-import json
-
 def get_best_time(log, ms=True):
+    import json
 
     f = open(log, "r")
     best_avg = 9999.0
