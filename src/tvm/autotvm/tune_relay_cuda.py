@@ -15,79 +15,40 @@
 # specific language governing permissions and limitations
 # under the License.
 """
-Auto-tuning a Convolutional Network for NVIDIA GPU
-==================================================
-**Author**: `Lianmin Zheng <https://github.com/merrymercy>`_, `Eddie Yan <https://github.com/eqy/>`_
+.. _tune_relay_x86:
 
-Auto-tuning for specific devices and workloads is critical for getting the
-best performance. This is a tutorial on how to tune a whole convolutional
-network for NVIDIA GPU.
+Auto-tuning a Convolutional Network for x86 CPU
+===============================================
+**Author**: `Yao Wang <https://github.com/kevinthesun>`_, `Eddie Yan <https://github.com/eqy>`_
 
-The operator implementation for NVIDIA GPU in TVM is written in template form.
-The template has many tunable knobs (tile factor, unrolling, etc).
-We will tune all convolution and depthwise convolution operators
-in the neural network. After tuning, we produce a log file which stores
-the best knob values for all required operators. When the TVM compiler compiles
-these operators, it will query this log file to get the best knob values.
-
-We also released pre-tuned parameters for some NVIDIA GPUs. You can go to
-`NVIDIA GPU Benchmark <https://github.com/apache/tvm/wiki/Benchmark#nvidia-gpu>`_
-to see the results.
+This is a tutorial about how to tune convolution neural network
+for x86 CPU.
 
 Note that this tutorial will not run on Windows or recent versions of macOS. To
 get it to run, you will need to wrap the body of this tutorial in a :code:`if
 __name__ == "__main__":` block.
 """
 
-######################################################################
-# Install dependencies
-# --------------------
-# To use the autotvm package in tvm, we need to install some extra dependencies.
-# (change "3" to "2" if you use python2):
-#
-# .. code-block:: bash
-#
-#   pip3 install --user psutil xgboost tornado cloudpickle
-#
-# To make TVM run faster during tuning, it is recommended to use cython
-# as FFI of tvm. In the root directory of tvm, execute:
-#
-# .. code-block:: bash
-#
-#   pip3 install --user cython
-#   sudo make cython3
-#
-# Now return to python code. Import packages.
-
-# sphinx_gallery_start_ignore
-# sphinx_gallery_requires_cuda = True
-# sphinx_gallery_end_ignore
 import os
-import time
-
 import numpy as np
+import time
 
 import tvm
 from tvm import relay, autotvm
-import tvm.relay.testing
+from tvm.relay import testing
 from tvm.autotvm.tuner import XGBTuner, GATuner, RandomTuner, GridSearchTuner, DropletTuner
+from tvm.autotvm.graph_tuner import DPTuner, PBQPTuner
 import tvm.contrib.graph_executor as runtime
 
 import json
 
-#################################################################
-# Define Network
-# --------------
-# First we need to define the network in relay frontend API.
-# We can load some pre-defined network from :code:`tvm.relay.testing`.
-# We can also load models from MXNet, ONNX and TensorFlow.
+target = "cuda"
 
-#### DEVICE CONFIG ####
-target = tvm.target.cuda()
-
-#### TUNING OPTION ####
-network = "resnet-18"
+batch_size = 1
 dtype = "float32"
+model_name = "resnet-18"
+
+graph_opt_sch_file = "%s_graph_opt.log" % model_name
 
 def get_best_time(log, ms=True):
 
@@ -106,6 +67,15 @@ def get_best_time(log, ms=True):
         best_avg *= 1000
         best_std *= 1000
     return best_avg, best_std
+
+# Set the input name of the graph
+# For ONNX models, it is typically "0".
+input_name = "data"
+
+# Set number of threads used for tuning based on the number of
+# physical CPU cores on your machine.
+num_threads = os.cpu_count()
+os.environ["TVM_NUM_THREADS"] = str(num_threads)
 
 def get_network(name, batch_size):
     """Get the symbol definition and random weight of a network"""
@@ -136,7 +106,7 @@ def get_network(name, batch_size):
         from mxnet.gluon.model_zoo.vision import get_model
 
         block = get_model("resnet18_v1", pretrained=True)
-        mod, params = relay.frontend.from_mxnet(block, shape={"data": input_shape}, dtype=dtype)
+        mod, params = relay.frontend.from_mxnet(block, shape={input_name: input_shape}, dtype=dtype)
         net = mod["main"]
         net = relay.Function(
             net.params, relay.nn.softmax(net.body), None, net.type_params, net.attrs
@@ -147,116 +117,133 @@ def get_network(name, batch_size):
 
     return mod, params, input_shape, output_shape
 
-
-###########################################
-# Set Tuning Options
-# ------------------
-# Before tuning, we apply some configurations.
-
-
-
-####################################################################
+#################################################################
+# Configure tensor tuning settings and create tasks
+# -------------------------------------------------
+# To get better kernel execution performance on x86 CPU,
+# we need to change data layout of convolution kernel from
+# "NCHW" to "NCHWc". To deal with this situation, we define
+# conv2d_NCHWc operator in topi. We will tune this operator
+# instead of plain conv2d.
 #
-# .. note:: How to set tuning options
+# We will use local mode for tuning configuration. RPC tracker
+# mode can be setup similarly to the approach in
+# :ref:`tune_relay_arm` tutorial.
 #
-#   In general, the default value provided here works well.
-#
-#   If you have large time budget, you can set :code:`n_trial`, :code:`early_stopping` larger,
-#   which makes the tuning runs longer.
-#
-#   If you have multiple devices, you can use all of them for measurement to
-#   accelerate the tuning process. (see the 'Scale up measurement` section below).
-#
-
-###################################################################
-# Begin Tuning
-# ------------
-# Now we can extract tuning tasks from the network and begin tuning.
-# Here, we provide a simple utility function to tune a list of tasks.
-# This function is just an initial implementation which tunes them in sequential order.
-# We will introduce a more sophisticated tuning scheduler in the future.
+# To perform a precise measurement, we should repeat the measurement several
+# times and use the average of results. In addition, we need to flush the cache
+# for the weight tensors between repeated measurements. This can make the measured
+# latency of one operator closer to its actual latency during end-to-end inference.
 
 # You can skip the implementation of this function for this tutorial.
-def tune_tasks(
-    tasks,
-    measure_option,
-    tuner="xgb",
-    n_trial=1000,
-    early_stopping=None,
-    log_filename="tuning.log",
+def tune_kernels(
+    tasks, measure_option, tuner="gridsearch", early_stopping=None, log_filename="tuning.log"
 ):
-    # create tmp log file
     if os.path.exists(log_filename):
         os.remove(log_filename)
 
-    for i, tsk in enumerate(reversed(tasks)):
+    for i, task in enumerate(tasks):
         prefix = "[Task %2d/%2d] " % (i + 1, len(tasks))
 
         # create tuner
         if tuner == "xgb" or tuner == "xgb-rank":
-            tuner_obj = XGBTuner(tsk, loss_type="rank")
+            tuner_obj = XGBTuner(task, loss_type="rank")
         elif tuner == "ga":
-            tuner_obj = GATuner(tsk, pop_size=100)
+            tuner_obj = GATuner(task, pop_size=50)
         elif tuner == "random":
-            tuner_obj = RandomTuner(tsk)
+            tuner_obj = RandomTuner(task)
         elif tuner == "gridsearch":
-            tuner_obj = GridSearchTuner(tsk)
+            tuner_obj = GridSearchTuner(task)
         elif tuner == "droplet":
-            tuner_obj = DropletTuner(tsk)
+            tuner_obj = DropletTuner(task)
         else:
             raise ValueError("Invalid tuner: " + tuner)
 
+        n_trial = min(118,len(task.config_space))
         # do tuning
-        tsk_trial = min(n_trial, len(tsk.config_space))
-        tuner_obj.tune(
-            n_trial=tsk_trial,
-            early_stopping=early_stopping,
-            measure_option=measure_option,
-            callbacks=[
-                #autotvm.callback.progress_bar(tsk_trial, prefix=prefix),
-                autotvm.callback.log_to_file(log_filename),
-            ],
-        )
-
+        with tvm.transform.PassContext(opt_level=3):
+            tuner_obj.tune(
+                n_trial=n_trial,
+                early_stopping=early_stopping,
+                measure_option=measure_option,
+                callbacks=[
+                    #autotvm.callback.progress_bar(n_trial, prefix=prefix),
+                    autotvm.callback.log_to_file(log_filename),
+                ],
+            )
 
 ########################################################################
 # Finally, we launch tuning jobs and evaluate the end-to-end performance.
+
+#def evaluate_performance(lib, data_shape):
+#    # upload parameters to device
+#    dev = tvm.cuda()
+#    data_tvm = tvm.nd.array((np.random.uniform(size=data_shape)).astype(dtype))
+#    module = runtime.GraphModule(lib["default"](dev))
+#    module.set_input(input_name, data_tvm)
+#
+#    # evaluate
+#    print(module.benchmark(dev, number=10, repeat=3))
 
 
 def tune_and_evaluate(tuning_opt, tuner, log_file):
     # extract workloads from relay program
     #print("Extract tasks...")
-    mod, params, input_shape, out_shape = get_network(network, batch_size=1)
+    mod, params, data_shape, out_shape = get_network(model_name, batch_size)
     tasks = autotvm.task.extract_from_program(
         mod["main"], target=target, params=params, ops=(relay.op.get("nn.conv2d"),)
     )
 
     # run tuning tasks
     start = time.time()
-    tune_tasks(tasks, **tuning_opt)
+    tune_kernels(tasks, **tuning_opt)
     end = time.time()
 
     best_avg, best_std = get_best_time(log_file)
+
     print("Time tuning %s: %.4f, %.4f, %.2f" %(tuner, best_avg, best_std, end-start))
+
+    # compile kernels in default mode
+    #print("Evaluation of the network compiled in 'default' mode without auto tune:")
+    #with tvm.transform.PassContext(opt_level=3):
+    #    print("Compile...")
+    #    lib = relay.build(mod, target=target, params=params)
+    #    evaluate_performance(lib, data_shape)
+
+    # compile kernels in kernel tuned only mode
+    #print("\nEvaluation of the network been tuned on kernel level:")
+    #with autotvm.apply_history_best(log_file):
+    #    #print("Compile...")
+    #    with tvm.transform.PassContext(opt_level=3):
+    #        lib = relay.build(mod, target=target, params=params)
+    #    evaluate_performance(lib, data_shape)
+
+    # compile kernels with graph-level best records
+    #print("\nEvaluation of the network been tuned on graph level:")
+    #with autotvm.apply_graph_best(graph_opt_sch_file):
+    #    print("Compile...")
+    #    with tvm.transform.PassContext(opt_level=3):
+    #        lib = relay.build_module.build(mod, target=target, params=params)
+    #    evaluate_performance(lib, data_shape)
 
 
 # We do not run the tuning in our webpage server since it takes too long.
 # Uncomment the following line to run it by yourself.
-
-tuner = ["droplet", "xgb", "ga", "random", "gridsearch"]
+tuner = ["droplet", "gridsearch", "random", "ga", "xgb"]
 
 for t in tuner:
 
-    log_file = "results/gpu_%s_%s.log" % (network, t)
+    log_file = "results/cuda_%s_%s.log" % (model_name, t)
 
     tuning_option = {
         "log_filename": log_file,
         "tuner": t,
-        "n_trial": 170,
         "early_stopping": None,
         "measure_option": autotvm.measure_option(
             builder=autotvm.LocalBuilder(),
-            runner=autotvm.LocalRunner(number=2, repeat=5, timeout=4),
+            runner=autotvm.LocalRunner(
+                number=2, repeat=5, min_repeat_ms=0
+            ),
         ),
     }
 
