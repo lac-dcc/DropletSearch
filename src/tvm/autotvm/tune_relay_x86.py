@@ -173,7 +173,7 @@ def tune_kernels(
         else:
             raise ValueError("Invalid tuner: " + tuner)
 
-        n_trial = min(170,len(task.config_space))
+        n_trial = len(task.config_space)
         # do tuning
         with tvm.transform.PassContext(opt_level=3):
             tuner_obj.tune(

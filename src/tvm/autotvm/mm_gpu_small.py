@@ -105,8 +105,8 @@ if __name__ == "__main__":
     b_np = np.random.uniform(size=(L, M)).astype(np.float32)
     c_np = a_np.dot(b_np)
 
-    #tool = ["DropletTuner", "GridSearchTuner", "RandomTuner", "GATuner", "XGBTuner"]
-    tool = ["DropletTuner"]
+    tool = ["DropletTuner", "GridSearchTuner", "RandomTuner", "GATuner", "XGBTuner"]
+    #tool = ["DropletTuner"]
 
     for t in tool:
 
