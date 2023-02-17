@@ -47,7 +47,7 @@ target = "llvm"
 
 batch_size = 1
 dtype = "float32"
-model_name = "vgg-16"
+model_name = "resnet-18"
 
 def get_best_time(log, ms=True):
     import json
@@ -141,16 +141,18 @@ def get_network(name, batch_size):
 def tune_kernels(
     tasks, measure_option, tuner="gridsearch", early_stopping=None, log_filename="tuning.log"
 ):
+    if os.path.exists(log_filename):
+        os.remove(log_filename)
 
     for i, task in enumerate(tasks):
-
-        log_filename = log_filename + "_layer_" + str(i) + ".log"
-
-        if os.path.exists(log_filename):
-            os.remove(log_filename)
-
         prefix = "[Task %2d/%2d] " % (i + 1, len(tasks))
 
+        print(task.args)
+        print(task.config_space)
+
+        for k, v in task.config_space.space_map.items():
+            print(k, v)
+        '''
         # create tuner
         if tuner == "xgb" or tuner == "xgb-rank":
             tuner_obj = XGBTuner(task, loss_type="rank")
@@ -165,7 +167,6 @@ def tune_kernels(
         else:
             raise ValueError("Invalid tuner: " + tuner)
 
-        start = time.time()
         n_trial = len(task.config_space)
         # do tuning
         with tvm.transform.PassContext(opt_level=3):
@@ -178,10 +179,7 @@ def tune_kernels(
                     autotvm.callback.log_to_file(log_filename),
                 ],
             )
-        end = time.time()
-        best_avg, best_std = get_best_time(log_file)
-        print("Time tuning %s-layer-%d: %.4f, %.4f, %.2f" %(i, tuner, best_avg, best_std, end-start))
-
+        '''
 ########################################################################
 # Finally, we launch tuning jobs and evaluate the end-to-end performance.
 
@@ -212,30 +210,6 @@ def tune_and_evaluate(tuning_opt, tuner, log_file):
     best_avg, best_std = get_best_time(log_file)
 
     print("Time tuning %s: %.4f, %.4f, %.2f" %(tuner, best_avg, best_std, end-start))
-
-    # compile kernels in default mode
-    #print("Evaluation of the network compiled in 'default' mode without auto tune:")
-    #with tvm.transform.PassContext(opt_level=3):
-    #    print("Compile...")
-    #    lib = relay.build(mod, target=target, params=params)
-    #    evaluate_performance(lib, data_shape)
-
-    # compile kernels in kernel tuned only mode
-    #print("\nEvaluation of the network been tuned on kernel level:")
-    #with autotvm.apply_history_best(log_file):
-    #    #print("Compile...")
-    #    with tvm.transform.PassContext(opt_level=3):
-    #        lib = relay.build(mod, target=target, params=params)
-    #    evaluate_performance(lib, data_shape)
-
-    # compile kernels with graph-level best records
-    #print("\nEvaluation of the network been tuned on graph level:")
-    #with autotvm.apply_graph_best(graph_opt_sch_file):
-    #    print("Compile...")
-    #    with tvm.transform.PassContext(opt_level=3):
-    #        lib = relay.build_module.build(mod, target=target, params=params)
-    #    evaluate_performance(lib, data_shape)
-
 
 # We do not run the tuning in our webpage server since it takes too long.
 # Uncomment the following line to run it by yourself.

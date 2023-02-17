@@ -139,10 +139,14 @@ def get_network(name, batch_size):
 def tune_kernels(
     tasks, measure_option, tuner="gridsearch", early_stopping=None, log_filename="tuning.log"
 ):
-    if os.path.exists(log_filename):
-        os.remove(log_filename)
-
+    
     for i, task in enumerate(tasks):
+        
+        log_filename = log_filename + "_layer_" + str(i) + ".log"
+
+        if os.path.exists(log_filename):
+            os.remove(log_filename)
+
         prefix = "[Task %2d/%2d] " % (i + 1, len(tasks))
 
         # create tuner
@@ -159,7 +163,8 @@ def tune_kernels(
         else:
             raise ValueError("Invalid tuner: " + tuner)
 
-        n_trial = min(118,len(task.config_space))
+        start = time.time()
+        n_trial = len(task.config_space)
         # do tuning
         with tvm.transform.PassContext(opt_level=3):
             tuner_obj.tune(
@@ -171,7 +176,11 @@ def tune_kernels(
                     autotvm.callback.log_to_file(log_filename),
                 ],
             )
+        end = time.time()
 
+        best_avg, best_std = get_best_time(log_file)
+
+        print("Time tuning %s-layer-%d: %.4f, %.4f, %.2f" %(i, tuner, best_avg, best_std, end-start))
 ########################################################################
 # Finally, we launch tuning jobs and evaluate the end-to-end performance.
 
@@ -195,13 +204,8 @@ def tune_and_evaluate(tuning_opt, tuner, log_file):
     )
 
     # run tuning tasks
-    start = time.time()
+    
     tune_kernels(tasks, **tuning_opt)
-    end = time.time()
-
-    best_avg, best_std = get_best_time(log_file)
-
-    print("Time tuning %s: %.4f, %.4f, %.2f" %(tuner, best_avg, best_std, end-start))
 
     # compile kernels in default mode
     #print("Evaluation of the network compiled in 'default' mode without auto tune:")

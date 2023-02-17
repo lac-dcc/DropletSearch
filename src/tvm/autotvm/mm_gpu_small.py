@@ -160,7 +160,7 @@ if __name__ == "__main__":
         c_tvm = tvm.nd.empty(c_np.shape, device=dev)
         func(a_tvm, b_tvm, c_tvm)
 
-        #tvm.testing.assert_allclose(c_np, c_tvm.numpy(), rtol=1e-4)
+        tvm.testing.assert_allclose(c_np, c_tvm.numpy(), rtol=1e-4)
 
         # Evaluate running time. Here we choose a large repeat number (400) to reduce the noise
         # and the overhead of kernel launch. You can also use nvprof to validate the result.

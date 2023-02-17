@@ -32,7 +32,6 @@ class DropletTuner(Tuner):
         self.next = [[0] * len(self.dims)] if start_position == None else start_position
         self.number_execution = 1
         self.best_choice = [-1] * len(self.dims)
-        self.visited = self.next
     
     def create_space(self, value):
         b = str(0) * (len(self.dims) - len(bin(value)[2:])) + bin(value)[2:]
@@ -59,9 +58,8 @@ class DropletTuner(Tuner):
         next_set = []
         for p in new_positions:
             p = [x + y for x, y in zip(p, self.best_choice)]
-            if p not in self.visited and self.safe_space(p):
+            if self.safe_space(p):
                 next_set.append(p)
-                self.visited.append(p)
         return next_set
     
     def safe_space(self, data):
@@ -77,8 +75,8 @@ class DropletTuner(Tuner):
         data_1 = np.array(elem_1)
         data_2 = np.array(elem_2)
         if len(data_1) <= 1 or len(data_2) <= 1: # Case that there is only one element
-            return 0
-        return stats.ttest_ind(data_1, data_2).pvalue
+            return True
+        return stats.ttest_ind(data_1, data_2).pvalue <= 0.5
 
     '''
         Return the next batch 
@@ -102,7 +100,7 @@ class DropletTuner(Tuner):
         for i, (inp, res) in enumerate(zip(inputs, results)):
             try:
                 y = np.mean(res.costs)
-                if np.mean(self.best_res) > y and self.p_value(self.best_res, res.costs) <= 0.05:
+                if np.mean(self.best_res) > y and self.p_value(self.best_res, res.costs):
                     self.best_res = res.costs
                     self.best_choice = self.next[i]
                     found_best_pos = True
