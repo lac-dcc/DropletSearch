@@ -32,6 +32,8 @@ class DropletTuner(Tuner):
         self.next = [[0] * len(self.dims)] if start_position == None else start_position
         self.number_execution = 1
         self.best_choice = [-1] * len(self.dims)
+        self.start_space = self.generate_search_space()
+        self.visited = {}
     
     def create_space(self, value):
         b = str(0) * (len(self.dims) - len(bin(value)[2:])) + bin(value)[2:]
@@ -40,19 +42,13 @@ class DropletTuner(Tuner):
     '''
         Return the search space 
     '''
-    def generate_search_space(self):
+    def generate_search_space(self, factor=1):
         search_space = []
-        for i in range(1,2**len(self.dims)):
-            search_space.append([x for x in self.create_space(i)])
-            search_space.append([-x for x in self.create_space(i)])
+        if factor < self.total_number_execution:
+            for i in range(1,2**len(self.dims)):
+                search_space.append([x*factor for x in self.create_space(i)])
+                search_space.append([-x*factor for x in self.create_space(i)])
         return search_space
-    
-    def generate_new_positions(self):
-        new_p = []
-        if self.number_execution < self.total_number_execution:
-            for p in self.generate_search_space():
-                new_p.append([i * self.number_execution for i in p])
-        return new_p
     
     def next_positions(self, new_positions):
         next_set = []
@@ -88,7 +84,11 @@ class DropletTuner(Tuner):
             for i in range(0, len(value)):
                 index += (value[i] % self.dims[i]) * exp
                 exp *= self.dims[i]
-            ret.append(self.space.get(index))
+            if index not in self.visited.keys():
+                print(value, end=", ")
+                self.visited[index] = 1
+                ret.append(self.space.get(index))
+        print()
         return ret
     
     '''
@@ -107,15 +107,16 @@ class DropletTuner(Tuner):
             except:
                 y = self.max_value
 
+        print("n_exec", self.number_execution)
         self.next = []
-        if not found_best_pos:
-            self.next = self.next_positions(self.generate_new_positions())
-            self.number_execution += 1
-        else:
+        if found_best_pos:
             self.next = self.next_positions(self.generate_search_space())
+        else:
+            self.next = self.next_positions(self.generate_search_space(self.number_execution))
+            self.number_execution += 1
 
-        #print("Best", self.best_choice, "n_exec", self.number_execution)
-        #print("next", self.next)
+        print("Best", self.best_choice, "time", np.mean(self.best_res))
+        print("next", self.next)
             
 
     '''
