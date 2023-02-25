@@ -17,7 +17,7 @@ RUN apt-get install -y gcc g++ graphviz vim python3 python3-pip python3-dev auto
     python3-setuptools
 
 RUN pip3 install numpy decorator scipy pytest psutil typing_extensions tornado cloudpickle \ 
-    'xgboost<1.6.0' synr
+    'xgboost<1.6.0' synr mxnet
 
 ########################################### COPY HAMSA ##################################################
 RUN cd $HOME && git clone https://github.com/lac-dcc/garkain 
@@ -26,7 +26,7 @@ RUN cd $HOME && git clone https://github.com/lac-dcc/garkain
 RUN cd $HOME && git clone -b v0.10.0 --recursive https://github.com/apache/tvm && \
     cd tvm && mkdir -p build && \
     cp $HOME/garkain/docker/gpu-version/config.cmake $HOME/tvm/build && \
-    cp $HOME/garkain/docker/utils/droplet_algorithm/*.py $HOME/tvm/python/tvm/autotvm/tuner/ && \ 
+    cp $HOME/garkain/docker/droplet_algorithm/*.py $HOME/tvm/python/tvm/autotvm/tuner/ && \ 
     cd build && cmake .. && make -j4 && \
     cd .. && sudo make cython3
 

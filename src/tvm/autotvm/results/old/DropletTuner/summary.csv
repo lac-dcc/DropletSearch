@@ -1,6 +1,0 @@
-Best config: [('tile_y', 16), ('tile_x', 1)],None,2, 0.398133, 0.000291, ijk, 68.291599
-Best config: [('tile_y', 8), ('tile_x', 1)],None,1, 0.596810, 0.001131, ikj, 118.150255
-Best config: [('tile_y', 8), ('tile_x', 1)],None,1, 0.384566, 0.000048, jik, 20.316559
-Best config: [('tile_y', 8), ('tile_x', 8)],None,18, 0.053162, 0.000473, jki, 5.545446
-Best config: [('tile_y', 16), ('tile_x', 1)],None,2, 0.563053, 0.000340, kij, 215.515428
-Best config: [('tile_y', 1), ('tile_x', 1)],None,0, 0.053812, 0.000067, kji, 5.845854

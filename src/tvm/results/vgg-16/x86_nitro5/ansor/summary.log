@@ -1,0 +1,10 @@
+without opt
+Execution time summary:
+ mean (ms)   median (ms)    max (ms)     min (ms)     std (ms)  
+  249.8312     253.3432     261.4938     235.5569      8.1831   
+               
+with opt
+Execution time summary:
+ mean (ms)   median (ms)    max (ms)     min (ms)     std (ms)  
+  264.6956     264.3211     268.0776     263.9962      0.9677   
+               

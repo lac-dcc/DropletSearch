@@ -1,5 +1,0 @@
-Time tuning droplet: 0.0859, 0.0013, 475.41
-Time tuning gridsearch: 0.0946, 0.0002, 679.92
-Time tuning random: 0.0992, 0.0001, 772.80
-Time tuning ga: 0.0691, 0.0015, 733.97
-Time tuning xgb: 0.0795, 0.0012, 758.21
