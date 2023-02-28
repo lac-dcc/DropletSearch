@@ -30,9 +30,7 @@ def get_network(name, batch_size, layout="NCHW", dtype="float32", use_sparse=Fal
             num_layers=n_layer, batch_size=batch_size, dtype=dtype
         )
     elif name == "mobilenet":
-        mod, params = relay.testing.mobilenet.get_workload(
-            batch_size=batch_size, layout=layout, dtype=dtype, image_shape=input_shape
-        )
+        mod, params = relay.testing.mobilenet.get_workload(batch_size=batch_size, dtype=dtype)
     elif name == "squeezenet_v1.1":
         assert layout == "NCHW", "squeezenet_v1.1 only supports NCHW layout"
         mod, params = relay.testing.squeezenet.get_workload(
