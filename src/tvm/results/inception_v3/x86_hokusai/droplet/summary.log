@@ -1,0 +1,55 @@
+0
+Time partial tuning: 0.7002, 0.0002, 65.07
+Time partial tuning: 4.7760, 0.0001, 104.70
+Time partial tuning: 9.6036, 0.0018, 110.93
+Time partial tuning: 0.7868, 0.0001, 234.26
+Time partial tuning: 16.7848, 0.0027, 209.30
+Time partial tuning: 0.3906, 0.0002, 223.09
+Time partial tuning: 0.3374, 0.0000, 233.49
+Time partial tuning: 2.2783, 0.0008, 112.59
+Time partial tuning: 1.6850, 0.0001, 127.86
+Time partial tuning: 2.5821, 0.0007, 136.87
+Time partial tuning: 0.1967, 0.0000, 205.53
+Time partial tuning: 0.5734, 0.0002, 131.34
+Time partial tuning: 0.3984, 0.0000, 245.91
+Time partial tuning: 0.6025, 0.0000, 232.02
+Time partial tuning: 0.4992, 0.0000, 268.31
+Time partial tuning: 7.5678, 0.0001, 196.53
+Time partial tuning: 0.8230, 0.0000, 101.31
+Time partial tuning: 1.3700, 0.0001, 177.39
+Time partial tuning: 0.7747, 0.0001, 143.00
+Time partial tuning: 0.7913, 0.0001, 91.28
+Time partial tuning: 1.4088, 0.0005, 129.00
+Time partial tuning: 1.0358, 0.0001, 125.00
+Time partial tuning: 1.2561, 0.0003, 122.96
+Time partial tuning: 1.1643, 0.0001, 176.86
+Time partial tuning: 1.2880, 0.0001, 81.81
+Time partial tuning: 1.6931, 0.0003, 160.85
+Time partial tuning: 1.3978, 0.0001, 161.99
+Time partial tuning: 1.5934, 0.0002, 129.63
+Time partial tuning: 2.0307, 0.0003, 110.14
+Time partial tuning: 2.3688, 0.0002, 184.96
+Time partial tuning: 0.8924, 0.0000, 126.84
+Time partial tuning: 0.5382, 0.0001, 147.68
+Time partial tuning: 0.6802, 0.0000, 143.00
+Time partial tuning: 0.9439, 0.0001, 147.20
+Time partial tuning: 0.6911, 0.0000, 127.59
+Time partial tuning: 0.7298, 0.0000, 162.48
+Time partial tuning: 0.9494, 0.0001, 138.07
+Time partial tuning: 2.3592, 0.0025, 139.39
+Time partial tuning: 0.4220, 0.0000, 177.65
+Time partial tuning: 1.2678, 0.0005, 139.15
+Time partial tuning: 1.3784, 0.0001, 201.37
+Time partial tuning: 1.8167, 0.0001, 104.30
+Time partial tuning: 0.6889, 0.0000, 190.26
+Time total tuning: 6678.96
+without opt
+Execution time summary:
+ mean (ms)   median (ms)    max (ms)     min (ms)     std (ms)  
+  247.5912     247.5854     247.7611     247.3025      0.0989   
+               
+droplet with opt
+Execution time summary:
+ mean (ms)   median (ms)    max (ms)     min (ms)     std (ms)  
+  171.8903     171.8770     172.1672     171.5044      0.1392   
+               
