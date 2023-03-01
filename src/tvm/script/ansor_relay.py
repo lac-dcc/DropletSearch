@@ -58,9 +58,10 @@ def run_tuning(model, arch, log_file, only_eval, target):
             os.remove(log_file)
 
         tasks, task_weights = auto_scheduler.extract_tasks(mod["main"], params, target)
+
         tuner = auto_scheduler.TaskScheduler(tasks, task_weights)
         tune_option = auto_scheduler.TuningOptions(
-            num_measure_trials=20000,  # change this to 20000 to achieve the best performance
+            num_measure_trials=10000,  # change this to 20000 to achieve the best performance
             runner=auto_scheduler.LocalRunner(number=2, repeat=3, min_repeat_ms=100, enable_cpu_cache_flush=True if target=="llvm" else False),
             measure_callbacks=[auto_scheduler.RecordToFile(log_file)],
             verbose=0
@@ -82,8 +83,6 @@ if __name__ == "__main__":
     model = sys.argv[1]
     arch = sys.argv[2]
     only_eval = sys.argv[3]
-
-    print(only_eval)
 
     if "x86" in arch:
         target = "llvm"
