@@ -9,17 +9,20 @@ def process_time(log):
     v_sum = 0
     for l in f.readlines():
         l = l.strip()
-        if "Time tuning" in l:
+        if "Time partial tuning:" in l:
             v = l.split(":")[1].replace(" ","").split(",")
             print("%s,%s,%s" %(v[0],v[1],v[2]))
-            v_sum += float(v[2])
+        elif "Time total tuning:" in l:
+            v_sum = float(l.split(":")[1].replace(" ",""))
+        elif "Time search" in l:
+            v_sum = float(l.split(" ")[2])
         elif "mean (ms)" in l:
             c = True
         elif c:
             l = l.split(" ")
             print("%s,%s,%.2f"%(l[0],l[-1],v_sum))
             c = False
-    f.close()
+    f.close() 
 
 if __name__ == "__main__":
 
