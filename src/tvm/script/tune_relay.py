@@ -27,7 +27,7 @@ import numpy as np
 import time, sys
 
 import tvm
-from tvm import relay, autotvm
+from tvm import relay, autotvm, auto_scheduler
 from tvm.relay import testing
 from tvm.autotvm.tuner import XGBTuner, GATuner, RandomTuner, GridSearchTuner, DropletTuner
 from tvm.autotvm.graph_tuner import DPTuner, PBQPTuner
@@ -49,7 +49,7 @@ os.environ["TVM_NUM_THREADS"] = str(num_threads)
 
 # You can skip the implementation of this function for this tutorial.
 def tune_kernels(
-    tasks, measure_option, tuner="gridsearch", early_stopping=None, log_filename="tuning.log"
+    tasks, model, measure_option, tuner="gridsearch", early_stopping=None, log_filename="tuning.log",
 ):
     total_time_tuning = 0
     for i, task in enumerate(tasks):
@@ -73,6 +73,14 @@ def tune_kernels(
             raise ValueError("Invalid tuner: " + tuner)
 
         n_trial = len(task.config_space)
+
+        if model == "mxnet":
+            n_trial = 500
+        if model == "mobilenet":
+            n_trial = 560
+        if model == "inception_v3":
+            n_trial = 250
+
         # do tuning
         start = time.time()
         with tvm.transform.PassContext(opt_level=3):
@@ -98,7 +106,7 @@ def tune_kernels(
             f1.write(l)
         f1.close()
         f.close()
-    print("Time total tuning: %.2f" %(total_time_tuning))
+    print("Time search: %.2f" %(total_time_tuning))
             
         
 ########################################################################
@@ -107,18 +115,29 @@ def tune_kernels(
 def tune_and_evaluate(tuning_opt, log_file, model, arch, tuner, only_eval, target):
     # extract workloads from relay program
     mod, params, data_shape, out_shape = get_network(model, batch_size)
-    tasks = autotvm.task.extract_from_program(
-        mod["main"], target=target, params=params, ops=(relay.op.get("nn.conv2d"),)
-    )
-
-    print(only_eval)
-
-    if only_eval != 1:
+    
+    if only_eval != 1: 
         if os.path.exists(log_file):
             os.remove(log_file)
-        # run tuning tasks
-        tune_kernels(tasks, **tuning_opt)
 
+        if tuner == "ansor":
+            tasks, task_weights = auto_scheduler.extract_tasks(mod["main"], params, target)
+
+            tuner = auto_scheduler.TaskScheduler(tasks, task_weights)
+            tune_option = auto_scheduler.TuningOptions(
+                num_measure_trials=10000,  # change this to 20000 to achieve the best performance
+                runner=auto_scheduler.LocalRunner(number=2, repeat=3, min_repeat_ms=100, enable_cpu_cache_flush=True if target=="llvm" else False),
+                measure_callbacks=[auto_scheduler.RecordToFile(log_file)],
+                verbose=0
+            )
+            start = time.time()
+            tuner.tune(tune_option)
+            end = time.time()
+            print("Time search: %.2f" %(end-start))
+        else:
+            tasks = autotvm.task.extract_from_program(mod["main"], target=target, params=params, ops=(relay.op.get("nn.conv2d"),))
+            # run tuning tasks
+            tune_kernels(tasks, model, **tuning_opt)
     print("without opt")
     lib = relay.build(mod, target=target, params=params)
     evaluate_performance(lib, data_shape, target)

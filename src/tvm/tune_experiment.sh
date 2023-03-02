@@ -9,8 +9,8 @@ MODEL=(
     "resnet-18"
     "vgg-16"
     "mobilenet"
-    "inception_v3"
     "mxnet"
+    "inception_v3"
 )
 
 TUNER=(
@@ -27,12 +27,9 @@ mkdir -p results
 for ((i = 0; i < ${#MODEL[@]}; i++)); do
     mkdir -p results/${MODEL[i]}
     mkdir -p results/${MODEL[i]}/$NAME
+    echo ${MODEL[i]}
     for ((j = 0; j < ${#TUNER[@]}; j++)); do
         mkdir -p results/${MODEL[i]}/$NAME/${TUNER[j]} 
-        if [ ${TUNER[j]} == "ansor" ]; then
-            python3 script/ansor_relay.py ${MODEL[i]} $NAME 0 > results/${MODEL[i]}/$NAME"/ansor/summary.log"
-        else
-            python3 script/tune_relay.py ${MODEL[i]} ${TUNER[j]} $NAME 0 > results/${MODEL[i]}/$NAME/${TUNER[j]}"/summary.log"
-        fi
+        python3 script/tune_relay.py ${MODEL[i]} ${TUNER[j]} $NAME 0 > results/${MODEL[i]}/$NAME/${TUNER[j]}"/time_partial_summary.log"
     done
 done
