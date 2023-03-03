@@ -1,5 +1,5 @@
 ################################################# Image #################################################
-FROM ubuntu:22.04
+FROM ubuntu:20.04
 
 ############################################# Date and Time #############################################
 ENV TZ="America/Sao_Paulo"
@@ -33,5 +33,5 @@ RUN cd $HOME && git clone -b v0.10.0 --recursive https://github.com/apache/tvm &
 RUN echo "export PYTHONPATH=/root/tvm/python:/python:" >> ~/.bashrc
 
 ########################################### WORKDIR #####################################################
-WORKDIR /root/garkain
+WORKDIR /root/garkain/src/tvm
 ENTRYPOINT ["/bin/bash"]

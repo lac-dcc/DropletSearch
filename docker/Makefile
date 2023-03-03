@@ -1,11 +1,11 @@
-docker-cpu:
-	docker build cpu-version/. -t garkain-cpu
+docker-x86:
+	docker build x86/. -t garkain-x86
 
-run-cpu:
-	docker run -ti garkain-cpu
+x86: docker-x86
+	docker run -ti garkain-x86
 
-docker-gpu:
-	docker build gpu-version/. -t garkain-gpu
+docker-cuda:
+	docker build cuda/. -t garkain-cuda
 
-run-gpu:
-	docker run -it --gpus all garkain-gpu
+cuda: docker-cuda
+	docker run -it --gpus all garkain-cuda
