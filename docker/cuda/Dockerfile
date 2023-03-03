@@ -1,5 +1,5 @@
 ################################################# Image #################################################
-FROM nvidia/cuda:12.0.1-devel-ubuntu22.04
+FROM nvidia/cuda:12.0.1-devel-ubuntu20.04
 
 ############################################# Date and Time #############################################
 ENV TZ="America/Sao_Paulo"
@@ -34,5 +34,5 @@ RUN echo "export PYTHONPATH=/root/tvm/python:/python:" >> ~/.bashrc
 RUN echo "export LD_LIBRARY_PATH=/usr/local/nvidia/lib:/usr/local/nvidia/lib64:/usr/local/cuda-12.0/compat/" >> ~/.bashrc
 
 ########################################### WORKDIR #####################################################
-WORKDIR /root/garkain
+WORKDIR /root/garkain/src/tvm/
 ENTRYPOINT ["/bin/bash"]
