@@ -1,5 +1,5 @@
 ################################################# Image #################################################
-FROM ubuntu:22.04
+FROM ubuntu:20.04
 
 ############################################# Date and Time #############################################
 ENV TZ="America/Sao_Paulo"
@@ -16,7 +16,7 @@ RUN apt-get install -y gcc g++ graphviz vim python3 python3-pip python3-dev auto
     build-essential cmake llvm-dev clang cython3 python-is-python3 libedit-dev libxml2-dev libtinfo-dev \
     python3-setuptools
 
-RUN pip3 install numpy decorator scipy pytest psutil typing_extensions tornado cloudpickle \ 
+RUN pip3 install numpy==1.20 decorator scipy pytest psutil typing_extensions tornado cloudpickle \ 
     'xgboost<1.6.0' synr mxnet
 
 ########################################### COPY HAMSA ##################################################
@@ -25,7 +25,7 @@ RUN cd $HOME && git clone https://github.com/lac-dcc/garkain
 ########################################### INSTALL TVM #################################################
 RUN cd $HOME && git clone -b v0.10.0 --recursive https://github.com/apache/tvm && \
     cd tvm && mkdir -p build && \
-    cp $HOME/garkain/docker/cpu-version/config.cmake $HOME/tvm/build && \
+    cp $HOME/garkain/docker/x86/config.cmake $HOME/tvm/build && \
     cp $HOME/garkain/docker/droplet_algorithm/*.py $HOME/tvm/python/tvm/autotvm/tuner/ && \ 
     cd build && cmake .. && make -j4 && \
     cd .. && sudo make cython3
@@ -33,5 +33,5 @@ RUN cd $HOME && git clone -b v0.10.0 --recursive https://github.com/apache/tvm &
 RUN echo "export PYTHONPATH=/root/tvm/python:/python:" >> ~/.bashrc
 
 ########################################### WORKDIR #####################################################
-WORKDIR /root/garkain
+WORKDIR /root/garkain/src/tvm
 ENTRYPOINT ["/bin/bash"]

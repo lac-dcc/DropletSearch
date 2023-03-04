@@ -37,6 +37,7 @@ import tvm.contrib.graph_executor as runtime
 #################################################################
 # Define network
 # --------------
+TOTAL_TRIAL=10000
 batch_size = 1
 dtype = "float32"
 input_name = "data"
@@ -52,6 +53,8 @@ def tune_kernels(
     tasks, model, measure_option, tuner="gridsearch", early_stopping=None, log_filename="tuning.log",
 ):
     total_time_tuning = 0
+
+    partial_trial = TOTAL_TRIAL // len(tasks)
     for i, task in enumerate(tasks):
         log_filename_tmp = log_filename + "_layer_" + str(i) + ".log"
 
@@ -72,14 +75,7 @@ def tune_kernels(
         else:
             raise ValueError("Invalid tuner: " + tuner)
 
-        n_trial = len(task.config_space)
-
-        if model == "mxnet":
-            n_trial = 500
-        if model == "mobilenet":
-            n_trial = 560
-        if model == "inception_v3":
-            n_trial = 250
+        n_trial = min(partial_trial, len(task.config_space))
 
         # do tuning
         start = time.time()
