@@ -1,5 +1,5 @@
 ################################################# Image #################################################
-FROM nvidia/cuda:12.0.1-devel-ubuntu20.04
+FROM arm32v7/ubuntu:20.04
 
 ############################################# Date and Time #############################################
 ENV TZ="America/Sao_Paulo"
@@ -25,14 +25,13 @@ RUN cd $HOME && git clone https://github.com/lac-dcc/garkain
 ########################################### INSTALL TVM #################################################
 RUN cd $HOME && git clone -b v0.10.0 --recursive https://github.com/apache/tvm && \
     cd tvm && mkdir -p build && \
-    cp $HOME/garkain/docker/cuda/config.cmake $HOME/tvm/build && \
+    cp $HOME/garkain/docker/x86/config.cmake $HOME/tvm/build && \
     cp $HOME/garkain/docker/droplet_algorithm/*.py $HOME/tvm/python/tvm/autotvm/tuner/ && \ 
     cd build && cmake .. && make -j4 && \
     cd .. && sudo make cython3
 
 RUN echo "export PYTHONPATH=/root/tvm/python:/python:" >> ~/.bashrc
-RUN echo "export LD_LIBRARY_PATH=/usr/local/nvidia/lib:/usr/local/nvidia/lib64:/usr/local/cuda-12.0/compat/" >> ~/.bashrc
 
 ########################################### WORKDIR #####################################################
-WORKDIR /root/garkain/src/tvm/
+WORKDIR /root/garkain/src/tvm
 ENTRYPOINT ["/bin/bash"]
