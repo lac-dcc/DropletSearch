@@ -1,0 +1,6 @@
+Downloading /root/.mxnet/models/resnet50_v1-0aee57f9.zipa9d8ec1f-c15b-4ba9-9c46-9e4d87102aaa from https://apache-mxnet.s3-accelerate.dualstack.amazonaws.com/gluon/models/resnet50_v1-0aee57f9.zip...
+Time partial tuning: 0.8659, 0.0005, 75.20
+Time partial tuning: 0.1093, 0.0001, 133.45
+Time partial tuning: 0.8515, 0.0015, 105.86
+Time partial tuning: 0.4250, 0.0025, 146.54
+Time partial tuning: 0.4377, 0.0000, 143.30
