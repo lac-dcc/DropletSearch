@@ -11,7 +11,7 @@ def process_time(log):
         l = l.strip()
         if "Time partial tuning:" in l:
             v = l.split(":")[1].replace(" ","").split(",")
-            print("%s,%s,%s" %(v[0],v[1],v[2]))
+            #print("%s,%s,%s" %(v[0],v[1],v[2]))
         elif "Time total tuning:" in l:
             v_sum = float(l.split(":")[1].replace(" ",""))
         elif "Time search" in l:
@@ -27,5 +27,5 @@ def process_time(log):
 if __name__ == "__main__":
 
     log = sys.argv[1]
-    print(log)
+    #print(log)
     process_time(log)
