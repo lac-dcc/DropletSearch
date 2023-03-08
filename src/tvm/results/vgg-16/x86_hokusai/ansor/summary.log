@@ -1,7 +1,11 @@
-0
-Time search 40257.8644
-ansor with opt
+Time search: 17846.94
+<tvm.auto_scheduler.task_scheduler.TaskScheduler object at 0x7fb9b0f11e50> with opt
 Execution time summary:
  mean (ms)   median (ms)    max (ms)     min (ms)     std (ms)  
-  399.7169     399.7130     400.3188     399.4930      0.1754   
+  399.2316     399.2170     399.4164     399.1158      0.0840   
+               
+without opt
+Execution time summary:
+ mean (ms)   median (ms)    max (ms)     min (ms)     std (ms)  
+  662.4624     662.3814     663.3648     662.0382      0.2739   
                
