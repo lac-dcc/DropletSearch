@@ -171,7 +171,7 @@ if __name__ == "__main__":
     elif "cuda" in arch:
         target = "cuda"
 
-    log_file = "results/%s/%s/%s/cpu.log" % (model, arch, tuner)
+    log_file = "results/%s/%s/%s/cpu.log" % (arch, model, tuner)
 
     tuning_option = {
         "log_filename": log_file,
