@@ -1,0 +1,12 @@
+Downloading /root/.mxnet/models/resnet50_v1-0aee57f9.zip218dd220-90d6-4b34-aa86-85522c5a7b93 from https://apache-mxnet.s3-accelerate.dualstack.amazonaws.com/gluon/models/resnet50_v1-0aee57f9.zip...
+Time search: 11224.38
+<tvm.auto_scheduler.task_scheduler.TaskScheduler object at 0x7fc032ec66d0> with opt
+Execution time summary:
+ mean (ms)   median (ms)    max (ms)     min (ms)     std (ms)  
+  100.4426     100.3850     101.2833     100.2311      0.2438   
+               
+without opt
+Execution time summary:
+ mean (ms)   median (ms)    max (ms)     min (ms)     std (ms)  
+  160.9615     160.9153     161.5994     160.6899      0.2199   
+               
