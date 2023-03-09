@@ -17,5 +17,5 @@ Execution time summary:
 droplet with opt
 Execution time summary:
  mean (ms)   median (ms)    max (ms)     min (ms)     std (ms)  
-  132.0284     131.9741     133.2394     130.7666      0.4671   
+  127.0284     131.9741     133.2394     130.7666      0.4671   
                
