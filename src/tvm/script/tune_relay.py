@@ -161,7 +161,7 @@ if __name__ == "__main__":
         tuner = sys.argv[2]
         arch = sys.argv[3]
         only_eval = sys.argv[4]
-        trials = sys.argv[5]
+        trials = int(sys.argv[5])
     else:
         print("Not valid configuration")
         exit()
