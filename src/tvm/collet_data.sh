@@ -1,8 +1,12 @@
 #!/bin/bash
 
 ARCH=(
-    "x86_gogh"
-    "x86_hokusai"
+    #"x86_AMD3900X"
+    #"x86_gogh"
+    #"x86_hokusai"
+    #"cuda_rtx3080"
+    "cuda_gtx1650"
+    "arm_cortex-a7"
 )
 
 MODEL=(
@@ -32,7 +36,7 @@ for ((k = 0; k < ${#ARCH[@]}; k++)); do
         for ((j = 0; j < ${#TUNER[@]}; j++)); do
             echo ${TUNER[j]} >> $DATA
             #python3 script/get_best_config.py ${MODEL[i]} ${TUNER[j]} $ARCH >> data.csv
-            python3 script/get_time.py results/${MODEL[i]}/${ARCH[k]}/${TUNER[j]}"/summary.log" >> $DATA
+            python3 script/get_time.py results/${ARCH[k]}/${MODEL[i]}/${TUNER[j]}"/summary.log" >> $DATA
         done
     done
 done

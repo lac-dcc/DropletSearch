@@ -37,7 +37,6 @@ import tvm.contrib.graph_executor as runtime
 #################################################################
 # Define network
 # --------------
-TOTAL_TRIAL=10000
 batch_size = 1
 dtype = "float32"
 input_name = "data"
@@ -50,11 +49,11 @@ os.environ["TVM_NUM_THREADS"] = str(num_threads)
 
 # You can skip the implementation of this function for this tutorial.
 def tune_kernels(
-    tasks, model, measure_option, tuner="gridsearch", early_stopping=None, log_filename="tuning.log",
+    tasks, model, trials, measure_option, tuner="gridsearch", early_stopping=None, log_filename="tuning.log",
 ):
     total_time_tuning = 0
 
-    partial_trial = TOTAL_TRIAL // len(tasks)
+    partial_trial = trials // len(tasks)
     for i, task in enumerate(tasks):
         log_filename_tmp = log_filename + "_layer_" + str(i) + ".log"
 
@@ -108,7 +107,7 @@ def tune_kernels(
 ########################################################################
 # Finally, we launch tuning jobs and evaluate the end-to-end performance.
 
-def tune_and_evaluate(tuning_opt, log_file, model, arch, tuner, only_eval, target):
+def tune_and_evaluate(tuning_opt, log_file, model, arch, tuner, only_eval, target, trials):
     # extract workloads from relay program
     mod, params, data_shape, out_shape = get_network(model, batch_size)
     
@@ -121,7 +120,7 @@ def tune_and_evaluate(tuning_opt, log_file, model, arch, tuner, only_eval, targe
 
             tuner = auto_scheduler.TaskScheduler(tasks, task_weights)
             tune_option = auto_scheduler.TuningOptions(
-                num_measure_trials=TOTAL_TRIAL,  # change this to 20000 to achieve the best performance
+                num_measure_trials=trials,  # change this to 20000 to achieve the best performance
                 runner=auto_scheduler.LocalRunner(number=2, repeat=3, min_repeat_ms=100, enable_cpu_cache_flush=True if target=="llvm" else False),
                 measure_callbacks=[auto_scheduler.RecordToFile(log_file)],
                 verbose=0
@@ -141,7 +140,7 @@ def tune_and_evaluate(tuning_opt, log_file, model, arch, tuner, only_eval, targe
         else:
             tasks = autotvm.task.extract_from_program(mod["main"], target=target, params=params, ops=(relay.op.get("nn.conv2d"),))
             # run tuning tasks
-            tune_kernels(tasks, model, **tuning_opt)
+            tune_kernels(tasks, model, trials, **tuning_opt)
 
             # compile kernels in kernel tuned only mode
             print("%s with opt" %(tuner))
@@ -157,11 +156,12 @@ def tune_and_evaluate(tuning_opt, log_file, model, arch, tuner, only_eval, targe
     
 if __name__ == "__main__":
 
-    if len(sys.argv) > 4:
+    if len(sys.argv) > 5:
         model = sys.argv[1]
         tuner = sys.argv[2]
         arch = sys.argv[3]
         only_eval = sys.argv[4]
+        trials = sys.argv[5]
     else:
         print("Not valid configuration")
         exit()
@@ -187,4 +187,4 @@ if __name__ == "__main__":
         ),
     }
 
-    tune_and_evaluate(tuning_option, log_file, model, arch, tuner, only_eval, target)
+    tune_and_evaluate(tuning_option, log_file, model, arch, tuner, only_eval, target, trials)
