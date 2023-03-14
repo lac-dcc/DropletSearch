@@ -171,7 +171,7 @@ if __name__ == "__main__":
     elif "cuda" in arch:
         target = "cuda"
     elif "arm" in arch:
-        target = "llvm -device=arm_cpu -mtriple=aarch32-linux-gnu"
+        target = "llvm -device=arm_cpu"
 
     log_file = "results/%s/%s/%s/cpu.log" % (arch, model, tuner)
 
