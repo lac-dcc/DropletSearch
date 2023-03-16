@@ -1,0 +1,49 @@
+Time partial tuning: 4.6111, 0.1244, 395.63
+Time partial tuning: 5.5845, 0.1707, 471.05
+Time partial tuning: 5.3888, 0.1069, 413.89
+Time partial tuning: 3.2661, 0.1300, 398.94
+Time partial tuning: 10.2848, 0.0100, 370.03
+Time partial tuning: 10.3780, 0.0808, 423.46
+Time partial tuning: 3.6723, 0.0545, 407.74
+Time partial tuning: 3.7873, 0.2305, 406.12
+Time partial tuning: 10.7947, 0.4997, 357.75
+Time partial tuning: 9.6013, 0.2124, 393.40
+Time partial tuning: 5.5047, 0.4991, 421.86
+Time partial tuning: 3.5669, 0.2850, 411.75
+Time partial tuning: 19.9228, 0.6872, 379.19
+Time partial tuning: 17.9805, 0.3399, 385.32
+Time partial tuning: 1.5591, 0.0528, 440.19
+Time partial tuning: 2.2081, 0.1029, 405.07
+Time partial tuning: 10.4603, 0.4034, 355.07
+Time partial tuning: 9.0813, 0.4604, 430.95
+Time partial tuning: 1.9369, 1.2730, 437.59
+Time partial tuning: 1.0868, 0.0056, 437.00
+Time partial tuning: 19.2853, 0.5281, 372.42
+Time partial tuning: 17.2414, 0.1472, 457.00
+Time partial tuning: 0.3140, 0.0013, 352.15
+Time partial tuning: 0.5516, 0.0037, 479.57
+Time partial tuning: 10.1885, 0.3997, 338.89
+Time partial tuning: 8.8277, 0.3041, 435.62
+Time partial tuning: 0.4851, 0.0022, 372.13
+Time partial tuning: 0.4713, 0.0003, 608.04
+Time partial tuning: 19.3024, 1.0706, 371.23
+Time partial tuning: 17.4051, 0.7720, 419.86
+Time partial tuning: 0.1084, 0.0006, 441.30
+Time partial tuning: 0.1600, 0.0003, 602.93
+Time partial tuning: 10.5160, 0.2071, 341.63
+Time partial tuning: 9.3381, 0.1833, 405.82
+Time partial tuning: 0.1931, 0.0004, 427.43
+Time partial tuning: 0.1948, 0.0012, 593.95
+Time partial tuning: 19.6415, 0.8711, 380.90
+Time partial tuning: 18.3013, 0.2606, 453.89
+Time search: 15996.76
+gridsearch with opt
+Execution time summary:
+ mean (ms)   median (ms)    max (ms)     min (ms)     std (ms)  
+  296.2217     297.7329     303.4115     279.6363      5.6911   
+               
+without opt
+Execution time summary:
+ mean (ms)   median (ms)    max (ms)     min (ms)     std (ms)  
+  341.6063     344.1411     351.1862     319.4368      6.9419   
+               

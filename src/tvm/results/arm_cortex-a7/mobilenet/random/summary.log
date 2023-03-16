@@ -1,0 +1,49 @@
+Time partial tuning: 4.6439, 0.3955, 653.18
+Time partial tuning: 5.6786, 0.0304, 563.42
+Time partial tuning: 4.6388, 0.7834, 476.86
+Time partial tuning: 3.4131, 0.0794, 563.90
+Time partial tuning: 10.4235, 0.1979, 619.34
+Time partial tuning: 11.1411, 0.1891, 617.55
+Time partial tuning: 3.7828, 0.2051, 479.58
+Time partial tuning: 3.9575, 0.0668, 550.95
+Time partial tuning: 10.6310, 0.3545, 605.33
+Time partial tuning: 9.7171, 0.3285, 609.94
+Time partial tuning: 4.8607, 0.1108, 477.78
+Time partial tuning: 3.7110, 0.2618, 604.44
+Time partial tuning: 20.8096, 0.0343, 616.91
+Time partial tuning: 18.0128, 0.0181, 615.32
+Time partial tuning: 1.4528, 0.0593, 501.02
+Time partial tuning: 2.3332, 0.0796, 558.07
+Time partial tuning: 9.5799, 0.8311, 584.24
+Time partial tuning: 9.1168, 0.0254, 632.80
+Time partial tuning: 1.0384, 0.0105, 486.43
+Time partial tuning: 1.6558, 0.7434, 621.93
+Time partial tuning: 17.8315, 0.5704, 600.12
+Time partial tuning: 16.7380, 0.2452, 641.50
+Time partial tuning: 0.3132, 0.0025, 515.11
+Time partial tuning: 0.5507, 0.0015, 632.28
+Time partial tuning: 9.7104, 0.3873, 600.19
+Time partial tuning: 9.3493, 0.1544, 641.31
+Time partial tuning: 0.4691, 0.0028, 503.06
+Time partial tuning: 0.4657, 0.0035, 631.45
+Time partial tuning: 19.5780, 2.2135, 614.12
+Time partial tuning: 17.4815, 0.0336, 611.03
+Time partial tuning: 0.1144, 0.0000, 474.73
+Time partial tuning: 0.1651, 0.0007, 649.97
+Time partial tuning: 10.2050, 0.0270, 562.63
+Time partial tuning: 9.5447, 0.3008, 600.61
+Time partial tuning: 0.2125, 0.0004, 506.60
+Time partial tuning: 0.1889, 0.0014, 630.77
+Time partial tuning: 19.6697, 0.3301, 615.31
+Time partial tuning: 17.9096, 0.0798, 631.73
+Time search: 22101.50
+random with opt
+Execution time summary:
+ mean (ms)   median (ms)    max (ms)     min (ms)     std (ms)  
+  295.0458     296.9556     301.2843     275.2265      5.9625   
+               
+without opt
+Execution time summary:
+ mean (ms)   median (ms)    max (ms)     min (ms)     std (ms)  
+  346.8017     348.4407     357.2837     322.4034      8.1670   
+               
