@@ -2,9 +2,10 @@
 
 ARCH=(
     "x86_AMD3900X"
-    #"cuda_rtx3080"
-    #"cuda_gtx1650"
-    #"arm_cortex-a7"
+    "x86_inteli7-3770"
+    "cuda_rtx3080"
+    "cuda_gtx1650"
+    "arm_cortex-a7"
 )
 
 MODEL=(
@@ -27,7 +28,7 @@ TUNER=(
 echo "" > data.csv
 echo "" > time.csv
 for ((k = 0; k < ${#ARCH[@]}; k++)); do
-    DATA="results/"${ARCH[k]}"_time.csv"
+    DATA="results/"${ARCH[k]}"/time.csv"
     DATA_ITER="results/"${ARCH[k]}"/number_iter.csv"
     echo "" > $DATA
     echo "" > $DATA_ITER

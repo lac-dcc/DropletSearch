@@ -51,8 +51,7 @@ os.environ["TVM_NUM_THREADS"] = str(num_threads)
 def tune_kernels(
     tasks, model, trials, measure_option, tuner="gridsearch", early_stopping=None, log_filename="tuning.log",
 ):
-    total_time_tuning = 0
-
+    total_time_tuning, total_line = 0, 0
     partial_trial = trials // len(tasks)
     for i, task in enumerate(tasks):
         log_filename_tmp = log_filename + "_layer_" + str(i) + ".log"
@@ -92,16 +91,18 @@ def tune_kernels(
 
         best_avg, best_std, config = get_best_time(log_filename_tmp)
         total_time_tuning += (end-start)
-        print("Time partial tuning: %.4f, %.4f, %.2f" %(best_avg, best_std, end-start))
-        #print(config)
         
         f = open(log_filename_tmp, "r")
         f1 = open(log_filename, "a")
+        count_line = 0
         for l in f.readlines():
             f1.write(l)
+            count_line += 1
         f1.close()
         f.close()
-    print("Time search: %.2f" %(total_time_tuning))
+        total_line += count_line
+        print("Time partial tuning: %.4f, %.4f, %.2f, %d" %(best_avg, best_std, end-start, count_line))
+    print("Time search: %.2f, %d" %(total_time_tuning, total_line))
             
         
 ########################################################################

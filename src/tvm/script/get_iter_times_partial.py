@@ -1,7 +1,5 @@
 import numpy as np
-import json
 import sys
-import glob
 
 def get_best_time(log, ms=True):
     import json
@@ -28,12 +26,20 @@ if __name__ == "__main__":
     path = sys.argv[1]
 
     c = 0
-    for i in range(100):
-        try:
-            f = open(path + "/cpu.log_layer_" + str(i) + ".log", "r")
-            for l in f.readlines():
-                c += 1
-            f.close()
-        except:
-            break
-    print("%d" %(c))
+    if "ansor" in path:
+        f = open(path + "/cpu.log", "r")
+        for l in f.readlines():
+            c += 1
+        f.close()
+        print("%d" %(c))
+        print("-" * 10)
+    else:
+        for i in range(100):
+            try:
+                f = open(path + "/cpu.log_layer_" + str(i) + ".log", "r")
+                for l in f.readlines():
+                    c += 1
+                f.close()
+            except:
+                break
+        print("%d" %(c))
