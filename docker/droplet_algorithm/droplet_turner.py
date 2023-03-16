@@ -1,4 +1,4 @@
-"""Tuner with genetic algorithm"""
+"""Tuner with droplet algorithm"""
 
 import numpy as np
 from scipy import stats
@@ -10,10 +10,11 @@ class DropletTuner(Tuner):
     This tuner expands the :code:`ConfigEntity` as gene.
 
     INPUTS: Task 
-            start_position : [OPTIONAL] = position zero is default
+            start_position : [OPTIONAL] = default is [0,0,...,0]
+            pvalue : [OPTIONAL] = default is 0.05
     """
 
-    def __init__(self, task, start_position=None):
+    def __init__(self, task, start_position=None, pvalue=0.05):
         super(DropletTuner, self).__init__(task)
 
         # space info
@@ -23,69 +24,77 @@ class DropletTuner(Tuner):
         for k, v in self.space.space_map.items():
             self.dims.append(len(v))
         
-        # start position: default is [0,0,...,0]
-        self.next = [[0] * len(self.dims)] if start_position == None else start_position
-        # number execution is important when the start position is not valid
-        self.number_execution = 1
-        self.total_number_execution = int(np.mean(self.dims))
-        self.max_value = 99999
-        self.best_choice = [-1] * len(self.dims)
-        self.best_res = [self.max_value]
+        # start position
+        start_position =  [0] * len(self.dims) if start_position == None else start_position
+        self.next = [(self.convert_idx(start_position),start_position)]
         self.visited = {}
+        self.visited[self.convert_idx(start_position)] = 1
+        self.batch, self.count, self.max_value, self.pvalue = 0, 0, 99999, pvalue
+        self.best_choice = (-1, [-1] * len(self.dims), [self.max_value])
+        # number execution is important when the start position is not valid
+        self.number_execution = 2
+        self.total_number_execution = max(self.dims)
     
-    def number_to_bin(self, value):
+    def number_to_bin(self, value, factor=1):
         """ convert a number to a binary vector.
         """
         bin_format = str(0) * (len(self.dims) - len(bin(value)[2:])) + bin(value)[2:]
-        return [int(i) for i in bin_format]
+        return [int(i) * factor for i in bin_format]
 
-    
-    def create_search_space(self, factor=1):
-        '''Return the search space 
+    def convert_idx(self, value):
+        #print(value)
+        index, exp = 0, 1
+        for i in range(0, len(value)):
+            index += (value[i] % self.dims[i]) * exp
+            exp *= self.dims[i]
+        return index
+
+    def new_search_space(self, factor=1):
+        '''Return the new search space 
         '''
         search_space = []
-        if factor < self.total_number_execution:
-            for i in range(1,2**len(self.dims)): # [0,0,0] => [0,0,1], [0,1,0], [0,1,1], ...
-                search_space.append([x*factor for x in self.number_to_bin(i)])
-                search_space.append([-x*factor for x in self.number_to_bin(i)])
+        for i in range(0,len(self.dims)): # [0,0,0] => [0,0,1], [0,1,0], [1,0,0]
+            search_space.append(self.number_to_bin(2**i, factor))
+            search_space.append(self.number_to_bin(2**i, -factor))
         return search_space
     
-    def next_positions(self, new_positions):
-        next_set = []
-        for p in new_positions:
-            p = [x + y for x, y in zip(p, self.best_choice)]
-            if self.safe_space(p):
-                next_set.append(p)
-        return next_set
-    
-    def safe_space(self, data):
+    def safe_value(self, data):
         for d in data:
             if d < 0:
                 return False
         return True
 
-    def p_value(self, elem_1, elem_2):
+    def next_positions(self, new_positions):
+        next_set = []
+        for p in new_positions:
+            new_p = [x + y for x, y in zip(p, self.best_choice[1])]
+            idx_p = self.convert_idx(new_p)
+            if self.safe_value(new_p) and idx_p not in self.visited.keys():
+                self.visited[idx_p] = 1
+                next_set.append((idx_p,new_p))
+        return next_set
+
+    def p_value(self, elem_1 : np.array, elem_2 : np.array):
         '''Return the p_value between two arrays
         '''
-        data_1 = np.array(elem_1)
-        data_2 = np.array(elem_2)
-        if len(data_1) <= 1 or len(data_2) <= 1: # Case that there is only one element
+        if len(elem_1) <= 1 or len(elem_2) <= 1: # Case that there is only one element
             return True
-        return stats.ttest_ind(data_1, data_2).pvalue <= 0.05
+        return stats.ttest_ind(elem_1, elem_2).pvalue <= self.pvalue
 
     def next_batch(self, batch_size):
         '''Return the next batch 
         '''
         ret = []
-        for value in self.next:
-            index, exp = 0, 1
-            for i in range(0, len(value)):
-                index += (value[i] % self.dims[i]) * exp
-                exp *= self.dims[i]
-            if index not in self.visited.keys():
-                self.visited[index] = 1
-                ret.append(self.space.get(index))
+        self.count, self.batch = 0, batch_size
+        for i in range(batch_size):
+            if i >= len(self.next):
+                break
+            self.count += 1
+            ret.append(self.space.get(self.next[i][0]))
         return ret
+
+    def update_next_element(self):
+        return self.next[self.count:-1]
     
     def update(self, inputs, results):
         '''Update the search space by measuring time 
@@ -93,29 +102,23 @@ class DropletTuner(Tuner):
         found_best_pos = False
         for i, (inp, res) in enumerate(zip(inputs, results)):
             try:
-                y = np.mean(res.costs)
-                if np.mean(self.best_res) > y and self.p_value(self.best_res, res.costs):
-                    self.best_res = res.costs
-                    self.best_choice = self.next[i]
+                if np.mean(self.best_choice[2]) > np.mean(res.costs) and self.p_value(np.array(self.best_choice[2]), np.array(res.costs)):
+                    self.best_choice = (self.next[i][0], self.next[i][1], res.costs)
                     found_best_pos = True
             except:
-                y = self.max_value
+                continue
 
-        #print("n_exec", self.number_execution)
-        self.next = []
-        if found_best_pos:
-            self.next = self.next_positions(self.create_search_space())
-        else:
-            self.next = self.next_positions(self.create_search_space(self.number_execution))
-            self.number_execution += 1
-        #print("Best", self.best_choice, "time", np.mean(self.best_res))
-        #print("next", self.next)
-            
+        self.next = self.update_next_element()
+        while len(self.next) < self.batch and self.number_execution < self.total_number_execution:
+            if found_best_pos:
+                self.next += self.next_positions(self.new_search_space())
+                found_best_pos = False
+            else:
+                self.next += self.next_positions(self.new_search_space(self.number_execution))
+                self.number_execution += 1
 
     def has_next(self):
-        '''Check for search space
-        '''
-        return self.number_execution < self.total_number_execution or len(self.next) > 0
+        return len(self.next) > 0
 
     def load_history(self, data_set, min_seed_records=500):
         pass
