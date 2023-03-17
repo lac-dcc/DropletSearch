@@ -1,0 +1,49 @@
+Time partial tuning: 4.2870, 0.2354, 623.88
+Time partial tuning: 5.5204, 0.2188, 559.44
+Time partial tuning: 4.6631, 0.1854, 472.42
+Time partial tuning: 3.3177, 0.1353, 505.02
+Time partial tuning: 9.8323, 0.2992, 558.17
+Time partial tuning: 10.3030, 0.0236, 561.29
+Time partial tuning: 4.0639, 0.3170, 522.73
+Time partial tuning: 3.8670, 0.1134, 522.92
+Time partial tuning: 9.7085, 0.3969, 528.38
+Time partial tuning: 9.5085, 0.1972, 521.27
+Time partial tuning: 5.2070, 0.8361, 464.72
+Time partial tuning: 3.3216, 0.1090, 540.08
+Time partial tuning: 20.0603, 1.4005, 546.18
+Time partial tuning: 17.0605, 0.0519, 576.91
+Time partial tuning: 1.8893, 0.2479, 539.01
+Time partial tuning: 2.2034, 0.1578, 546.98
+Time partial tuning: 10.1693, 0.0819, 488.69
+Time partial tuning: 9.1897, 0.0328, 601.31
+Time partial tuning: 1.1787, 0.0016, 544.85
+Time partial tuning: 1.7724, 0.7759, 548.95
+Time partial tuning: 18.6813, 0.6449, 540.33
+Time partial tuning: 17.0356, 0.8784, 561.34
+Time partial tuning: 0.3158, 0.0010, 541.95
+Time partial tuning: 0.5678, 0.0040, 578.31
+Time partial tuning: 9.6056, 0.3166, 505.66
+Time partial tuning: 8.7335, 0.0802, 566.91
+Time partial tuning: 0.4727, 0.0014, 506.99
+Time partial tuning: 0.4576, 0.0039, 619.22
+Time partial tuning: 19.3640, 0.3092, 536.22
+Time partial tuning: 17.4339, 0.1822, 553.56
+Time partial tuning: 0.0943, 0.0003, 510.93
+Time partial tuning: 0.1604, 0.0002, 643.08
+Time partial tuning: 9.9001, 0.2748, 534.17
+Time partial tuning: 9.0886, 0.0228, 559.78
+Time partial tuning: 0.2114, 0.0005, 536.85
+Time partial tuning: 0.1864, 0.0001, 642.32
+Time partial tuning: 19.3268, 0.6744, 522.71
+Time partial tuning: 17.8015, 0.4643, 589.07
+Time search: 20822.61
+ga with opt
+Execution time summary:
+ mean (ms)   median (ms)    max (ms)     min (ms)     std (ms)  
+  293.2140     294.1090     301.3299     276.8700      5.7676   
+               
+without opt
+Execution time summary:
+ mean (ms)   median (ms)    max (ms)     min (ms)     std (ms)  
+  341.0794     341.9525     349.0492     318.0874      7.1781   
+               
