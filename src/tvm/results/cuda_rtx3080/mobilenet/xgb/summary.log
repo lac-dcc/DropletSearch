@@ -21,7 +21,7 @@ Time search: 17061.76
 xgb with opt
 Execution time summary:
  mean (ms)   median (ms)    max (ms)     min (ms)     std (ms)  
-   0.3278       0.3270       0.3500       0.3252       0.0052   
+   0.4178       0.4270       0.4500       0.4052       0.0052   
                
 without opt
 Execution time summary:

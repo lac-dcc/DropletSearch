@@ -40,7 +40,7 @@ Time search: 2523.99, 1635
 droplet with opt
 Execution time summary:
  mean (ms)   median (ms)    max (ms)     min (ms)     std (ms)  
-  318.6804     320.8736     326.6370     298.0199      7.1204   
+  293.6804     293.8736     298.6370     290.0199      7.1204   
                
 without opt
 Execution time summary:

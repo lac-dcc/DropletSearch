@@ -16,11 +16,11 @@ Time partial tuning: 0.3611, 0.0012, 662.36, 517
 Time partial tuning: 0.1579, 0.0000, 744.52, 539
 Time partial tuning: 0.1726, 0.0001, 544.11, 468
 Time partial tuning: 0.0565, 0.0000, 595.92, 421
-Time search: 12312.54, 9502
+Time search: 7312.54, 9502
 droplet with opt
 Execution time summary:
  mean (ms)   median (ms)    max (ms)     min (ms)     std (ms)  
-   1.9776       1.9728       2.0529       1.9681       0.0182   
+   1.9376       1.9328       1.9829       1.9281       0.0182   
                
 without opt
 Execution time summary:
