@@ -15,7 +15,7 @@ def process_time(log):
         elif "Time total tuning:" in l:
             v_sum = float(l.split(":")[1].replace(" ",""))
         elif "Time search" in l:
-            v_sum = float(l.split(" ")[2])
+            v_sum = float(l.replace(",","").split(" ")[2])
         elif "mean (ms)" in l:
             c = True
         elif c:

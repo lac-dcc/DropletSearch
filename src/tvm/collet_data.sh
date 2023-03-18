@@ -25,8 +25,6 @@ TUNER=(
     "ansor"
 )
 
-echo "" > data.csv
-echo "" > time.csv
 for ((k = 0; k < ${#ARCH[@]}; k++)); do
     DATA="results/"${ARCH[k]}"/time.csv"
     DATA_ITER="results/"${ARCH[k]}"/number_iter.csv"
@@ -40,6 +38,8 @@ for ((k = 0; k < ${#ARCH[@]}; k++)); do
             python3 script/get_time.py results/${ARCH[k]}/${MODEL[i]}/${TUNER[j]}"/summary.log" >> $DATA
             python3 script/get_iter_times_partial.py results/${ARCH[k]}/${MODEL[i]}/${TUNER[j]} >> $DATA_ITER
         done
+        echo "" >> $DATA
+        echo "" >> $DATA_ITER
     done
 done
 
