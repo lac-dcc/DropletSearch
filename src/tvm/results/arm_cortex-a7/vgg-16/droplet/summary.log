@@ -1,0 +1,28 @@
+pool is not optimized for arm cpu.
+pool is not optimized for arm cpu.
+pool is not optimized for arm cpu.
+pool is not optimized for arm cpu.
+pool is not optimized for arm cpu.
+dense is not optimized for arm cpu.
+dense is not optimized for arm cpu.
+dense is not optimized for arm cpu.
+WARNING:root:Could not find any valid schedule for task Task(func_name=conv2d_nchw_winograd.arm_cpu, args=(('TENSOR', (1, 3, 224, 224), 'float32'), ('TENSOR', (64, 3, 3, 3), 'float32'), (1, 1), (1, 1, 1, 1), (1, 1), 'float32'), kwargs={}, workload=('conv2d_nchw_winograd.arm_cpu', ('TENSOR', (1, 3, 224, 224), 'float32'), ('TENSOR', (64, 3, 3, 3), 'float32'), (1, 1), (1, 1, 1, 1), (1, 1), 'float32')). A file containing the errors has been written to /tmp/tvm_tuning_errors_4zij8xdk.log.
+WARNING:root:Could not find any valid schedule for task Task(func_name=conv2d_nchw_winograd.arm_cpu, args=(('TENSOR', (1, 64, 224, 224), 'float32'), ('TENSOR', (64, 64, 3, 3), 'float32'), (1, 1), (1, 1, 1, 1), (1, 1), 'float32'), kwargs={}, workload=('conv2d_nchw_winograd.arm_cpu', ('TENSOR', (1, 64, 224, 224), 'float32'), ('TENSOR', (64, 64, 3, 3), 'float32'), (1, 1), (1, 1, 1, 1), (1, 1), 'float32')). A file containing the errors has been written to /tmp/tvm_tuning_errors_c_9twh5e.log.
+WARNING:root:Could not find any valid schedule for task Task(func_name=conv2d_nchw_winograd.arm_cpu, args=(('TENSOR', (1, 64, 112, 112), 'float32'), ('TENSOR', (128, 64, 3, 3), 'float32'), (1, 1), (1, 1, 1, 1), (1, 1), 'float32'), kwargs={}, workload=('conv2d_nchw_winograd.arm_cpu', ('TENSOR', (1, 64, 112, 112), 'float32'), ('TENSOR', (128, 64, 3, 3), 'float32'), (1, 1), (1, 1, 1, 1), (1, 1), 'float32')). A file containing the errors has been written to /tmp/tvm_tuning_errors_twoxvsrl.log.
+WARNING:root:Could not find any valid schedule for task Task(func_name=conv2d_nchw_winograd.arm_cpu, args=(('TENSOR', (1, 128, 112, 112), 'float32'), ('TENSOR', (128, 128, 3, 3), 'float32'), (1, 1), (1, 1, 1, 1), (1, 1), 'float32'), kwargs={}, workload=('conv2d_nchw_winograd.arm_cpu', ('TENSOR', (1, 128, 112, 112), 'float32'), ('TENSOR', (128, 128, 3, 3), 'float32'), (1, 1), (1, 1, 1, 1), (1, 1), 'float32')). A file containing the errors has been written to /tmp/tvm_tuning_errors_7yu1kd0p.log.
+WARNING:root:Could not find any valid schedule for task Task(func_name=conv2d_nchw_winograd.arm_cpu, args=(('TENSOR', (1, 128, 56, 56), 'float32'), ('TENSOR', (256, 128, 3, 3), 'float32'), (1, 1), (1, 1, 1, 1), (1, 1), 'float32'), kwargs={}, workload=('conv2d_nchw_winograd.arm_cpu', ('TENSOR', (1, 128, 56, 56), 'float32'), ('TENSOR', (256, 128, 3, 3), 'float32'), (1, 1), (1, 1, 1, 1), (1, 1), 'float32')). A file containing the errors has been written to /tmp/tvm_tuning_errors_cfn9hzb5.log.
+WARNING:root:Could not find any valid schedule for task Task(func_name=conv2d_nchw_winograd.arm_cpu, args=(('TENSOR', (1, 256, 56, 56), 'float32'), ('TENSOR', (256, 256, 3, 3), 'float32'), (1, 1), (1, 1, 1, 1), (1, 1), 'float32'), kwargs={}, workload=('conv2d_nchw_winograd.arm_cpu', ('TENSOR', (1, 256, 56, 56), 'float32'), ('TENSOR', (256, 256, 3, 3), 'float32'), (1, 1), (1, 1, 1, 1), (1, 1), 'float32')). A file containing the errors has been written to /tmp/tvm_tuning_errors_bp9yqhz3.log.
+WARNING:root:Could not find any valid schedule for task Task(func_name=conv2d_nchw_winograd.arm_cpu, args=(('TENSOR', (1, 256, 28, 28), 'float32'), ('TENSOR', (512, 256, 3, 3), 'float32'), (1, 1), (1, 1, 1, 1), (1, 1), 'float32'), kwargs={}, workload=('conv2d_nchw_winograd.arm_cpu', ('TENSOR', (1, 256, 28, 28), 'float32'), ('TENSOR', (512, 256, 3, 3), 'float32'), (1, 1), (1, 1, 1, 1), (1, 1), 'float32')). A file containing the errors has been written to /tmp/tvm_tuning_errors_qmv5ye6s.log.
+WARNING:root:Could not find any valid schedule for task Task(func_name=conv2d_nchw_winograd.arm_cpu, args=(('TENSOR', (1, 512, 28, 28), 'float32'), ('TENSOR', (512, 512, 3, 3), 'float32'), (1, 1), (1, 1, 1, 1), (1, 1), 'float32'), kwargs={}, workload=('conv2d_nchw_winograd.arm_cpu', ('TENSOR', (1, 512, 28, 28), 'float32'), ('TENSOR', (512, 512, 3, 3), 'float32'), (1, 1), (1, 1, 1, 1), (1, 1), 'float32')). A file containing the errors has been written to /tmp/tvm_tuning_errors_6vw8jk0h.log.
+WARNING:root:Could not find any valid schedule for task Task(func_name=conv2d_nchw_winograd.arm_cpu, args=(('TENSOR', (1, 512, 14, 14), 'float32'), ('TENSOR', (512, 512, 3, 3), 'float32'), (1, 1), (1, 1, 1, 1), (1, 1), 'float32'), kwargs={}, workload=('conv2d_nchw_winograd.arm_cpu', ('TENSOR', (1, 512, 14, 14), 'float32'), ('TENSOR', (512, 512, 3, 3), 'float32'), (1, 1), (1, 1, 1, 1), (1, 1), 'float32')). A file containing the errors has been written to /tmp/tvm_tuning_errors_20xye2o2.log.
+WARNING:strategy:dense is not optimized for arm cpu.
+WARNING:strategy:dense is not optimized for arm cpu.
+WARNING:strategy:dense is not optimized for arm cpu.
+WARNING:strategy:pool is not optimized for arm cpu.
+WARNING:strategy:pool is not optimized for arm cpu.
+WARNING:strategy:pool is not optimized for arm cpu.
+WARNING:strategy:pool is not optimized for arm cpu.
+WARNING:strategy:pool is not optimized for arm cpu.
+WARNING:strategy:dense is not optimized for arm cpu.
+WARNING:strategy:dense is not optimized for arm cpu.
+WARNING:strategy:dense is not optimized for arm cpu.
