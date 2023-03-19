@@ -112,11 +112,11 @@ def tune_and_evaluate(tuning_opt, log_file, model, arch, tuner, only_eval, targe
     # extract workloads from relay program
     mod, params, data_shape, out_shape = get_network(model, batch_size)
     
-    if only_eval != 1: 
-        if os.path.exists(log_file):
-            os.remove(log_file)
-
-        if tuner == "ansor":
+    print("With opt")
+    if tuner == "ansor":
+        if only_eval != 1: 
+            if os.path.exists(log_file):
+                os.remove(log_file)
             tasks, task_weights = auto_scheduler.extract_tasks(mod["main"], params, target)
 
             tuner = auto_scheduler.TaskScheduler(tasks, task_weights)
@@ -131,24 +131,25 @@ def tune_and_evaluate(tuning_opt, log_file, model, arch, tuner, only_eval, targe
             end = time.time()
             print("Time search: %.2f" %(end-start))
 
-            print("%s with opt" %(tuner))
-            # compile kernels in kernel tuned only mode
-            with auto_scheduler.ApplyHistoryBest(log_file):
-                with tvm.transform.PassContext(opt_level=3, config={"relay.backend.use_auto_scheduler": True}):
-                    lib = relay.build(mod, target=target, params=params)
-                    evaluate_performance(lib, data_shape, target)
+        # compile kernels in kernel tuned only mode
+        with auto_scheduler.ApplyHistoryBest(log_file):
+            with tvm.transform.PassContext(opt_level=3, config={"relay.backend.use_auto_scheduler": True}):
+                lib = relay.build(mod, target=target, params=params)
+                evaluate_performance(lib, data_shape, target)
 
-        else:
+    else:
+        if only_eval != 1: 
+            if os.path.exists(log_file):
+                os.remove(log_file)
             tasks = autotvm.task.extract_from_program(mod["main"], target=target, params=params, ops=(relay.op.get("nn.conv2d"),))
             # run tuning tasks
             tune_kernels(tasks, model, trials, **tuning_opt)
 
-            # compile kernels in kernel tuned only mode
-            print("%s with opt" %(tuner))
-            with autotvm.apply_history_best(log_file):
-                with tvm.transform.PassContext(opt_level=3):
-                    lib = relay.build(mod, target=target, params=params)
-                    evaluate_performance(lib, data_shape, target)
+        # compile kernels in kernel tuned only mode
+        with autotvm.apply_history_best(log_file):
+            with tvm.transform.PassContext(opt_level=3):
+                lib = relay.build(mod, target=target, params=params)
+                evaluate_performance(lib, data_shape, target)
     
     print("without opt")
     lib = relay.build(mod, target=target, params=params)
@@ -161,7 +162,7 @@ if __name__ == "__main__":
         model = sys.argv[1]
         tuner = sys.argv[2]
         arch = sys.argv[3]
-        only_eval = sys.argv[4]
+        only_eval = int(sys.argv[4])
         trials = int(sys.argv[5])
     else:
         print("Not valid configuration")
