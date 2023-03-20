@@ -1,0 +1,32 @@
+Downloading /root/.mxnet/models/resnet50_v1-0aee57f9.zip64403140-5259-462b-b476-b7221d1c699a from https://apache-mxnet.s3-accelerate.dualstack.amazonaws.com/gluon/models/resnet50_v1-0aee57f9.zip...
+With opt
+Time partial tuning: 2.8127, 0.0010, 34.67, 25
+Time partial tuning: 0.4390, 0.0000, 31.33, 25
+Time partial tuning: 4.3717, 0.0009, 27.16, 25
+Time partial tuning: 1.3879, 0.0001, 48.21, 40
+Time partial tuning: 1.6254, 0.0001, 41.28, 33
+Time partial tuning: 0.6761, 0.0001, 35.30, 32
+Time partial tuning: 2.9352, 0.0004, 30.69, 31
+Time partial tuning: 2.5775, 0.0006, 42.35, 39
+Time partial tuning: 1.3800, 0.0005, 32.55, 31
+Time partial tuning: 1.2932, 0.0002, 42.64, 39
+Time partial tuning: 0.6963, 0.0001, 43.78, 39
+Time partial tuning: 3.4789, 0.0004, 31.07, 32
+Time partial tuning: 2.5564, 0.0008, 50.04, 42
+Time partial tuning: 1.4891, 0.0006, 37.71, 33
+Time partial tuning: 1.3470, 0.0011, 52.69, 48
+Time partial tuning: 0.8481, 0.0000, 38.60, 33
+Time partial tuning: 2.8714, 0.0004, 38.61, 33
+Time partial tuning: 3.1479, 0.0003, 42.47, 39
+Time partial tuning: 1.4799, 0.0002, 47.62, 40
+Time partial tuning: 1.4041, 0.0002, 45.38, 39
+Time search: 794.14, 698
+Execution time summary:
+ mean (ms)   median (ms)    max (ms)     min (ms)     std (ms)  
+  114.4573     114.4209     115.0145     114.1803      0.1544   
+               
+without opt
+Execution time summary:
+ mean (ms)   median (ms)    max (ms)     min (ms)     std (ms)  
+  163.5031     163.5167     163.5834     163.2274      0.0791   
+               
