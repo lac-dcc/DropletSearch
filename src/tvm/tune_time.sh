@@ -4,7 +4,7 @@ set -e
 
 NAME="cuda_gtx1650" # please change this name for your machine
 
-TRIALS=10000
+TRIALS=100
 
 MODEL=(
     "resnet-18"
@@ -30,6 +30,6 @@ for ((i = 0; i < ${#MODEL[@]}; i++)); do
     echo "* "${MODEL[i]}
     for ((j = 0; j < ${#TUNER[@]}; j++)); do
         echo " -> "${TUNER[j]} 
-        python3 script/tune_relay.py ${MODEL[i]} ${TUNER[j]} $NAME 1 $TRIALS
+        python3 script/tune_relay_trials.py ${MODEL[i]} ${TUNER[j]} $NAME $TRIALS
     done
 done
