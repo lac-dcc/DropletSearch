@@ -49,7 +49,7 @@ os.environ["TVM_NUM_THREADS"] = str(num_threads)
 
 # You can skip the implementation of this function for this tutorial.
 def tune_kernels(
-    tasks, model, trials, measure_option, tuner="gridsearch", early_stopping=None, log_filename="tuning.log",
+    tasks, model, trials, pvalue, measure_option, tuner="gridsearch", early_stopping=None, log_filename="tuning.log",
 ):
     total_time_tuning, total_line = 0, 0
     partial_trial = trials // len(tasks)
@@ -69,7 +69,7 @@ def tune_kernels(
         elif tuner == "gridsearch":
             tuner_obj = GridSearchTuner(task)
         elif tuner == "droplet":
-            tuner_obj = DropletTuner(task)
+            tuner_obj = DropletTuner(task, pvalue=pvalue)
         else:
             raise ValueError("Invalid tuner: " + tuner)
 
@@ -108,7 +108,7 @@ def tune_kernels(
 ########################################################################
 # Finally, we launch tuning jobs and evaluate the end-to-end performance.
 
-def tune_and_evaluate(tuning_opt, log_file, model, arch, tuner, only_eval, target, trials):
+def tune_and_evaluate(tuning_opt, log_file, model, arch, tuner, only_eval, target, trials, pvalue):
     # extract workloads from relay program
     mod, params, data_shape, out_shape = get_network(model, batch_size)
     
@@ -143,7 +143,7 @@ def tune_and_evaluate(tuning_opt, log_file, model, arch, tuner, only_eval, targe
                 os.remove(log_file)
             tasks = autotvm.task.extract_from_program(mod["main"], target=target, params=params, ops=(relay.op.get("nn.conv2d"),))
             # run tuning tasks
-            tune_kernels(tasks, model, trials, **tuning_opt)
+            tune_kernels(tasks, model, trials, pvalue, **tuning_opt)
 
         # compile kernels in kernel tuned only mode
         with autotvm.apply_history_best(log_file):
@@ -158,12 +158,15 @@ def tune_and_evaluate(tuning_opt, log_file, model, arch, tuner, only_eval, targe
     
 if __name__ == "__main__":
 
+    pvalue = 0.05
     if len(sys.argv) > 5:
         model = sys.argv[1]
         tuner = sys.argv[2]
         arch = sys.argv[3]
         only_eval = int(sys.argv[4])
         trials = int(sys.argv[5])
+        if len(sys.argv) > 6:
+            pvalue = float(sys.argv[6])
     else:
         print("Not valid configuration")
         exit()
@@ -189,4 +192,4 @@ if __name__ == "__main__":
         ),
     }
 
-    tune_and_evaluate(tuning_option, log_file, model, arch, tuner, only_eval, target, trials)
+    tune_and_evaluate(tuning_option, log_file, model, arch, tuner, only_eval, target, trials, pvalue)
