@@ -14,8 +14,20 @@ You need to install docker on your machine. You can take a look at in [docker we
 
 In the docker directory run the code below:
 
-    docker build -t hamsa .
+For **x86** architecture:
 
-The command above takes ~20-30 minutes on a good computer. After executing the command above you can access the container in your machine with the command:
+    make docker-x86 
 
-    docker run -it hamsa
+For **cuda** architecture:
+
+    make docker-cuda
+
+The command above takes ~20 minutes on a good computer. After executing the command above you can access the container in your machine with the command:
+
+For **x86** architecture:
+
+    make garkain-x86
+
+For **cuda** architecture:
+
+    make garkain-cuda
