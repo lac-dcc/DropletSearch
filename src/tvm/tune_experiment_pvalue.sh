@@ -29,14 +29,15 @@ mkdir -p results
 
 echo $NAME
 for ((i = 0; i < ${#MODEL[@]}; i++)); do
-    mkdir -p results/$NAME
-    mkdir -p results/$NAME/${MODEL[i]}
-    echo "* "${MODEL[i]}
-    for ((j = 0; j < ${#TUNER[@]}; j++)); do
-    	echo " -> "${TUNER[j]}
-        mkdir -p results/$NAME/${MODEL[i]}/${TUNER[j]} 
-        for ((k = 0; k < ${#PVALUE[@]}; k++)); do
-            python3 script/tune_relay.py ${MODEL[i]} ${TUNER[j]} $NAME 0 $TRIALS $PVALUE > results/$NAME/${MODEL[i]}/${TUNER[j]}"/summary.log"
+    for ((k = 0; k < ${#PVALUE[@]}; k++)); do
+        NEW_NAME=$NAME"_"${PVALUE[k]}
+        mkdir -p results/$NEW_NAME
+        mkdir -p results/$NEW_NAME/${MODEL[i]}
+        echo "* "${MODEL[i]}
+        for ((j = 0; j < ${#TUNER[@]}; j++)); do
+            echo " -> "${TUNER[j]}
+            mkdir -p results/$NEW_NAME/${MODEL[i]}/${TUNER[j]} 
+            python3 script/tune_relay.py ${MODEL[i]} ${TUNER[j]} $NEW_NAME 0 $TRIALS ${PVALUE[k]} > results/$NEW_NAME/${MODEL[i]}/${TUNER[j]}"/summary.log"
         done
     done
 done
