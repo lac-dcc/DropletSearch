@@ -1,27 +1,27 @@
-Time partial tuning: 0.0232, 0.0000, 859.26, 593
-Time partial tuning: 0.0449, 0.0002, 445.61, 372
-Time partial tuning: 0.0181, 0.0000, 382.62, 286
-Time partial tuning: 0.0060, 0.0000, 517.59, 401
-Time partial tuning: 0.0506, 0.0000, 387.37, 334
-Time partial tuning: 0.0053, 0.0000, 434.31, 336
-Time partial tuning: 0.0301, 0.0000, 704.56, 526
-Time partial tuning: 0.0190, 0.0000, 308.95, 276
-Time partial tuning: 0.0442, 0.0001, 384.00, 329
-Time partial tuning: 0.0060, 0.0000, 424.51, 347
-Time partial tuning: 0.0538, 0.0000, 712.53, 560
-Time partial tuning: 0.0228, 0.0000, 406.26, 277
-Time partial tuning: 0.0678, 0.0002, 442.50, 355
-Time partial tuning: 0.0087, 0.0000, 452.76, 346
-Time partial tuning: 0.1509, 0.0000, 387.95, 380
-Time partial tuning: 0.0295, 0.0000, 543.21, 479
-Time search: 7794.00, 6197
-droplet with opt
+With opt
+Time partial tuning: 0.0247, 0.0001, 749.95, 513
+Time partial tuning: 0.0448, 0.0001, 444.97, 372
+Time partial tuning: 0.0181, 0.0000, 369.21, 276
+Time partial tuning: 0.0060, 0.0000, 469.11, 352
+Time partial tuning: 0.0315, 0.0001, 491.14, 368
+Time partial tuning: 0.0053, 0.0000, 435.53, 336
+Time partial tuning: 0.0312, 0.0000, 724.48, 528
+Time partial tuning: 0.0179, 0.0000, 414.71, 346
+Time partial tuning: 0.0443, 0.0001, 386.27, 329
+Time partial tuning: 0.0064, 0.0000, 373.65, 305
+Time partial tuning: 0.0541, 0.0000, 716.82, 560
+Time partial tuning: 0.0203, 0.0000, 433.28, 296
+Time partial tuning: 0.0678, 0.0001, 413.48, 343
+Time partial tuning: 0.0087, 0.0000, 431.97, 329
+Time partial tuning: 0.1064, 0.0002, 360.14, 342
+Time partial tuning: 0.0297, 0.0000, 618.45, 516
+Time search: 7833.16, 6111
 Execution time summary:
  mean (ms)   median (ms)    max (ms)     min (ms)     std (ms)  
-   0.5625       0.5588       0.6336       0.5561       0.0163   
+   0.5309       0.5274       0.5975       0.5258       0.0153   
                
 without opt
 Execution time summary:
  mean (ms)   median (ms)    max (ms)     min (ms)     std (ms)  
-   0.7525       0.7482       0.8374       0.7465       0.0195   
+   0.7512       0.7469       0.8359       0.7450       0.0194   
                
