@@ -32,8 +32,8 @@ class DropletTuner(Tuner):
         self.batch, self.count, self.max_value, self.pvalue = 0, 0, 99999, pvalue
         self.best_choice = (-1, [-1] * len(self.dims), [self.max_value])
         # number execution is important when the start position is not valid
-        self.number_execution = 2
-        self.total_number_execution = max(self.dims)
+        self.number_execution = 1
+        self.total_number_execution = (max(self.dims) + min(self.dims)) // 2
     
     def number_to_bin(self, value, factor=1):
         """ convert a number to a binary vector.
@@ -42,7 +42,6 @@ class DropletTuner(Tuner):
         return [int(i) * factor for i in bin_format]
 
     def convert_idx(self, value):
-        #print(value)
         index, exp = 0, 1
         for i in range(0, len(value)):
             index += (value[i] % self.dims[i]) * exp
@@ -56,6 +55,16 @@ class DropletTuner(Tuner):
         for i in range(0,len(self.dims)): # [0,0,0] => [0,0,1], [0,1,0], [1,0,0]
             search_space.append(self.number_to_bin(2**i, factor))
             search_space.append(self.number_to_bin(2**i, -factor))
+        return search_space
+    
+    def local_search_space(self, factor=1):
+        '''Return the new search space 
+        '''
+        search_space = []
+        for i in range(2**len(self.dims)-1,0,-1):
+            search_space.append(self.number_to_bin(i))
+            if i > self.batch:
+                break
         return search_space
     
     def safe_value(self, data):
@@ -107,15 +116,19 @@ class DropletTuner(Tuner):
                     found_best_pos = True
             except:
                 continue
-
+        
+        print("exec:", self.number_execution)
         self.next = self.update_next_element()
         while len(self.next) < self.batch and self.number_execution < self.total_number_execution:
+            print(self.next)
             if found_best_pos:
-                self.next += self.next_positions(self.new_search_space())
+                self.next += self.next_positions(self.local_search_space())
                 found_best_pos = False
             else:
                 self.next += self.next_positions(self.new_search_space(self.number_execution))
                 self.number_execution += 1
+        print("best:", self.best_choice)
+        #print("next_elements:", self.next)
 
     def has_next(self):
         return len(self.next) > 0
