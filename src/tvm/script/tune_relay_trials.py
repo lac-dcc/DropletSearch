@@ -111,6 +111,7 @@ def tune_and_evaluate(tuning_opt, log_file_original, log_file_save, model, arch,
             with tvm.transform.PassContext(opt_level=3):
                 lib = relay.build(mod, target=target, params=params)
                 evaluate_performance(lib, data_shape, target)
+    os.remove(log_file_save)
     
     #print("without opt")
     #lib = relay.build(mod, target=target, params=params)
