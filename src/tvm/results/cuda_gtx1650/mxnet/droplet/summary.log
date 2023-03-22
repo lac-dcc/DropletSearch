@@ -1,35 +1,36 @@
-Time partial tuning: 0.2643, 0.0001, 324.80, 237
-Time partial tuning: 0.0346, 0.0000, 259.52, 194
-Time partial tuning: 0.1371, 0.0000, 315.38, 244
-Time partial tuning: 0.0903, 0.0000, 174.65, 124
-Time partial tuning: 0.0824, 0.0000, 301.87, 249
-Time partial tuning: 0.1070, 0.0000, 243.25, 180
-Time partial tuning: 0.1298, 0.0000, 175.02, 142
-Time partial tuning: 0.1938, 0.0000, 252.06, 183
-Time partial tuning: 0.1018, 0.0000, 220.63, 177
-Time partial tuning: 0.2754, 0.0000, 279.32, 207
-Time partial tuning: 0.0859, 0.0000, 276.33, 212
-Time partial tuning: 0.1039, 0.0000, 193.28, 157
-Time partial tuning: 0.0915, 0.0000, 171.70, 160
-Time partial tuning: 0.2537, 0.0000, 207.33, 177
-Time partial tuning: 0.0939, 0.0000, 161.31, 125
-Time partial tuning: 0.3117, 0.0000, 167.91, 161
-Time partial tuning: 0.1059, 0.0000, 243.56, 197
-Time partial tuning: 0.1230, 0.0000, 167.83, 148
-Time partial tuning: 0.1897, 0.0000, 133.75, 143
-Time partial tuning: 0.4113, 0.0000, 169.01, 158
-Time partial tuning: 0.1357, 0.0001, 198.11, 161
-Time partial tuning: 0.4806, 0.0001, 140.67, 138
-Time partial tuning: 0.1871, 0.0000, 175.26, 161
-Time partial tuning: 0.2539, 0.0000, 130.49, 127
-Time search: 5083.02, 4162
-droplet with opt
+Downloading /home/canesche/.mxnet/models/resnet50_v1-0aee57f9.zip50185881-4682-4824-8ec0-ca76caeea88d from https://apache-mxnet.s3-accelerate.dualstack.amazonaws.com/gluon/models/resnet50_v1-0aee57f9.zip...
+With opt
+Time partial tuning: 0.1218, 0.0000, 402.52, 296
+Time partial tuning: 0.0217, 0.0000, 234.06, 193
+Time partial tuning: 0.1749, 0.0000, 292.27, 194
+Time partial tuning: 0.0795, 0.0000, 276.14, 192
+Time partial tuning: 0.0758, 0.0000, 401.45, 347
+Time partial tuning: 0.0740, 0.0003, 226.23, 193
+Time partial tuning: 0.0786, 0.0000, 327.33, 277
+Time partial tuning: 0.1448, 0.0000, 402.94, 327
+Time partial tuning: 0.0956, 0.0000, 291.14, 225
+Time partial tuning: 0.2283, 0.0001, 500.21, 406
+Time partial tuning: 0.0799, 0.0000, 566.16, 416
+Time partial tuning: 0.0829, 0.0000, 372.52, 298
+Time partial tuning: 0.0868, 0.0000, 248.34, 213
+Time partial tuning: 0.2354, 0.0002, 392.76, 327
+Time partial tuning: 0.1327, 0.0000, 180.15, 145
+Time partial tuning: 0.2303, 0.0000, 409.14, 379
+Time partial tuning: 0.0929, 0.0001, 491.62, 416
+Time partial tuning: 0.1331, 0.0000, 313.23, 255
+Time partial tuning: 0.1757, 0.0000, 269.04, 237
+Time partial tuning: 0.2773, 0.0000, 370.00, 285
+Time partial tuning: 0.1213, 0.0000, 490.77, 365
+Time partial tuning: 0.5509, 0.0001, 242.47, 259
+Time partial tuning: 0.1784, 0.0000, 351.41, 321
+Time partial tuning: 0.2446, 0.0000, 215.48, 205
+Time search: 8267.38, 6771
 Execution time summary:
  mean (ms)   median (ms)    max (ms)     min (ms)     std (ms)  
-   6.9589       7.0303       7.7677       7.2204       0.3348   
+   6.7885       6.7721       7.1173       6.7530       0.0758   
                
 without opt
 Execution time summary:
  mean (ms)   median (ms)    max (ms)     min (ms)     std (ms)  
-  10.7643      10.6228      13.4281      10.6180       0.6112   
+  10.7388      10.5983      13.4115      10.5876       0.6132   
                
