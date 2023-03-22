@@ -42,33 +42,6 @@ dtype = "float32"
 input_name = "data"
 num_threads = os.cpu_count()
 os.environ["TVM_NUM_THREADS"] = str(num_threads)
-
-#################################################################
-# Configure tensor tuning settings and create tasks
-# -------------------------------------------------
-
-# You can skip the implementation of this function for this tutorial.
-def tune_kernels(
-    tasks, model, trials, pvalue, log_file_original, log_file_save, measure_option, tuner="gridsearch", early_stopping=None
-):
-    partial_trial = trials // len(tasks)
-    for i, task in enumerate(tasks):
-        log_filename_tmp = log_file_original + "_layer_" + str(i) + ".log"
-
-        if os.path.exists(log_filename_tmp):
-            os.remove(log_filename_tmp)
-
-        f = open(log_filename_tmp, "r")
-        f1 = open(log_file_save, "a")
-        count_line = 0
-        for l in f.readlines():
-            if count_line > partial_trial:
-                break
-            f1.write(l)
-            count_line += 1
-        f1.close()
-        f.close()
-            
         
 ########################################################################
 # Finally, we launch tuning jobs and evaluate the end-to-end performance.
@@ -77,11 +50,11 @@ def tune_and_evaluate(tuning_opt, log_file_original, log_file_save, model, arch,
     # extract workloads from relay program
     mod, params, data_shape, out_shape = get_network(model, batch_size)
     
+    if os.path.exists(log_file_save):
+        os.remove(log_file_save)
+
     print("With opt")
     if tuner == "ansor":
-        if os.path.exists(log_file_save):
-            os.remove(log_file_save)
-        
         f = open(log_file_original, "r")
         f1 = open(log_file_save, "w")
         count_line = 0
@@ -92,6 +65,8 @@ def tune_and_evaluate(tuning_opt, log_file_original, log_file_save, model, arch,
             count_line += 1
         f1.close()
         f.close()
+
+        tasks, task_weights = auto_scheduler.extract_tasks(mod["main"], params, target)
         
         # compile kernels in kernel tuned only mode
         with auto_scheduler.ApplyHistoryBest(log_file_save):
@@ -100,11 +75,22 @@ def tune_and_evaluate(tuning_opt, log_file_original, log_file_save, model, arch,
                 evaluate_performance(lib, data_shape, target)
 
     else:
-        if os.path.exists(log_file_save):
-            os.remove(log_file_save)
         tasks = autotvm.task.extract_from_program(mod["main"], target=target, params=params, ops=(relay.op.get("nn.conv2d"),))
         # run tuning tasks
-        tune_kernels(tasks, model, trials, pvalue, log_file_original, log_file_save, **tuning_opt)
+        partial_trial = trials // len(tasks)
+        for i, task in enumerate(tasks):
+            log_filename_tmp = log_file_original + "_layer_" + str(i) + ".log"
+
+            f = open(log_filename_tmp, "r")
+            f1 = open(log_file_save, "a")
+            count_line = 0
+            for l in f.readlines():
+                if count_line > partial_trial:
+                    break
+                f1.write(l)
+                count_line += 1
+            f1.close()
+            f.close()
 
         # compile kernels in kernel tuned only mode
         with autotvm.apply_history_best(log_file_save):
