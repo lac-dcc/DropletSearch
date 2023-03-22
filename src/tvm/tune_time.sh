@@ -46,4 +46,4 @@ for ((i = 0; i < ${#MODEL[@]}; i++)); do
     done
 done
 
-#rm -rf tmp.txt
+rm -rf tmp.txt
