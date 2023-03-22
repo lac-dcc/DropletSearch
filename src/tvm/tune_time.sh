@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -e
+#set -e
 
 NAME="cuda_gtx1650" # please change this name for your machine
 
@@ -29,19 +29,21 @@ TUNER=(
     "ansor"
 )
 
-mkdir -p results
-
 echo $NAME
-for ((k = 0; k < ${#TRIALS[@]}; k++)); do
-    echo "SIZE: "${TRIALS[k]}
-    DATA="results/"$NAME"_"${TRIALS[k]}".csv"
-    echo "" > $DATA
-    for ((i = 0; i < ${#MODEL[@]}; i++)); do
-        echo "* "${MODEL[i]}
+for ((i = 0; i < ${#MODEL[@]}; i++)); do
+    echo "* "${MODEL[i]}
+    DATA="results/"$NAME"/"$NAME"_"${MODEL[i]}".csv"
+    echo "time,droplet,gridsearch,random,ga,xgb,ansor," > $DATA
+    for ((k = 0; k < ${#TRIALS[@]}; k++)); do
+        echo "SIZE: "${TRIALS[k]}
+        echo "" > tmp.txt
         for ((j = 0; j < ${#TUNER[@]}; j++)); do
             echo " -> "${TUNER[j]}
-            echo ${TUNER[j]} >> $DATA
-            python3 script/tune_relay_trials.py ${MODEL[i]} ${TUNER[j]} $NAME ${TRIALS[k]} >> $DATA
+            echo "-- "${TUNER[j]} >> tmp.txt
+            python3 script/tune_relay_trials.py ${MODEL[i]} ${TUNER[j]} $NAME ${TRIALS[k]} >> tmp.txt
         done
+        python3 script/split_time.py tmp.txt ${TRIALS[k]} >> $DATA
     done
 done
+
+#rm -rf tmp.txt
