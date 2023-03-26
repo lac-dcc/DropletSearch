@@ -25,58 +25,64 @@ class DropletTuner(Tuner):
         for _, v in self.space.space_map.items():
             self.dims.append(len(v))
         
-        #print(self.dims)
         # start position
         start_position =  [0] * len(self.dims) if start_position == None else start_position
-        self.next = [(knob2point(start_position, self.dims),start_position)]
+        self.best_choice = (-1, [0] * len(self.dims), [99999])
         self.visited = set([knob2point(start_position, self.dims)])
-        self.batch, self.count, self.pvalue = 16, 0, pvalue
-        self.best_choice = (-1, [-1] * len(self.dims), [99999])
-        # number execution is important when the start position is not valid
-        self.number_execution = 2
-        self.total_number_execution = max(self.dims)
+        self.execution, self.total_execution, self.batch = 1, max(self.dims), 16
+        self.count, self.pvalue, self.step = 0, pvalue, max(2,self.total_execution//self.batch)
+        self.next = [(knob2point(start_position, self.dims),start_position)] + self.next_pos(self.local_search_space())
     
-    def number_to_bin(self, value, factor=1):
+    def num_to_bin(self, value, factor=1):
         """ convert a number to a binary vector.
         """
         bin_format = str(0) * (len(self.dims) - len(bin(value)[2:])) + bin(value)[2:]
         return [int(i) * factor for i in bin_format]
 
-    def get_search_space(self, factor=1):
+    def local_search_space(self, factor=1):
+        search_space = []
+        for i in range(1,2**len(self.dims)): # [0,0,0] => [0,0,1], [0,1,0], [1,0,0]. ...
+            search_space += [self.num_to_bin(i, factor)] + [self.num_to_bin(i, -factor)]
+        return search_space
+
+    def global_search_space(self, factor=1):
         '''Return the new search space 
         '''
         search_space = []
-        for i in range(1,2**len(self.dims)): # [0,0,0] => [0,0,1], [0,1,0], [1,0,0]. ...
-            search_space.append(self.number_to_bin(i, factor))
-            search_space.append(self.number_to_bin(i, -factor))
+        for i in range(0,len(self.dims)): # [0,0,0] => [0,0,1], [0,1,0], [1,0,0]. ...
+            search_space += [self.num_to_bin(2**i, factor)] + [self.num_to_bin(2**i, -factor)]
         return search_space
 
-    def next_positions(self, new_positions):
+    def next_pos(self, new_positions):
         next_set = []
         for p in new_positions:
             new_p = [(x + y) % self.dims[i] if x + y > 0 else 0 for i, (x, y) in enumerate(zip(p, self.best_choice[1]))]
             idx_p = knob2point(new_p, self.dims)
-            if idx_p not in self.visited: # memoization
+            if idx_p not in self.visited and len(next_set) < 2*self.batch : # memoization
                 self.visited.add(idx_p)
                 next_set.append((idx_p,new_p))
         return next_set
 
     def p_value(self, elem_1 : np.array, elem_2 : np.array):
-        '''Return the p_value between two arrays, using Student's t-test
-        '''
+        '''Return the p_value between two arrays, using Student's t-test'''
         return True if len(elem_1) <= 1 or len(elem_2) <= 1 else stats.ttest_ind(elem_1, elem_2).pvalue <= self.pvalue
 
     def next_batch(self, batch_size):
-        '''Return the next batch 
-        '''
-        ret = []
-        self.count, self.batch = 0, batch_size
+        '''Return the next batch'''
+        ret, self.count = [], 0
         for i in range(batch_size):
             if i >= len(self.next):
                 break
             self.count += 1
             ret.append(self.space.get(self.next[i][0]))
         return ret
+    
+    def prediction(self, step=1):
+        # Prediction the gradient descendent direction and fill the search space
+        while len(self.next) < self.batch and self.execution < self.total_execution:
+            self.next += self.next_pos(self.global_search_space(self.execution))
+            self.execution += step
+        return self.next
     
     def update(self, inputs, results):
         '''Update the search space by measuring time 
@@ -90,27 +96,10 @@ class DropletTuner(Tuner):
             except:
                 continue
         
-        #print("exec:", self.number_execution)
-        #print("best:", self.best_choice)
         self.next = self.next[self.count:-1]
-
         if found_best_pos:
-            self.next += self.next_positions(self.get_search_space())
-
-            # Prediction the gradient descendent direction and fill the search space
-            while len(self.next) < self.batch:
-                self.next += self.next_positions(self.get_search_space(self.number_execution))
-                self.number_execution += 1
-
-        #while len(self.next) < self.batch and self.number_execution < self.total_number_execution:
-        #    if found_best_pos:
-        #        self.next += self.next_positions(self.local_search_space())
-        #        found_best_pos = False
-        #    else:
-        #        self.next += self.next_positions(self.new_search_space(self.number_execution))
-        #        self.number_execution += 1
-        #        break
-        #print("next_elements:", self.next)
+            self.next += self.next_pos(self.local_search_space()) 
+        self.prediction(self.step) 
 
     def has_next(self):
         return len(self.next) > 0
