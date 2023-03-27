@@ -25,12 +25,13 @@ class DropletTuner(Tuner):
         for _, v in self.space.space_map.items():
             self.dims.append(len(v))
         
+        #print(self.dims)
         # start position
         start_position =  [0] * len(self.dims) if start_position == None else start_position
         self.best_choice = (-1, [0] * len(self.dims), [99999])
-        self.visited = set([knob2point(start_position, self.dims)])
+        self.visited = set()
         self.execution, self.total_execution, self.batch = 1, max(self.dims), 16
-        self.count, self.pvalue, self.step = 0, pvalue, max(2,self.total_execution//self.batch)
+        self.count, self.pvalue, self.step = 0, pvalue, 1
         self.next = [(knob2point(start_position, self.dims),start_position)] + self.next_pos(self.local_search_space())
     
     def num_to_bin(self, value, factor=1):
@@ -56,9 +57,11 @@ class DropletTuner(Tuner):
     def next_pos(self, new_positions):
         next_set = []
         for p in new_positions:
+            if len(next_set) > 2*self.batch:
+                break
             new_p = [(x + y) % self.dims[i] if x + y > 0 else 0 for i, (x, y) in enumerate(zip(p, self.best_choice[1]))]
             idx_p = knob2point(new_p, self.dims)
-            if idx_p not in self.visited and len(next_set) < 2*self.batch : # memoization
+            if idx_p not in self.visited: # memoization
                 self.visited.add(idx_p)
                 next_set.append((idx_p,new_p))
         return next_set
@@ -73,20 +76,18 @@ class DropletTuner(Tuner):
         for i in range(batch_size):
             if i >= len(self.next):
                 break
-            self.count += 1
             ret.append(self.space.get(self.next[i][0]))
+            self.count += 1
         return ret
     
     def prediction(self, step=1):
-        # Prediction the gradient descendent direction and fill the search space
+        # Gradient descending direction prediction and search space filling
         while len(self.next) < self.batch and self.execution < self.total_execution:
             self.next += self.next_pos(self.global_search_space(self.execution))
             self.execution += step
         return self.next
     
     def update(self, inputs, results):
-        '''Update the search space by measuring time 
-        '''
         found_best_pos = False
         for i, (inp, res) in enumerate(zip(inputs, results)):
             try:
