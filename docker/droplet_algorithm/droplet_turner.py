@@ -80,7 +80,7 @@ class DropletTuner(Tuner):
             self.count += 1
         return ret
     
-    def prediction(self, step=1):
+    def speculation(self, step=1):
         # Gradient descending direction prediction and search space filling
         while len(self.next) < self.batch and self.execution < self.total_execution:
             self.next += self.next_pos(self.global_search_space(self.execution))
@@ -100,7 +100,7 @@ class DropletTuner(Tuner):
         self.next = self.next[self.count:-1]
         if found_best_pos:
             self.next += self.next_pos(self.local_search_space()) 
-        self.prediction(self.step) 
+        self.speculation(self.step) 
 
     def has_next(self):
         return len(self.next) > 0
