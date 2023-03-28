@@ -30,9 +30,9 @@ class DropletTuner(Tuner):
         start_position =  [0] * len(self.dims) if start_position == None else start_position
         self.best_choice = (-1, [0] * len(self.dims), [99999])
         self.visited = set()
-        self.execution, self.total_execution, self.batch = 1, max(self.dims), 16
-        self.count, self.pvalue, self.step = 0, pvalue, 1
-        self.next = [(knob2point(start_position, self.dims),start_position)] + self.next_pos(self.local_search_space())
+        self.execution, self.total_execution, self.batch = 1, max(self.dims), 64
+        self.count, self.pvalue, self.step = 0, pvalue, 2
+        self.next = [(knob2point(start_position, self.dims),start_position)] + self.next_pos(self.search_space())
     
     def num_to_bin(self, value, factor=1):
         """ convert a number to a binary vector.
@@ -40,18 +40,10 @@ class DropletTuner(Tuner):
         bin_format = str(0) * (len(self.dims) - len(bin(value)[2:])) + bin(value)[2:]
         return [int(i) * factor for i in bin_format]
 
-    def local_search_space(self, factor=1):
+    def search_space(self, factor=1):
         search_space = []
         for i in range(1,2**len(self.dims)): # [0,0,0] => [0,0,1], [0,1,0], [1,0,0]. ...
             search_space += [self.num_to_bin(i, factor)] + [self.num_to_bin(i, -factor)]
-        return search_space
-
-    def global_search_space(self, factor=1):
-        '''Return the new search space 
-        '''
-        search_space = []
-        for i in range(0,len(self.dims)): # [0,0,0] => [0,0,1], [0,1,0], [1,0,0]. ...
-            search_space += [self.num_to_bin(2**i, factor)] + [self.num_to_bin(2**i, -factor)]
         return search_space
 
     def next_pos(self, new_positions):
@@ -80,11 +72,11 @@ class DropletTuner(Tuner):
             self.count += 1
         return ret
     
-    def speculation(self, step=1):
+    def speculation(self):
         # Gradient descending direction prediction and search space filling
         while len(self.next) < self.batch and self.execution < self.total_execution:
-            self.next += self.next_pos(self.global_search_space(self.execution))
-            self.execution += step
+            self.next += self.next_pos(self.search_space(self.execution))
+            self.execution += self.step
         return self.next
     
     def update(self, inputs, results):
@@ -99,8 +91,8 @@ class DropletTuner(Tuner):
         
         self.next = self.next[self.count:-1]
         if found_best_pos:
-            self.next += self.next_pos(self.local_search_space()) 
-        self.speculation(self.step) 
+            self.next += self.next_pos(self.search_space()) 
+        self.speculation() 
 
     def has_next(self):
         return len(self.next) > 0
