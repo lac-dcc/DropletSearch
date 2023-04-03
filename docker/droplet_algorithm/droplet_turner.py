@@ -29,10 +29,10 @@ class DropletTuner(Tuner):
         # start position
         start_position =  [0] * len(self.dims) if start_position == None else start_position
         self.best_choice = (-1, [0] * len(self.dims), [99999])
-        self.visited = set()
-        self.execution, self.total_execution, self.batch = 1, max(self.dims), 64
-        self.count, self.pvalue, self.step = 0, pvalue, 2
-        self.next = [(knob2point(start_position, self.dims),start_position)] + self.next_pos(self.search_space())
+        self.visited = set([knob2point(start_position, self.dims)])
+        self.execution, self.total_execution, self.batch = 1, max(self.dims), 16, 
+        self.count, self.pvalue, self.step = 0, pvalue, max(1, self.total_execution//20)
+        self.next = [(knob2point(start_position, self.dims),start_position)] + self.speculation()
     
     def num_to_bin(self, value, factor=1):
         """ convert a number to a binary vector.
@@ -42,16 +42,16 @@ class DropletTuner(Tuner):
 
     def search_space(self, factor=1):
         search_space = []
-        for i in range(1,2**len(self.dims)): # [0,0,0] => [0,0,1], [0,1,0], [1,0,0]. ...
+        for i in range(2**len(self.dims)-1,0,-1): # [0,0,0] => [0,0,1], [0,1,0], [1,0,0]. ...
             search_space += [self.num_to_bin(i, factor)] + [self.num_to_bin(i, -factor)]
         return search_space
 
     def next_pos(self, new_positions):
         next_set = []
         for p in new_positions:
-            if len(next_set) > 2*self.batch:
+            if len(next_set) > self.batch:
                 break
-            new_p = [(x + y) % self.dims[i] if x + y > 0 else 0 for i, (x, y) in enumerate(zip(p, self.best_choice[1]))]
+            new_p = [(x+y) % self.dims[i] if (x+y>0) else 0 for i, (x, y) in enumerate(zip(p, self.best_choice[1]))]
             idx_p = knob2point(new_p, self.dims)
             if idx_p not in self.visited: # memoization
                 self.visited.add(idx_p)
@@ -64,20 +64,20 @@ class DropletTuner(Tuner):
 
     def next_batch(self, batch_size):
         '''Return the next batch'''
-        ret, self.count = [], 0
+        ret, self.batch = [], batch_size
         for i in range(batch_size):
             if i >= len(self.next):
                 break
             ret.append(self.space.get(self.next[i][0]))
-            self.count += 1
         return ret
-    
+
     def speculation(self):
         # Gradient descending direction prediction and search space filling
-        while len(self.next) < self.batch and self.execution < self.total_execution:
-            self.next += self.next_pos(self.search_space(self.execution))
+        new_points = []
+        while len(new_points) < self.batch and self.execution < self.total_execution:
             self.execution += self.step
-        return self.next
+            new_points += self.next_pos(self.search_space(self.execution))
+        return new_points
     
     def update(self, inputs, results):
         found_best_pos = False
@@ -89,10 +89,14 @@ class DropletTuner(Tuner):
             except:
                 continue
         
-        self.next = self.next[self.count:-1]
+        #print("execution:", self.execution, self.step)
+        #print("best:", self.best_choice)
+
+        self.next = self.next[self.batch:-1]
         if found_best_pos:
-            self.next += self.next_pos(self.search_space()) 
-        self.speculation() 
+            self.next += self.next_pos(self.search_space())
+            self.execution = 1
+        self.next += self.speculation() 
 
     def has_next(self):
-        return len(self.next) > 0
+        return len(self.next) > 0 
