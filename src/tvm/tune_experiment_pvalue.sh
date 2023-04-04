@@ -1,7 +1,7 @@
 #!/bin/bash
 
-ARCH="cuda"
-NICK="gtx1650"
+ARCH="x86"
+NICK="AMD3700X_p"
 NAME=$ARCH"_"$NICK # please change this name for your machine
 
 TRIALS=10000
@@ -19,9 +19,10 @@ TUNER=(
 )
 
 PVALUE=(
-    "0.05"
+    #"0.01"
+    #"0.05"
     "0.10"
-    "0.50"
+    "0.25"
     "1.00"
 )
 
