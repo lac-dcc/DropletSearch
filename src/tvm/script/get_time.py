@@ -22,15 +22,20 @@ def process_each_time(log):
 def process_time_ansor(log):
     layers = {}
     f = open(log, "r")
+    c = 0
     for line in f.readlines():
         data = json.loads(line)
         if "ansor" in log:
-            print(data["i"][0])
-            break
-            #if data["i"][0] not in layers.keys():
-            #    print(data)
-            #    break
+            key = str(data["i"][0])
+            if key not in layers.keys():
+                layers[key] = [c,np.average(data["r"][0])]
+                c += 1
+            else:
+                layers[key].append(np.average(data["r"][0]))
             #layers[data["i"][0]]
+    for l in layers:
+        #print(layers[l])
+        print("%2d, %.4f" %(layers[l][0], 100*min(layers[l][1:])))
 
 def process_time(log):
 
