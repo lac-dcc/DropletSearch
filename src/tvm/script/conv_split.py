@@ -110,13 +110,16 @@ if __name__=="__main__":
             else:
                 sch = blocking_cpu(sch, i, i, j, j, 8)
             
-            rt_mod = tvm.build(sch.mod, target=target)
-            A_np = np.random.uniform(size=(1027,1027)).astype("float32")
-            B_nd = tvm.nd.array(np.array([-2,-1,0,-1,1,1,0,1,2], dtype="float32").reshape((3, 3)), dev)
-            C_nd = tvm.nd.array(np.zeros((1025,1025), dtype="float32"), dev)
+            try:
+                rt_mod = tvm.build(sch.mod, target=target)
+                A_np = np.random.uniform(size=(1027,1027)).astype("float32")
+                B_nd = tvm.nd.array(np.array([-2,-1,0,-1,1,1,0,1,2], dtype="float32").reshape((3, 3)), dev)
+                C_nd = tvm.nd.array(np.zeros((1025,1025), dtype="float32"), dev)
 
-            A_nd = tvm.nd.array(A_np, dev)
-            
-            evaluator = rt_mod.time_evaluator("main", dev, number=10, repeat=3)
-            eval = evaluator(A_nd, B_nd, C_nd)
-            print("%d,%d,%.6f,%.6f" %(i, j, eval.mean, eval.std))
+                A_nd = tvm.nd.array(A_np, dev)
+                
+                evaluator = rt_mod.time_evaluator("main", dev, number=10, repeat=3)
+                eval = evaluator(A_nd, B_nd, C_nd)
+                print("%d,%d,%.6f,%.6f" %(i, j, eval.mean, eval.std))
+            except:
+                print("%d,%d,NaN,NaN" %(i, j))
