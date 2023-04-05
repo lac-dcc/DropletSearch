@@ -63,4 +63,4 @@ if __name__ == "__main__":
 
     log = sys.argv[1]
     #print(log)
-    process_time_ansor(log)
+    process_time(log)

@@ -51,13 +51,10 @@ os.environ["TVM_NUM_THREADS"] = str(num_threads)
 def tune_kernels(
     tasks, model, trials, pvalue, measure_option, tuner="gridsearch", early_stopping=None, log_filename="tuning.log",
 ):
-    total_time_tuning, total_line, total_space_size = 0, 0, 0
+    total_time_tuning, total_line = 0, 0
     partial_trial = trials // len(tasks)
     for i, task in enumerate(tasks):
         log_filename_tmp = log_filename + "_layer_" + str(i) + ".log"
-
-        space_layer_size = len(task.config_space)
-        total_space_size += len(task.config_space)
 
         if os.path.exists(log_filename_tmp):
             os.remove(log_filename_tmp)
@@ -104,8 +101,8 @@ def tune_kernels(
         f1.close()
         f.close()
         total_line += count_line
-        print("Time partial tuning: %.4f, %.4f, %.2f, %d, %d" %(best_avg, best_std, end-start, count_line, space_layer_size))
-    print("Time search: %.2f, %d, %d" %(total_time_tuning, total_line, total_space_size))
+        print("Time partial tuning: %.4f, %.4f, %.2f, %d" %(best_avg, best_std, end-start, count_line))
+    print("Time search: %.2f, %d" %(total_time_tuning, total_line))
             
         
 ########################################################################
@@ -154,9 +151,9 @@ def tune_and_evaluate(tuning_opt, log_file, model, arch, tuner, only_eval, targe
                 lib = relay.build(mod, target=target, params=params)
                 evaluate_performance(lib, data_shape, target)
     
-    #print("without opt")
-    #lib = relay.build(mod, target=target, params=params)
-    #evaluate_performance(lib, data_shape, target)
+    print("without opt")
+    lib = relay.build(mod, target=target, params=params)
+    evaluate_performance(lib, data_shape, target)
     
     
 if __name__ == "__main__":

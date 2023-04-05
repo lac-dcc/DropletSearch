@@ -21,8 +21,9 @@ def get_number_parameters(log):
                 layers.append(data["input"])
     f.close()
 
-    print(len(param), len(layers))
-
+    print("Parameters Layer:", len(param))
+    print(param)
+    print("Number of layers:", len(layers))
 
 if __name__ == "__main__":
 
