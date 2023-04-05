@@ -80,17 +80,17 @@ if __name__=="__main__":
     dev = tvm.cpu(0)
     target = "llvm"
 
-    interval = [1]+list(range(8,129,8))
+    interval = [1]+list(range(4,65,4))
     for split_a in interval:
         for split_b in interval:
             sch = tvm.tir.Schedule(MatMulConv)
             sch = blocking(sch, split_a, split_a, split_a, split_a, split_b, split_b, split_b, split_b, 8)
             
             #pp.pprint(sch.mod.show())
-            rt_mod = tvm.build(sch.mod, target=target)
-            B_nd = tvm.nd.array(np.array([-2,-1,0,-1,1,1,0,1,2], dtype="float32").reshape((3, 3)), dev)
+            with tvm.transform.PassContext(opt_level=3):
+                rt_mod = tvm.build(sch.mod, target=target)
             
-            #B_nd = tvm.nd.array(B_np, dev)
+            B_nd = tvm.nd.array(np.array([-2,-1,0,-1,1,1,0,1,2], dtype="float32").reshape((3, 3)), dev)
             C_nd = tvm.nd.array(np.zeros((61,253), dtype="float32"), dev)
             X_nd = tvm.nd.array(np.zeros((64,256), dtype="float32"), dev)
             Y_nd = tvm.nd.array(Y_np, dev)
