@@ -3,7 +3,6 @@ import numpy as np
 import tvm, sys
 from tvm import te
 from tvm.script import tir as T
-from PIL import Image
 import numpy as np 
 
 @tvm.script.ir_module
