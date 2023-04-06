@@ -21,9 +21,11 @@ def read_file(csv_file):
     dim = int(math.sqrt(size))
     m = [[0 for col in range(dim)] for row in range(dim)]
 
+    diff = int(lista[2][1]) - int(lista[1][1])
+
     for l in lista:
-        row = int(l[0])//4
-        col = int(l[1])//4
+        row = int(l[0])//diff
+        col = int(l[1])//diff
 
         value = l[2]
         
@@ -34,7 +36,7 @@ def read_file(csv_file):
             print(m[i][j], ",", end="")
         print()
     
-    x = [[row*4 for col in range(dim)] for row in range(dim)]
+    x = [[row*diff for col in range(dim)] for row in range(dim)]
 
     return np.array(x), np.array(x).T, np.array(m)
 
