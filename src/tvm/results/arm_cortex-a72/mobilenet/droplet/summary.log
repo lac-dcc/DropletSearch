@@ -1,0 +1,44 @@
+With opt
+Time partial tuning: 1.4818, 0.0032, 390.71, 263, 96000
+Time partial tuning: 0.8036, 0.0005, 159.31, 100, 264
+Time partial tuning: 1.7704, 0.0036, 177.06, 120, 12000
+Time partial tuning: 1.8264, 0.0030, 139.95, 104, 648
+Time partial tuning: 4.9773, 0.0117, 353.60, 263, 112000
+Time partial tuning: 1.7659, 0.0079, 275.82, 161, 924
+Time partial tuning: 1.5570, 0.0007, 227.78, 122, 8960
+Time partial tuning: 2.8208, 0.0028, 150.78, 110, 784
+Time partial tuning: 2.9075, 0.0048, 326.00, 263, 81920
+Time partial tuning: 1.8673, 0.0052, 188.71, 112, 1120
+Time partial tuning: 1.8155, 0.0036, 237.05, 136, 10240
+Time partial tuning: 1.8572, 0.0030, 70.91, 48, 1024
+Time partial tuning: 4.3485, 0.0065, 340.36, 263, 81920
+Time partial tuning: 3.9618, 0.0081, 222.14, 119, 1280
+Time partial tuning: 0.7715, 0.0005, 282.74, 147, 5760
+Time partial tuning: 1.4485, 0.0020, 159.57, 101, 768
+Time partial tuning: 2.5063, 0.0051, 400.50, 263, 51840
+Time partial tuning: 1.4853, 0.0015, 170.74, 122, 1152
+Time partial tuning: 0.9035, 0.0017, 225.80, 146, 6480
+Time partial tuning: 0.9069, 0.0003, 142.51, 91, 972
+Time partial tuning: 4.2088, 0.0340, 362.08, 263, 51840
+Time partial tuning: 3.1484, 0.0140, 258.80, 193, 1296
+Time partial tuning: 0.2054, 0.0007, 205.10, 104, 2880
+Time partial tuning: 0.6696, 0.0018, 140.25, 86, 648
+Time partial tuning: 2.5776, 0.0021, 405.13, 263, 25600
+Time partial tuning: 1.5549, 0.0017, 149.20, 104, 1080
+Time partial tuning: 0.2248, 0.0013, 230.90, 137, 3200
+Time partial tuning: 0.1858, 0.0006, 119.75, 78, 800
+Time partial tuning: 3.3756, 0.0079, 354.27, 263, 25600
+Time partial tuning: 3.5801, 0.0100, 173.06, 120, 1200
+Time partial tuning: 0.0459, 0.0001, 146.92, 92, 800
+Time partial tuning: 0.0786, 0.0005, 104.38, 62, 400
+Time partial tuning: 1.5116, 0.0029, 369.14, 263, 7040
+Time partial tuning: 1.6170, 0.0033, 173.23, 141, 880
+Time partial tuning: 0.0780, 0.0005, 180.47, 100, 880
+Time partial tuning: 0.0542, 0.0001, 127.60, 78, 484
+Time partial tuning: 3.0208, 0.0353, 342.56, 263, 7040
+Time partial tuning: 3.4461, 0.0040, 196.88, 152, 968
+Time search: 8681.79, 5816, 608692
+Execution time summary:
+ mean (ms)   median (ms)    max (ms)     min (ms)     std (ms)  
+  84.7598      84.5754      87.6173      83.3940       0.7970   
+               
