@@ -1,1 +1,3 @@
 .pkl_memoize_py3
+script/__pycache__
+script/__pycache__/*
