@@ -1,0 +1,11 @@
+With opt
+Time search: 9493.76
+Execution time summary:
+ mean (ms)   median (ms)    max (ms)     min (ms)     std (ms)  
+  133.6600     141.8340     146.9383     111.8033     13.0038   
+               
+without opt
+Execution time summary:
+ mean (ms)   median (ms)    max (ms)     min (ms)     std (ms)  
+  178.2686     182.4596     187.3435     148.0247     12.0530   
+               

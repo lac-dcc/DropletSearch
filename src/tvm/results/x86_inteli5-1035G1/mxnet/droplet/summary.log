@@ -1,0 +1,32 @@
+Downloading /home/canesche/.mxnet/models/resnet50_v1-0aee57f9.zipd1219951-dbe4-456b-85c3-7fe81dee0f12 from https://apache-mxnet.s3-accelerate.dualstack.amazonaws.com/gluon/models/resnet50_v1-0aee57f9.zip...
+With opt
+Time partial tuning: 3.2352, 0.0355, 88.63, 68, 308
+Time partial tuning: 0.3620, 0.0349, 190.62, 137, 980
+Time partial tuning: 3.4708, 0.2559, 126.91, 96, 980
+Time partial tuning: 1.5917, 0.1184, 125.52, 98, 1260
+Time partial tuning: 1.5443, 0.1007, 120.04, 102, 1260
+Time partial tuning: 0.7552, 0.0608, 195.46, 172, 1152
+Time partial tuning: 3.3702, 0.2372, 87.17, 65, 1024
+Time partial tuning: 3.2009, 0.2485, 133.02, 103, 1440
+Time partial tuning: 1.5358, 0.1179, 118.40, 77, 1280
+Time partial tuning: 1.5007, 0.1176, 173.39, 128, 1280
+Time partial tuning: 0.7890, 0.0461, 211.50, 153, 1080
+Time partial tuning: 3.3590, 0.2674, 87.35, 73, 972
+Time partial tuning: 2.9343, 0.0249, 239.45, 168, 1320
+Time partial tuning: 1.3015, 0.0054, 365.07, 238, 1188
+Time partial tuning: 1.5647, 0.1538, 147.34, 105, 1188
+Time partial tuning: 0.6811, 0.0111, 205.60, 169, 880
+Time partial tuning: 3.2562, 0.2980, 94.17, 74, 800
+Time partial tuning: 3.1647, 0.0335, 238.25, 164, 1056
+Time partial tuning: 1.5038, 0.1334, 107.17, 84, 960
+Time partial tuning: 1.5538, 0.1495, 99.59, 84, 960
+Time search: 3154.66, 2358, 21368
+Execution time summary:
+ mean (ms)   median (ms)    max (ms)     min (ms)     std (ms)  
+  128.1485     134.0971     136.9419     107.9901     10.6866   
+               
+without opt
+Execution time summary:
+ mean (ms)   median (ms)    max (ms)     min (ms)     std (ms)  
+  176.7078     182.0121     187.0519     147.2413     13.3808   
+               

@@ -1,0 +1,54 @@
+With opt
+Time partial tuning: 0.5736, 0.0502, 199.20, 168, 168
+Time partial tuning: 5.5926, 0.4559, 280.78, 232, 792
+Time partial tuning: 11.4066, 0.9435, 290.83, 232, 924
+Time partial tuning: 0.8272, 0.0715, 300.32, 232, 980
+Time partial tuning: 22.2603, 1.5899, 340.08, 232, 1960
+Time partial tuning: 0.4737, 0.0343, 323.07, 232, 1764
+Time partial tuning: 0.3972, 0.0326, 324.76, 232, 2520
+Time partial tuning: 2.7944, 0.2281, 322.05, 232, 1260
+Time partial tuning: 2.0756, 0.1226, 320.50, 232, 1512
+Time partial tuning: 3.5744, 0.3332, 316.07, 232, 2592
+Time partial tuning: 0.2348, 0.0180, 321.58, 232, 1512
+Time partial tuning: 0.5673, 0.0394, 313.65, 232, 1134
+Time partial tuning: 0.4773, 0.0370, 313.91, 232, 1620
+Time partial tuning: 0.7165, 0.0589, 323.64, 232, 2268
+Time partial tuning: 0.5973, 0.0460, 322.08, 232, 3240
+Time partial tuning: 9.8927, 0.8638, 300.17, 232, 3456
+Time partial tuning: 0.8517, 0.0360, 331.53, 232, 1728
+Time partial tuning: 1.4807, 0.0982, 328.21, 232, 3024
+Time partial tuning: 0.8992, 0.0681, 315.29, 232, 1728
+Time partial tuning: 0.9704, 0.0854, 334.23, 232, 768
+Time partial tuning: 1.6820, 0.1363, 320.14, 232, 1344
+Time partial tuning: 1.0717, 0.0629, 319.15, 232, 768
+Time partial tuning: 1.5721, 0.1501, 335.96, 232, 1344
+Time partial tuning: 1.2371, 0.0883, 328.57, 232, 2592
+Time partial tuning: 1.5766, 0.1507, 341.72, 232, 1728
+Time partial tuning: 2.2259, 0.1845, 318.55, 232, 2016
+Time partial tuning: 1.6971, 0.1693, 317.44, 232, 1728
+Time partial tuning: 2.0301, 0.1919, 340.93, 232, 2016
+Time partial tuning: 2.3421, 0.1768, 352.65, 232, 2352
+Time partial tuning: 2.5937, 0.2455, 315.79, 232, 2352
+Time partial tuning: 1.1248, 0.0824, 314.08, 232, 1568
+Time partial tuning: 0.7052, 0.0485, 312.84, 232, 1568
+Time partial tuning: 0.8240, 0.0740, 309.41, 232, 2016
+Time partial tuning: 0.9508, 0.0894, 305.22, 232, 2304
+Time partial tuning: 0.8023, 0.0491, 326.77, 232, 2048
+Time partial tuning: 0.8611, 0.0744, 307.04, 232, 2048
+Time partial tuning: 1.1313, 0.0856, 276.59, 232, 2016
+Time partial tuning: 3.1244, 0.2315, 280.67, 232, 1792
+Time partial tuning: 0.5075, 0.0462, 315.12, 232, 2016
+Time partial tuning: 1.2379, 0.1126, 278.30, 232, 1344
+Time partial tuning: 1.5615, 0.1516, 276.20, 232, 1536
+Time partial tuning: 1.7546, 0.1575, 279.14, 232, 1344
+Time partial tuning: 0.8064, 0.0704, 317.20, 232, 1344
+Time search: 13411.44, 9912, 76134
+Execution time summary:
+ mean (ms)   median (ms)    max (ms)     min (ms)     std (ms)  
+  218.1804     225.7987     233.7441     177.0030     18.2477   
+               
+without opt
+Execution time summary:
+ mean (ms)   median (ms)    max (ms)     min (ms)     std (ms)  
+  269.8792     275.4048     283.9576     218.9492     17.3514   
+               
