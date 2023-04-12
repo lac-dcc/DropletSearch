@@ -29,7 +29,7 @@ import time, sys
 import tvm
 from tvm import relay, autotvm, auto_scheduler
 from tvm.relay import testing
-from tvm.autotvm.tuner import XGBTuner, GATuner, RandomTuner, GridSearchTuner, DropletTuner
+from tvm.autotvm.tuner import XGBTuner, GATuner, RandomTuner, GridSearchTuner, DropletTuner, DropletTuner_one_thread
 from tvm.autotvm.graph_tuner import DPTuner, PBQPTuner
 from utils import get_network, get_best_time, evaluate_performance
 import tvm.contrib.graph_executor as runtime
@@ -73,6 +73,8 @@ def tune_kernels(
             tuner_obj = GridSearchTuner(task)
         elif tuner == "droplet":
             tuner_obj = DropletTuner(task, pvalue=pvalue)
+        elif tuner == "droplet_one_thread":
+            tuner_obj = DropletTuner_one_thread(task, pvalue=pvalue)
         else:
             raise ValueError("Invalid tuner: " + tuner)
 

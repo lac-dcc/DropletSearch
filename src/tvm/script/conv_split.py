@@ -98,7 +98,7 @@ if __name__=="__main__":
     dev = tvm.device(str(target), 0)
     
     if "cuda" in arch:
-        interval = [1]+list(range(2,32,2))
+        interval = [1]+list(range(2,33,2))
     else:
         interval = [1]+list(range(8,129,8))
 

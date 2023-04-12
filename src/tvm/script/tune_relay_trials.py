@@ -78,6 +78,7 @@ def tune_and_evaluate(tuning_opt, log_file_original, log_file_save, model, arch,
         tasks = autotvm.task.extract_from_program(mod["main"], target=target, params=params, ops=(relay.op.get("nn.conv2d"),))
         # run tuning tasks
         partial_trial = trials // len(tasks)
+        extra, total_trials = 0, 0
         for i, task in enumerate(tasks):
             log_filename_tmp = log_file_original + "_layer_" + str(i) + ".log"
 
@@ -85,13 +86,16 @@ def tune_and_evaluate(tuning_opt, log_file_original, log_file_save, model, arch,
             f1 = open(log_file_save, "a")
             count_line = 0
             for l in f.readlines():
-                if count_line > partial_trial:
+                if count_line > partial_trial + extra:
                     break
                 f1.write(l)
                 count_line += 1
+            total_trials += count_line
+            extra = max(0, partial_trial + extra - count_line)
             f1.close()
             f.close()
 
+        #print("Number of trials:",total_trials)
         # compile kernels in kernel tuned only mode
         with autotvm.apply_history_best(log_file_save):
             with tvm.transform.PassContext(opt_level=3):
