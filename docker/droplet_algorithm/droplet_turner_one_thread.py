@@ -5,7 +5,7 @@ from scipy import stats
 from .tuner import Tuner
 from .model_based_tuner import knob2point
 
-class DropletTuner(Tuner):
+class DropletTuner_one_thread(Tuner):
     """Tuner with droplet algorithm.
     This tuner does not have a cost model so it always run measurement on real machines.
     This tuner expands the :code:`ConfigEntity` as gene.
@@ -16,7 +16,7 @@ class DropletTuner(Tuner):
     """
 
     def __init__(self, task, start_position=None, pvalue=0.05):
-        super(DropletTuner, self).__init__(task)
+        super(DropletTuner_one_thread, self).__init__(task)
 
         # space info
         self.space = task.config_space
@@ -25,11 +25,12 @@ class DropletTuner(Tuner):
         for _, v in self.space.space_map.items():
             self.dims.append(len(v))
         
+        #print(self.dims)
         # start position
         start_position =  [0] * len(self.dims) if start_position == None else start_position
         self.best_choice = (-1, [0] * len(self.dims), [99999])
         self.visited = set([knob2point(start_position, self.dims)])
-        self.execution, self.total_execution, self.batch = 1, max(self.dims), 16, 
+        self.execution, self.total_execution, self.batch = 1, max(self.dims), 1, 
         self.count, self.pvalue, self.step = 0, pvalue, max(1, self.total_execution//20)
         self.next = [(knob2point(start_position, self.dims),start_position)] + self.speculation()
     
@@ -63,17 +64,18 @@ class DropletTuner(Tuner):
 
     def next_batch(self, batch_size):
         '''Return the next batch'''
-        ret, self.batch = [], batch_size
+        ret, self.batch = [], 1
         for i in range(batch_size):
             if i >= len(self.next):
                 break
             ret.append(self.space.get(self.next[i][0]))
+        #print(ret)
         return ret
 
     def speculation(self):
         # Gradient descending direction prediction and search space filling
         new_points = []
-        while len(new_points) < self.batch and self.execution < self.total_execution:
+        while len(new_points) < 16 and self.execution < self.total_execution:
             self.execution += self.step
             new_points += self.next_pos(self.search_space(self.execution))
         return new_points

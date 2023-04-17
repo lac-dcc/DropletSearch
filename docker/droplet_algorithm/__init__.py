@@ -29,3 +29,4 @@ from .index_based_tuner import GridSearchTuner, RandomTuner
 from .ga_tuner import GATuner
 from .xgboost_tuner import XGBTuner
 from .droplet_turner import DropletTuner 
+from .droplet_turner_one_thread import DropletTuner_one_thread
