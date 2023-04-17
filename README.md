@@ -25,6 +25,8 @@
     * [Prerequisites](#prerequisites)
     * [Setup](#setup)
     * [Running](#running)
+* [Structure](#structure)
+* [Technical Report](#technical-report)
 
 ---
 <a id="introduction"></a>
@@ -63,6 +65,14 @@ TODO: setup under construction.
 Now, you can run the following command line:
 
 TODO: script under contruction.
+
+---
+<a id="structure"></a>
+
+## :card_index_dividers: Structure
+The repository has the following organization:
+
+TODO: Under construction.
 
 ---
 <a id="technical-report"></a>
