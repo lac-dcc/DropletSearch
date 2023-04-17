@@ -1,7 +1,7 @@
 <div align="center">
     <h1> Garkain </h1>
     <div style="font-style: italic">
-        Garkain is a space search algorithm in the compiler optimization space
+        Garkain is a design of a space search algorithm (droplet search) in compiler optimization space.
     </div>
 </div>
 
