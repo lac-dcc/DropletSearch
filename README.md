@@ -18,4 +18,59 @@
   </a>
 </p>
 
+## **Contents Table**
+
+* [Introduction](#introduction)
+* [Getting Started](#getting-started)
+    * [Prerequisites](#prerequisites)
+    * [Setup](#setup)
+    * [Running](#running)
+
+---
+<a id="introduction"></a>
+
+## **Introduction**
+
+TODO: introduction text here
+
+<p align="center">
+<img alt="examples of classifications" src="./docs/figs/droplet_maps.pdf" width="60%" height="auto"/>
+</p>
+
+---
+<a id="getting-started"></a>
+
+## **Getting Started**
+
+In this section are the steps to reproduce our experiments.
+
+### **Prerequisites**
+
+You need to install the following packages to run this project:
+
+* [Docker](https://www.docker.com/get-started/) and [Docker Compose](https://docs.docker.com/compose/install/) to run our experiments
+* [Python-3](https://www.python.org/downloads/) to plot the results in the project's Jupyter Notebook
+
+<a id="setup"></a>
+
+###  **Setup**
+
+TODO: setup under construction.
+
+<a id="running"></a>
+
+### **Running**
+Now, you can run the following command line:
+
+TODO: script under contruction.
+
+---
+<a id="technical-report"></a>
+
+## Technical Report
+
+This framework is used in the following published papers:
+
+TODO: in submission the paper.
+
 
