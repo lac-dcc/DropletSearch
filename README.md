@@ -69,7 +69,7 @@ TODO: script under contruction.
 ---
 <a id="structure"></a>
 
-## :card_index_dividers: Structure
+## Structure
 The repository has the following organization:
 
 TODO: Under construction.
