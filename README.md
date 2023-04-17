@@ -34,7 +34,7 @@
 TODO: introduction text here
 
 <p align="center">
-<img alt="examples of classifications" src="./docs/figs/droplet_maps.pdf" width="60%" height="auto"/>
+<img alt="examples of classifications" src="./docs/figs/droplet_maps.png" width="60%" height="auto"/>
 </p>
 
 ---
