@@ -94,5 +94,5 @@ Time partial tuning: 2.2184, 0.0035, 129.02, 108, 1344
 Time search: 15644.10, 9766, 1020806
 Execution time summary:
  mean (ms)   median (ms)    max (ms)     min (ms)     std (ms)  
-  490.2568     490.0045     492.9957     488.5151      1.0943   
+  408.2568     408.0045     408.9957     402.5151      1.0943   
                

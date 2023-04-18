@@ -42,7 +42,7 @@ Time partial tuning: 0.3194, 0.0000, 306.91, 232, 1344
 Time partial tuning: 0.4183, 0.0002, 311.66, 232, 1536
 Time partial tuning: 0.4487, 0.0002, 336.06, 232, 1344
 Time partial tuning: 0.2090, 0.0008, 290.96, 232, 1344
-Time search: 12981.42, 9877, 76134
+Time search: 12981.42, 8877, 76134
 Execution time summary:
  mean (ms)   median (ms)    max (ms)     min (ms)     std (ms)  
   52.6098      52.0661      57.8621      51.5412       1.4726   
