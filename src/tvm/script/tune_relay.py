@@ -117,7 +117,7 @@ def tune_and_evaluate(tuning_opt, log_file, model, arch, tuner, only_eval, targe
     # extract workloads from relay program
     mod, params, data_shape, out_shape = get_network(model, batch_size)
     
-    print("With opt")
+    r = []
     if tuner == "ansor":
         if only_eval != 1: 
             if os.path.exists(log_file):
@@ -140,8 +140,7 @@ def tune_and_evaluate(tuning_opt, log_file, model, arch, tuner, only_eval, targe
         with auto_scheduler.ApplyHistoryBest(log_file):
             with tvm.transform.PassContext(opt_level=3, config={"relay.backend.use_auto_scheduler": True}):
                 lib = relay.build(mod, target=target, params=params)
-                evaluate_performance(lib, data_shape, target)
-
+                r = evaluate_performance(lib, data_shape, target)
     else:
         if only_eval != 1: 
             if os.path.exists(log_file):
@@ -154,8 +153,9 @@ def tune_and_evaluate(tuning_opt, log_file, model, arch, tuner, only_eval, targe
         with autotvm.apply_history_best(log_file):
             with tvm.transform.PassContext(opt_level=3):
                 lib = relay.build(mod, target=target, params=params)
-                evaluate_performance(lib, data_shape, target)
+                r = evaluate_performance(lib, data_shape, target)
     
+    print("Final results (opt): %s,%s,%s,%.4f,%.4f,%.4f,%.4f" %(arch, model, tuner, np.mean(r), np.std(r), np.min(r), np.max(r)))
     #print("without opt")
     #lib = relay.build(mod, target=target, params=params)
     #evaluate_performance(lib, data_shape, target)

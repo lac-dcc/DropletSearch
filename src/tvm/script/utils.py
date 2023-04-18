@@ -96,4 +96,22 @@ def evaluate_performance(lib, data_shape, target, input_name="data", dtype="floa
     module = runtime.GraphModule(lib["default"](dev))
     module.set_input(input_name, data_tvm)
     # evaluate
-    print(module.benchmark(dev, number=10, repeat=20, min_repeat_ms=100, cooldown_interval_ms=100))
+    
+    r = []
+    for i in range(3):
+        eval = module.benchmark(dev, number=5, repeat=5, min_repeat_ms=100, cooldown_interval_ms=100)
+        r.append(eval.mean*1000)
+    return r
+
+def evaluate_p_value(lib, data_shape, target, input_name="data", dtype="float32"):
+    dev = tvm.device(str(target), 0)
+    np.random.seed(0)
+    data_tvm = tvm.nd.array((np.random.uniform(size=data_shape)).astype(dtype), device=dev)
+    module = runtime.GraphModule(lib["default"](dev))
+    module.set_input(input_name, data_tvm)
+    # evaluate
+    r = []
+    for i in range(3):
+        eval = module.benchmark(dev, number=5, repeat=5, min_repeat_ms=100, cooldown_interval_ms=100)
+        r.append(eval.mean*1000)
+    return r

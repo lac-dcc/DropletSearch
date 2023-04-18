@@ -36,10 +36,11 @@ if __name__ == "__main__":
     else:
         for i in range(100):
             try:
+                c = 0
                 f = open(path + "/cpu.log_layer_" + str(i) + ".log", "r")
                 for l in f.readlines():
                     c += 1
                 f.close()
             except:
                 break
-        print("%d" %(c))
+            print("%d" %(c))

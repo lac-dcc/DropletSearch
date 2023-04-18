@@ -31,7 +31,7 @@ from tvm import relay, autotvm, auto_scheduler
 from tvm.relay import testing
 from tvm.autotvm.tuner import XGBTuner, GATuner, RandomTuner, GridSearchTuner, DropletTuner
 from tvm.autotvm.graph_tuner import DPTuner, PBQPTuner
-from utils import get_network, get_best_time, evaluate_performance
+from utils import get_network, get_best_time, evaluate_performance, evaluate_p_value
 import tvm.contrib.graph_executor as runtime
 
 #################################################################
@@ -53,7 +53,7 @@ def tune_and_evaluate(tuning_opt, log_file_original, log_file_save, model, arch,
     if os.path.exists(log_file_save):
         os.remove(log_file_save)
 
-    print("With opt")
+    r = []
     if tuner == "ansor":
         f = open(log_file_original, "r")
         f1 = open(log_file_save, "w")
@@ -72,7 +72,7 @@ def tune_and_evaluate(tuning_opt, log_file_original, log_file_save, model, arch,
         with auto_scheduler.ApplyHistoryBest(log_file_save):
             with tvm.transform.PassContext(opt_level=3, config={"relay.backend.use_auto_scheduler": True}):
                 lib = relay.build(mod, target=target, params=params)
-                evaluate_performance(lib, data_shape, target)
+                r = evaluate_performance(lib, data_shape, target)
 
     else:
         tasks = autotvm.task.extract_from_program(mod["main"], target=target, params=params, ops=(relay.op.get("nn.conv2d"),))
@@ -100,9 +100,11 @@ def tune_and_evaluate(tuning_opt, log_file_original, log_file_save, model, arch,
         with autotvm.apply_history_best(log_file_save):
             with tvm.transform.PassContext(opt_level=3):
                 lib = relay.build(mod, target=target, params=params)
-                evaluate_performance(lib, data_shape, target)
+                r = evaluate_performance(lib, data_shape, target)
     os.remove(log_file_save)
     
+    print("Final results (opt): %s,%s,%s,%.4f,%.4f,%.4f,%.4f" %(arch, model, tuner, np.mean(r), np.std(r), np.min(r), np.max(r)))
+
     #print("without opt")
     #lib = relay.build(mod, target=target, params=params)
     #evaluate_performance(lib, data_shape, target)
