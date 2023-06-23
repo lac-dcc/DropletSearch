@@ -5,9 +5,9 @@ import numpy as np
 from scipy.interpolate import griddata
 import math, sys 
 
-n = 1000 # size of 2D array 
-C = 1024 # Cache's size
-l = 1024 # Cache Line size 
+n = 100 # size of 2D array 
+C = 32 # Cache's size
+l = 32 # Cache Line size: Common cache line sizes are 32, 64 and 128 bytes
 
 def create_surface_plot(dimensions, costs, combination, output_filename, label):
     x_idx, y_idx = (0, 1)
