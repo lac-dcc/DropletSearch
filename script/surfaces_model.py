@@ -5,8 +5,9 @@ import numpy as np
 from scipy.interpolate import griddata
 import math, sys 
 
-N = 1000
-C = 1000
+n = 1000 # size of 2D array 
+C = 1024 # Cache's size
+l = 1024 # Cache Line size 
 
 def create_surface_plot(dimensions, costs, combination, output_filename, label):
     x_idx, y_idx = (0, 1)
@@ -43,44 +44,47 @@ def create_surface_plot(dimensions, costs, combination, output_filename, label):
 def models(name):
 
     r = []
-    for h in range(0.1, 1, 0.05):
-        for w in range(0.1, 1, 0.05):
+    for h in np.arange(0.1, 1, 0.05):
+        for w in np.arange(0.1, 1, 0.05):
             if name == "ESS":
                 expr = C / (h * w)
             elif name == "LRW":
                 expr = 1/h + 1/w + (2*h + w) / C
             elif name == "TSS":
-                pass
+                expr = (2*h + w)/h * w
             elif name == "EUC":
-                pass
+                expr = 1/h + 1/w
             elif name == "MOON":
-                pass
+                expr = 1/h + 1/w + (h+w)/C
             elif name == "TLI":
-                pass
+                expr = 1/h + 1/w + (h+w)/C + h*w/(C**2)
             elif name == "WMC":
-                pass
+                expr = C/h * w
             elif name == "MHCF":
-                pass
+                expr = (1/h+1/w) * (1/n + 1/l) + 2/(h*w)
+            else:
+                print("Model not exist!")
+                exit(0)
             r.append((h, w, expr))
     return r
 
-def execute_models(combinations, labels):
+def execute_models(combination, label, name):
     
-    data = models(C / h * w)
+    data = models(name)
 
     # Separate the dimensions and costs
     dimensions = np.array([point[:2] for point in data])
     costs = np.array([point[2] for point in data])
-
-    find_best_global_solution(dimensions, costs, labels[i])
     
-    output_filename = f"surface_plot_combination_{i+1}.png"
-    create_surface_plot(dimensions, costs, combination, output_filename, labels[i])
+    output_filename = f"surface_plot_{name}.png"
+    create_surface_plot(dimensions, costs, combination, output_filename, label)
 
 if __name__ == "__main__":
 
-    # Create surface plots for each combination of dimensions
+    name_model = ["ESS", "LRW", "TSS", "EUC", "MOON", "TLI", "WMC", "MHCF"]
+
     combinations = [(0, 1)]
     labels = [("h", "w")]
 
-    execute_models(combinations, labels)
+    for name in name_model:
+        execute_models(combinations[0], labels[0], name)
