@@ -36,7 +36,7 @@ To ease the process of installing all the dependencies, baseline softwares, and 
     ```
     bash scripts/open_container_old_docker.sh
     ```
-* Now, supposedly you are inside the container and located in */root/nnfusion/*. Then you can insatll all baseline software (e.g., TensorFlow 1.15.2, Tensor RT-7.0.0, TVM-0.7) through:
+* Now, supposedly you are inside the container and located in */root/nnfusion/*. Then you can install all baseline software (e.g., TensorFlow 1.15.2, Tensor RT-7.0.0, TVM-0.7) through:
     ```
     bash artifacts/scripts/build_and_install_deps.sh
     ```

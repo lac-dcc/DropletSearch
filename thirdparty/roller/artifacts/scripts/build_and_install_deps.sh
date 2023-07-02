@@ -8,6 +8,8 @@ declare THIS_SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 tftrt=$THIS_SCRIPT_DIR/../wheel/tensorflow-1.15.2-cp36-cp36m-linux_x86_64.whl
 
+pip install protobuf==3.19.6
+
 # build and install tf-trt
 if [ ! -f "$tftrt" ]; then
     echo "Build Tensorflow 1.15.2 with TensorRT 7.0.0 ..."

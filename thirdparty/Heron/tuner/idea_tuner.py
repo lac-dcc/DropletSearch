@@ -2,11 +2,107 @@ import os
 import math
 import time
 from .tuner import Tuner
-from Heron.sample import *
-from Heron.utils import *
+
+import copy
+import tvm
+import time
+import hashlib
+import numpy as np
+
+#from Heron.utils import *
+
+def DeCode(code):
+    assert isinstance(code, str)
+    nums = code.split('_')[:-1]
+    return [int(x) for x in nums]
+
+def Code(point):
+    assert isinstance(point, list)
+    code = ''
+    for x in point:
+        code += str(x) + '_'
+    return code
+
 import random
 import numpy as np
-from Heron.multi import Job
+#from Heron.multi import Job
+
+import multiprocessing as _multi
+multi = _multi.get_context("fork")
+
+import os
+import time
+import psutil
+import signal
+import math
+
+def exec(func, queue, args):
+    res = func(*args)
+    queue.put(res)
+
+def kill_child_processes(parent_pid, sig=signal.SIGTERM):
+    try:
+        parent = psutil.Process(parent_pid)
+    except psutil.NoSuchProcess:
+        return
+    children = parent.children(recursive=True)
+    for process in children:
+        try:
+            process.send_signal(sig)
+        except psutil.NoSuchProcess:
+            return
+
+class Job:
+    def __init__(self, func, attach_info, timeout = 10):
+        self.func = func
+        self.attach_info = attach_info
+        self.timeout = timeout
+
+    def start(self, inputs):
+        self.queue = multi.Queue(2)
+        self.process = multi.Process(target=exec, args = (self.func, self.queue, inputs,))
+        self.process.start()
+
+    def get(self):
+        try:
+            res = self.queue.get(block=True, timeout=self.timeout)
+        except:
+            res = 0
+        if self.process.is_alive():
+            kill_child_processes(self.process.pid)
+            self.process.terminate()
+        self.process.join()
+        self.queue.close()
+        self.queue.join_thread()
+        del self.process; del self.queue
+        return res
+
+class Sample:
+    def __init__(self, task):
+        self.valid = False
+        self.perf = 0.0
+        self.task = task
+        self.knob_manager = copy.deepcopy(task.knob_manager)
+        self.predict = 0
+        self.prob = 0
+        self.violation = None
+        self.violations = None
+        self.ranks = []
+
+    def getTask(self):
+        return self.task
+
+    def fromCode(self, code):
+        point = DeCode(code)
+        self.point = point
+        for idx, key in enumerate(list(self.knob_manager.solver.vals.keys())):
+            self.knob_manager.solved_knob_vals_genotype[key] = point[idx]
+
+    def lower(self):
+        task = self.getTask()
+        sch, fargs = task.instantiate(self.knob_manager)
+        stmt = tvm.lower(sch, fargs)
+        return stmt
 
 class IDEATuner(Tuner):
     def optimize(self, env, pop, stat, s_time):
