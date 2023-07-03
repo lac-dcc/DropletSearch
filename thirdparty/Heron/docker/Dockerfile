@@ -18,7 +18,7 @@ RUN apt-get install -y gcc g++ graphviz vim python3 python3-pip python3-dev auto
     gettext libncurses5-dev tk-dev tcl-dev blt-dev libgdbm-dev git python3-dev aria2 lzma-dev
 
 RUN pip3 install ortools==9.1.9490 matplotlib==3.3.1 numpy==1.19.5 cloudpickle==1.2.2 decorator scipy \ 
-    pytest psutil typing_extensions tornado synr mxnet
+    pytest psutil typing_extensions tornado synr mxnet protobuf==3.20.3
 
 ########################################### COPY REPO ##################################################
 RUN cd $HOME && git clone https://github.com/lac-dcc/garkain     
