@@ -18,7 +18,7 @@ RUN apt-get install -y gcc g++ graphviz vim python3 python3-pip python3-dev auto
     gettext libncurses5-dev tk-dev tcl-dev blt-dev libgdbm-dev git python3-dev aria2 lzma-dev
 
 RUN pip3 install ortools==9.1.9490 matplotlib==3.3.1 numpy==1.19.5 cloudpickle==1.2.2 decorator scipy \ 
-    pytest psutil typing_extensions tornado synr mxnet protobuf==3.20.3
+    pytest psutil typing_extensions tornado synr mxnet protobuf==3.20.3 'xgboost<1.6.0'
 
 ########################################### COPY REPO ##################################################
 RUN cd $HOME && git clone https://github.com/lac-dcc/garkain     
@@ -30,7 +30,7 @@ RUN cd $HOME && git clone -b v0.8.0 --recursive https://github.com/apache/tvm &&
     cd build && cmake .. && make -j8 && \
     cd .. && sudo make cython3
 
-RUN echo "export PYTHONPATH=/root/tvm/python:/python:" >> ~/.bashrc
+RUN echo "export PYTHONPATH=/root/tvm/python:/root/garkain/thirdparty" >> ~/.bashrc
 RUN echo "export LD_LIBRARY_PATH=/usr/local/nvidia/lib:/usr/local/nvidia/lib64:/usr/local/cuda-12.0/compat/" >> ~/.bashrc
 
 ########################################### WORKDIR #####################################################
