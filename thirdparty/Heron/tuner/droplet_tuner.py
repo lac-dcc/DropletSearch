@@ -21,6 +21,7 @@ class DropletTuner(Tuner):
             sample = Sample(task)
             print(sample.knob_manager)
             valid, point = sample.knob_manager.randSample({})
+            print(valid, point)
             sample.point = point
             sample.valid = valid
             code = Code(point)
