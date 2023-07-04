@@ -8,6 +8,7 @@ import numpy as np
 class DropletTuner(Tuner):
     def optimize(self, env, pop, stat, s_time):
         samples = [] + pop
+        print(len(pop))
         for i in range(self.config.iter_walks):
             population = self.walk(env, self.config.pop_num)
             samples = samples + population
@@ -20,11 +21,10 @@ class DropletTuner(Tuner):
         for i in range(number):
             sample = Sample(task)
             valid, point = sample.knob_manager.randSample({})
-            
             sample.point = point
             sample.valid = valid
             code = Code(point)
-            print(valid, point, code)
+            #print(valid, point, code)
             sample.stmt_code = code
             ret.append(sample)
         return ret
