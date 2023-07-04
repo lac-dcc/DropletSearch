@@ -84,6 +84,8 @@ class Env:
        #    self.tuner = ConstrainedRandomWalkerSATuner(self.config)
         elif self.config.opt_method == 'SA':
             self.tuner = RandomWalkSATuner(self.config)
+        elif self.config.opt_method == "Droplet":
+            self.tuner = DropletTuner(self.config)
         else:
             raise ValueError('Unsupportted opt method')
         if self.config.use_cost_model:
