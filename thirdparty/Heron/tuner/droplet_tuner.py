@@ -10,7 +10,6 @@ class DropletTuner(Tuner):
         samples = [] + pop
         for i in range(self.config.iter_walks):
             population = self.walk(env, self.config.pop_num)
-            #print(self.config.pop_num)
             samples = samples + population
             perfs = [x.predict for x in samples]
             stat.append([np.array(perfs).max(), time.time() - s_time])
@@ -20,6 +19,7 @@ class DropletTuner(Tuner):
         ret = []
         for i in range(number):
             sample = Sample(task)
+            print(sample.knob_manager)
             valid, point = sample.knob_manager.randSample({})
             sample.point = point
             sample.valid = valid
