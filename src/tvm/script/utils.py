@@ -59,6 +59,43 @@ def get_network(name, batch_size, layout="NCHW", dtype="float32", use_sparse=Fal
         mod, params = relay.testing.mlp.get_workload(
             batch_size=batch_size, dtype=dtype, image_shape=input_shape, num_classes=1000
         )
+    elif name == 'bert':
+        import torch, os
+        import transformers  # pip3 install transfomers==3.0
+        os.environ['TOKENIZERS_PARALLELISM'] = 'false'
+
+        model_class = transformers.BertModel
+        tokenizer_class = transformers.BertTokenizer
+
+        # You can also download them manualy
+        #   https://s3.amazonaws.com/models.huggingface.co/bert/bert-base-uncased-pytorch_model.bin
+        #   https://s3.amazonaws.com/models.huggingface.co/bert/bert-base-uncased-vocab.txt
+        #   https://s3.amazonaws.com/models.huggingface.co/bert/bert-base-uncased-config.json
+        # Then rename to pytorch_model.bin, vocab.txt & config.json
+        # weight = 'path to downloaded model dir'
+        weight = 'bert-base-uncased'
+        model = model_class.from_pretrained(weight)
+        model.eval()
+
+        # tokenizer = tokenizer_class.from_pretrained(weight)
+        # A = torch.tensor([tokenizer.encode("Here is some text to encode", add_special_tokens=True)])
+        # There is 30522 words in bert-base-uncased's vocabulary list
+        input_shape = [batch_size, 128]
+        input_name = 'input_ids'
+        input_dtype = 'int64'
+        A = torch.randint(30000, input_shape)
+        scripted_model = torch.jit.trace(model, [A], strict=False)
+        shape_list = [('input_ids', input_shape)]
+        mod, params = relay.frontend.from_pytorch(scripted_model, shape_list)
+
+        mod = tvm.relay.transform.FastMath()(mod)
+        mod = tvm.relay.transform.EliminateCommonSubexpr()(mod)
+        BindPass = tvm.relay.transform.function_pass(lambda fn, new_mod, ctx:
+                            tvm.relay.build_module.bind_params_by_name(fn, params), opt_level=1)
+        mod = BindPass(mod)
+        mod = tvm.relay.transform.FoldConstant()(mod)
+        mod = tvm.relay.transform.CombineParallelBatchMatmul()(mod)
+        mod = tvm.relay.transform.FoldConstant()(mod)
     else:
         raise ValueError("Network not found.")
 
