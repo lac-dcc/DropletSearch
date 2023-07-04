@@ -7,18 +7,19 @@ NAME=$ARCH"_"$NICK # please change this name for your machine
 TRIALS=10000
 
 MODEL=(
-    "resnet-18"
-    "vgg-16"
-    "mobilenet"
-    "mxnet"
-    "inception_v3"
+    #"resnet-18"
+    #"vgg-16"
+    #"mobilenet"
+    #"mxnet"
+    #"inception_v3"
+    "bert"
 )
 
 TUNER=(
     #"droplet" 
-    #"gridsearch" 
+    "gridsearch" 
     #"random" 
-    "ga" 
+    #"ga" 
     #"xgb"
     #"ansor"
 )
