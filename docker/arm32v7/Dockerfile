@@ -16,7 +16,7 @@ RUN apt-get install -y gcc g++ graphviz vim python3 python3-pip python3-dev auto
     build-essential cmake llvm-dev clang cython3 python-is-python3 libedit-dev libxml2-dev libtinfo-dev \
     python3-setuptools libopenblas-dev pkg-config gfortran python3-scipy
 
-RUN pip3 install numpy==1.20 decorator pytest psutil typing_extensions tornado cloudpickle synr mxnet
+RUN pip3 install numpy==1.20 decorator pytest psutil typing_extensions tornado cloudpickle synr mxnet 
 
 ########################################### COPY HAMSA ##################################################
 RUN cd $HOME && git clone https://github.com/lac-dcc/garkain 
