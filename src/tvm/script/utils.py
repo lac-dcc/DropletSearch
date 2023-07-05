@@ -132,7 +132,6 @@ def evaluate_performance(lib, data_shape, target, input_name="data", dtype="floa
     data_tvm = tvm.nd.array((np.random.uniform(size=data_shape)).astype(dtype), device=dev)
     module = runtime.GraphModule(lib["default"](dev))
     module.set_input(input_name, data_tvm)
-    # evaluate
     
     r = []
     for i in range(3):

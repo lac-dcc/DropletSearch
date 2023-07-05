@@ -145,7 +145,7 @@ def tune_and_evaluate(tuning_opt, log_file, model, arch, tuner, only_eval, targe
         if only_eval != 1: 
             if os.path.exists(log_file):
                 os.remove(log_file)
-            tasks = autotvm.task.extract_from_program(mod["main"], target=target, params=params, ops=(relay.op.get("nn.conv2d"),))
+            tasks = autotvm.task.extract_from_program(mod["main"], target=target, params=params)
             # run tuning tasks
             tune_kernels(tasks, model, trials, pvalue, **tuning_opt)
 
