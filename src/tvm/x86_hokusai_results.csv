@@ -1,0 +1,7 @@
+
+Final results (opt): x86_hokusai,bert,droplet,233.3483,0.1939,233.0932,233.5629
+Final results (opt): x86_hokusai,bert,gridsearch,229.7316,0.0178,229.7071,229.7488
+Final results (opt): x86_hokusai,bert,random,233.7751,0.1150,233.6196,233.8942
+Final results (opt): x86_hokusai,bert,ga,227.1129,0.0231,227.0928,227.1452
+Final results (opt): x86_hokusai,bert,xgb,231.9561,0.0307,231.9160,231.9904
+Final results (opt): x86_hokusai,bert,ansor,212.6862,0.0813,212.5887,212.7878
