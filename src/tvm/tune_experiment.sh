@@ -16,12 +16,12 @@ MODEL=(
 )
 
 TUNER=(
-    #"droplet" 
+    "droplet" 
     "gridsearch" 
-    #"random" 
-    #"ga" 
-    #"xgb"
-    #"ansor"
+    "random" 
+    "ga" 
+    "xgb"
+    "ansor"
 )
 
 mkdir -p results

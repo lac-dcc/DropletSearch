@@ -75,7 +75,7 @@ def tune_and_evaluate(tuning_opt, log_file_original, log_file_save, model, arch,
                 r = evaluate_performance(lib, data_shape, target)
 
     else:
-        tasks = autotvm.task.extract_from_program(mod["main"], target=target, params=params, ops=(relay.op.get("nn.conv2d"),))
+        tasks = autotvm.task.extract_from_program(mod["main"], target=target, params=params)
         # run tuning tasks
         partial_trial = trials // len(tasks)
         extra, total_trials = 0, 0
@@ -100,7 +100,10 @@ def tune_and_evaluate(tuning_opt, log_file_original, log_file_save, model, arch,
         with autotvm.apply_history_best(log_file_save):
             with tvm.transform.PassContext(opt_level=3):
                 lib = relay.build(mod, target=target, params=params)
-                r = evaluate_performance(lib, data_shape, target)
+                if model != "bert":
+                    r = evaluate_performance(lib, data_shape, target)
+                else:
+                    r = evaluate_performance(lib, data_shape, target, input_name="input_ids", dtype="int64")
     os.remove(log_file_save)
     
     print("Final results (opt): %s,%s,%s,%.4f,%.4f,%.4f,%.4f" %(arch, model, tuner, np.mean(r), np.std(r), np.min(r), np.max(r)))

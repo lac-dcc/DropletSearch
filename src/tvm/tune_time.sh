@@ -5,19 +5,23 @@
 NAME="cuda_gtx1650" # please change this name for your machine
 
 TRIALS=(
-    100
-    500
-    1000
-    2500
-    5000
+    #100
+    #500
+    #1000
+    #2500
+    #5000
+    10000
+    10000
+    10000
 )
 
 MODEL=(
-    "resnet-18"
-    "vgg-16"
-    "mobilenet"
-    "mxnet"
-    "inception_v3"
+    #"resnet-18"
+    #"vgg-16"
+    #"mobilenet"
+    #"mxnet"
+    #"inception_v3"
+    "bert"
 )
 
 TUNER=(
@@ -30,6 +34,7 @@ TUNER=(
 )
 
 echo $NAME
+echo "" > $NAME_results.csv 
 for ((i = 0; i < ${#MODEL[@]}; i++)); do
     echo "* "${MODEL[i]}
     DATA="results/"$NAME"/"$NAME"_"${MODEL[i]}".csv"
@@ -41,8 +46,9 @@ for ((i = 0; i < ${#MODEL[@]}; i++)); do
             echo " -> "${TUNER[j]}
             echo "-- "${TUNER[j]} >> tmp.txt
             python3 script/tune_relay_trials.py ${MODEL[i]} ${TUNER[j]} $NAME ${TRIALS[k]} >> tmp.txt
+            cat tmp.txt >> $NAME_results.csv 
         done
-        python3 script/split_time.py tmp.txt ${TRIALS[k]} >> $DATA
+        python3 script/split_time.py tmp.txt ${TRIALS[k]} #>> $DATA
     done
 done
 
