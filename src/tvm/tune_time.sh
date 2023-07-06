@@ -11,8 +11,6 @@ TRIALS=(
     #2500
     #5000
     10000
-    10000
-    10000
 )
 
 MODEL=(
@@ -34,7 +32,7 @@ TUNER=(
 )
 
 echo $NAME
-echo "" > $NAME_results.csv 
+echo "" > $NAME"_results.csv" 
 for ((i = 0; i < ${#MODEL[@]}; i++)); do
     echo "* "${MODEL[i]}
     DATA="results/"$NAME"/"$NAME"_"${MODEL[i]}".csv"
@@ -44,9 +42,9 @@ for ((i = 0; i < ${#MODEL[@]}; i++)); do
         echo "" > tmp.txt
         for ((j = 0; j < ${#TUNER[@]}; j++)); do
             echo " -> "${TUNER[j]}
-            echo "-- "${TUNER[j]} >> tmp.txt
-            python3 script/tune_relay_trials.py ${MODEL[i]} ${TUNER[j]} $NAME ${TRIALS[k]} >> tmp.txt
-            cat tmp.txt >> $NAME_results.csv 
+            echo "-- "${TUNER[j]} > tmp.txt
+            python3 script/tune_relay_trials.py ${MODEL[i]} ${TUNER[j]} $NAME ${TRIALS[k]} > tmp.txt
+            cat tmp.txt >> $NAME"_results.csv"  
         done
         python3 script/split_time.py tmp.txt ${TRIALS[k]} #>> $DATA
     done

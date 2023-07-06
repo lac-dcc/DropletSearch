@@ -72,7 +72,10 @@ def tune_and_evaluate(tuning_opt, log_file_original, log_file_save, model, arch,
         with auto_scheduler.ApplyHistoryBest(log_file_save):
             with tvm.transform.PassContext(opt_level=3, config={"relay.backend.use_auto_scheduler": True}):
                 lib = relay.build(mod, target=target, params=params)
-                r = evaluate_performance(lib, data_shape, target)
+                if model != "bert":
+                    r = evaluate_performance(lib, data_shape, target)
+                else:
+                    r = evaluate_performance(lib, data_shape, target, input_name="input_ids", dtype="int64")
 
     else:
         tasks = autotvm.task.extract_from_program(mod["main"], target=target, params=params)
