@@ -7,6 +7,8 @@ from Heron.schedule.sched_op import get_op_methods
 from .tuner import *
 from tvm.autotvm.measure.measure import create_measure_batch, MeasureInput
 
+from tvm.autotvm.tuner import XGBTuner, GATuner, RandomTuner, GridSearchTuner, DropletTuner
+
 class Env:
     def __init__(self, measure_option, config):
         self.config = config
