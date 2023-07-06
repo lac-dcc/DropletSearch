@@ -111,9 +111,12 @@ def tune_and_evaluate(tuning_opt, log_file_original, log_file_save, model, arch,
     
     print("Final results (opt): %s,%s,%s,%.4f,%.4f,%.4f,%.4f" %(arch, model, tuner, np.mean(r), np.std(r), np.min(r), np.max(r)))
 
-    #print("without opt")
-    #lib = relay.build(mod, target=target, params=params)
-    #evaluate_performance(lib, data_shape, target)
+    lib = relay.build(mod, target=target, params=params)
+    if model != "bert":
+        r = evaluate_performance(lib, data_shape, target)
+    else:
+        r = evaluate_performance(lib, data_shape, target, input_name="input_ids", dtype="int64")
+    print("Final results (without opt): %s,%s,%.4f,%.4f,%.4f,%.4f" %(arch, model, np.mean(r), np.std(r), np.min(r), np.max(r)))
     
     
 if __name__ == "__main__":
