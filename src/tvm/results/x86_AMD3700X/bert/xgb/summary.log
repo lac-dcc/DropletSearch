@@ -1,0 +1,9 @@
+Time partial tuning: 10.3208, 0.0103, 1819.21, 1428, 2592
+Time partial tuning: 0.1569, 0.0002, 510.73, 448, 448
+Time partial tuning: 0.1265, 0.0000, 528.64, 448, 448
+Time partial tuning: 68.7262, 0.5897, 3453.46, 1428, 3168
+Time partial tuning: 53.4454, 0.4513, 2108.87, 1428, 3168
+Time partial tuning: 0.0066, 0.0000, 478.62, 324, 324
+Time partial tuning: 0.0068, 0.0000, 1724.34, 1428, 2430
+Time search: 10623.87, 6932, 12578
+Final results (opt): x86_AMD3700X,bert,xgb,2510.5057,7.3925,2500.3736,2517.8030
