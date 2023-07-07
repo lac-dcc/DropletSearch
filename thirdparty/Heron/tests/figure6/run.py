@@ -88,6 +88,7 @@ if __name__ == '__main__':
                                      repeat=config.runner_repeat,
                                      min_repeat_ms=500,
                                      timeout=config.runner_timeout, enable_cpu_cache_flush = flush)
+    
     measure_option = autotvm.measure_option(
                 builder = autotvm.LocalBuilder(timeout=config.build_timeout),
                 runner = runner
