@@ -4,9 +4,9 @@ import time
 from tensorflow.python.framework import graph_util
 import sys
 
-flags = tf.flags
-logging = tf.logging
-logging.set_verbosity(tf.logging.ERROR)
+flags = tf.compat.v1.flags
+#logging = tf.logging
+#logging.set_verbosity(tf.logging.ERROR)
 
 if __name__ == "__main__":
     if len(sys.argv) == 5:
@@ -20,7 +20,7 @@ if __name__ == "__main__":
     flags.DEFINE_integer("n", N, "n")
     flags.DEFINE_integer("iter", 10, "num of iterations")
     FLAGS = flags.FLAGS
-    tf.enable_eager_execution()
+    tf.executing_eagerly()
     print('is eager mode: ',tf.executing_eagerly())
     a = tf.ones([FLAGS.m, FLAGS.k], tf.float32)
     b = tf.ones([FLAGS.k, FLAGS.n], tf.float32)
