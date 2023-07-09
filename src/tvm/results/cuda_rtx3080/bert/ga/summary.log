@@ -1,0 +1,8 @@
+Time partial tuning: 0.0247, 0.0001, 2055.83, 1666, 699840
+Time partial tuning: 0.0047, 0.0000, 1995.49, 1666, 72576
+Time partial tuning: 0.0051, 0.0000, 2001.56, 1666, 64512
+Time partial tuning: 0.0593, 0.0002, 1668.63, 1666, 1026432
+Time partial tuning: 0.0944, 0.0004, 1745.76, 1666, 855360
+Time partial tuning: 0.0032, 0.0000, 21.55, 18, 18
+Time search: 9488.82, 8348, 2718738
+Final results (opt): cuda_rtx3080,bert,ga,5.4960,0.0741,5.4435,5.6008

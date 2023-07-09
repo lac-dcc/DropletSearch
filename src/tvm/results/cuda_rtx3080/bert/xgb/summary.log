@@ -1,7 +1,8 @@
-Time partial tuning: 9999000.0000, 0.0000, 17.71, 1666, 699840
-Time partial tuning: 9999000.0000, 0.0000, 16.91, 1666, 72576
-Time partial tuning: 9999000.0000, 0.0000, 15.26, 1666, 64512
-Time partial tuning: 9999000.0000, 0.0000, 15.38, 1666, 1026432
-Time partial tuning: 9999000.0000, 0.0000, 14.26, 1666, 855360
-Time partial tuning: 9999000.0000, 0.0000, 1.18, 18, 18
-Time search: 80.71, 8348, 2718738
+Time partial tuning: 0.0224, 0.0000, 2790.53, 1666, 699840
+Time partial tuning: 0.0047, 0.0000, 2293.79, 1666, 72576
+Time partial tuning: 0.0051, 0.0000, 2300.80, 1666, 64512
+Time partial tuning: 0.0572, 0.0001, 2468.82, 1666, 1026432
+Time partial tuning: 0.0881, 0.0002, 2555.42, 1666, 855360
+Time partial tuning: 0.0031, 0.0000, 21.76, 18, 18
+Time search: 12431.12, 8348, 2718738
+Final results (opt): cuda_rtx3080,bert,xgb,5.2651,0.0663,5.2183,5.3588
