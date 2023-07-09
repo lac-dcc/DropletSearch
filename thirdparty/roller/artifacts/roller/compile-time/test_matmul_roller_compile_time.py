@@ -1,4 +1,5 @@
 from arch import *
+from Constrution import ConstructionPolicyV2
 from op import *
 from config import *
 import codegen.op_impl.codegen

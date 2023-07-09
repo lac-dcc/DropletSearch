@@ -129,7 +129,7 @@ def main():
     else:
         op1, op2 = None, None
     
-    # path = sys.argv[11] if len(sys.argv) == 12 else ""
+    path = sys.argv[11] if len(sys.argv) == 12 else ""
     # path = "e2e/autotvm"
     print(N, CI, H, W, CO, KH, KW, strides, padding, path)
     tune_conv2d_nchw(N, CI, H, W, CO, KH, KW, strides, padding, path)

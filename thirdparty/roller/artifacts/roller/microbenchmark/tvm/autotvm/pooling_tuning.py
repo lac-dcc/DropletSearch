@@ -33,7 +33,9 @@ def tune_pool(pool_type, N, CI, H, W, KH, KW, strides, padding, path, n_trial=10
     a_tvm = tvm.nd.array(a_np, device=dev)
     b_tvm = tvm.nd.array(b_np, device=dev)
     
-    # log_filename = get_log_filename(pool_type, path, *shape)
+    shape = tuple([v.value for v in arg_bufs[1].shape])
+
+    log_filename = get_log_filename(pool_type, path, *shape)
 
     func(a_tvm, b_tvm)
     evaluator = func.time_evaluator(func.entry_name, dev, number=400)
