@@ -37,12 +37,12 @@ if __name__ == "__main__":
     FLAGS = flags.FLAGS
     #tf.enable_eager_execution()
     #print('is eager mode: ',tf.executing_eagerly())
-    a = tf.ones([FLAGS.N, FLAGS.C, FLAGS.H, FLAGS.W], tf.float32)
+    a = tf.ones([FLAGS.N, FLAGS.H, FLAGS.W, FLAGS.C], tf.float32)
     b = tf.ones([FLAGS.K, FLAGS.K, FLAGS.C, FLAGS.F], tf.float32)
     t = tf.reduce_sum(b).numpy()
     st = time.time()
     for i in range(repeat_time):
-        c = tf.nn.conv2d(input=a, filter=b, strides=FLAGS.S, padding=FLAGS.P, data_format='NCHW', dilations=FLAGS.D)
+        c = tf.nn.conv2d(input=a, filters=b, strides=FLAGS.S, padding=FLAGS.P, data_format='NHWC', dilations=FLAGS.D)
     x = tf.reduce_sum(c)
     _ = x.numpy()
     ed = time.time()

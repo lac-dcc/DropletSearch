@@ -1,4 +1,4 @@
-# python conv.py 128 128 28 28 128 3 3 1 1 SAME > log/conv/conv_44.log 2>&1
+ python3 conv.py 128 128 28 28 128 3 3 1 1 SAME #> log/conv/conv_44.log 2>&1
 # python conv.py 128 128 58 58 128 3 3 2 1 VALID > log/conv/conv_45.log 2>&1
 # python conv.py 128 256 30 30 256 3 3 2 1 VALID > log/conv/conv_46.log 2>&1
 # python conv.py 128 168 42 42 168 1 1 1 1 VALID > log/conv/conv_47.log 2>&1
@@ -48,4 +48,4 @@
 # python conv.py 1024 1024 14 14 2048 1 1 2 1 VALID > log/conv/conv_91.log 2>&1
 # python conv.py 2048 1024 14 14 2048 1 1 2 1 VALID > log/conv/conv_92.log 2>&1
 # python conv.py 4096 1024 14 14 2048 1 1 2 1 VALID > log/conv/conv_93.log 2>&1
-python conv.py 8192 1024 14 14 2048 1 1 2 1 VALID #> log/conv/conv_94.log 2>&1
+#python conv.py 8192 1024 14 14 2048 1 1 2 1 VALID #> log/conv/conv_94.log 2>&1
