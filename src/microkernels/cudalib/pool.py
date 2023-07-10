@@ -33,7 +33,7 @@ if __name__ == "__main__":
     t = tf.reduce_sum(a).numpy()
     st = time.time()
     for i in range(repeat_time):
-        c = tf.nn.avg_pool_v2(input=a, ksize=FLAGS.K, strides=FLAGS.S, padding=FLAGS.P, data_format='NHWC')
+        c = tf.nn.avg_pool2d(input=a, ksize=FLAGS.K, strides=FLAGS.S, padding=FLAGS.P, data_format='NHWC')
     x = tf.reduce_sum(c)
     _ = x.numpy()
     ed = time.time()
