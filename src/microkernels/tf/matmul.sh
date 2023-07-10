@@ -1,4 +1,4 @@
-LOG_DIR=./logs/tf/matmul
+
 REAPEAT_TIME=100
 
 python3 -u src/matmul.py 1024 2 1024 $REAPEAT_TIME #2>&1 | tee $LOG_DIR/matmul0_65536_1024_2.log
