@@ -4,7 +4,7 @@ import time
 from tensorflow.python.framework import graph_util
 import sys
 
-flags = tf.flags
+flags = tf.compat.v1.flags
 #logging = tf.logging
 #logging.set_verbosity(tf.logging.ERROR)
 C = 1024
