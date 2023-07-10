@@ -1,4 +1,4 @@
-python src/relu.py 1024 > log/relu/relu_0.log 2>&1
+python src/relu.py 1024 #> log/relu/relu_0.log 2>&1
 #python relu.py 2048 > log/relu/relu_1.log 2>&1
 #python relu.py 4096 > log/relu/relu_2.log 2>&1
 #python relu.py 8192 > log/relu/relu_3.log 2>&1
