@@ -101,7 +101,7 @@ if __name__ == '__main__':
             config.tuned = ''
         case_keys = list(config.cases.keys())
         op_name, case = config.cases[case_keys[i]]
-        print(case)
+        #print(case)
         env = Env(measure_option, config)
         latency = run(op_name, case_keys[i], case + [config.in_dtype, config.out_dtype], env)
         cases.append([case, latency])
