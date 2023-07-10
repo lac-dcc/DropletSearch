@@ -42,7 +42,7 @@ if __name__ == "__main__":
     t = tf.reduce_sum(b).numpy()
     st = time.time()
     for i in range(repeat_time):
-        c = tf.nn.conv2d(input=a, filter=b, strides=FLAGS.S, padding=FLAGS.P, data_format='NHWC', dilations=FLAGS.D)
+        c = tf.nn.conv2d(input=a, filters=b, strides=FLAGS.S, padding=FLAGS.P, data_format='NHWC', dilations=FLAGS.D)
     x = tf.reduce_sum(c)
     _ = x.numpy()
     ed = time.time()
