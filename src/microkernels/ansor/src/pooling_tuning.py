@@ -15,8 +15,8 @@ from utils.get_best_config import get, get1
 from utils.pooling_cuda import execute
 
 # logging config (for printing tuning log to screen)
-logging.getLogger("autotvm").setLevel(logging.DEBUG)
-logging.getLogger("autotvm").addHandler(logging.StreamHandler(sys.stdout))
+#logging.getLogger("autotvm").setLevel(logging.DEBUG)
+#logging.getLogger("autotvm").addHandler(logging.StreamHandler(sys.stdout))
 
 
 def get_log_filename(pool_type, path, *shape):
@@ -41,15 +41,15 @@ def tune_pool(pool_type, N, CI, H, W, KH, KW, strides, padding, path, n_trial=10
         num_measure_trials=n_trial,  # change this to 1000 to achieve the best performance
         runner=measure_ctx.runner,
         measure_callbacks=[auto_scheduler.RecordToFile(log_filename)],
-        verbose=2,
+        verbose=0,
     )
 
     # Run auto-tuning (search)
     task.tune(tune_option)
     # Apply the best schedule
     sch, args = task.apply_best(log_filename)
-    tir = str(tvm.lower(sch, args, simple_mode=True))
-    source_code = task.print_best(log_filename, print_mode="cuda")
+    #tir = str(tvm.lower(sch, args, simple_mode=True))
+    #source_code = task.print_best(log_filename, print_mode="cuda")
     
     #kernel_filename = log_filename[:-4] + ".cc"
     #grid, block = parse_launch_config(tir)

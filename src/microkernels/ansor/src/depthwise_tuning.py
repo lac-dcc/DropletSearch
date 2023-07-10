@@ -14,8 +14,8 @@ from utils.get_best_config import get, get1
 from utils.depthwise_cuda import execute
 
 # logging config (for printing tuning log to screen)
-logging.getLogger("autotvm").setLevel(logging.DEBUG)
-logging.getLogger("autotvm").addHandler(logging.StreamHandler(sys.stdout))
+#logging.getLogger("autotvm").setLevel(logging.DEBUG)
+#logging.getLogger("autotvm").addHandler(logging.StreamHandler(sys.stdout))
 
 def get_log_filename(N, CI, H, W, KH, KW, strides, padding, path):
     return os.path.join(path, "ansor_depthwise_{0}_{1}_{2}_{3}_{4}_{5}_{6}_{7}.log".format(N, CI, H, W, KH, KW, strides, padding))
@@ -42,23 +42,23 @@ def search_depthwise_conv2d_nchw_configs(N, CI, H, W, KH, KW, strides, padding, 
         num_measure_trials=n_trial,  # change this to 1000 to achieve the best performance
         runner=measure_ctx.runner,
         measure_callbacks=[auto_scheduler.RecordToFile(log_filename)],
-        verbose=2,
+        verbose=0,
     )
 
     # Run auto-tuning (search)
     task.tune(tune_option)
     # Apply the best schedule
     sch, args = task.apply_best(log_filename)
-    tir = str(tvm.lower(sch, args, simple_mode=True))
-    source_code = task.print_best(log_filename, print_mode="cuda")
+    #tir = str(tvm.lower(sch, args, simple_mode=True))
+    #source_code = task.print_best(log_filename, print_mode="cuda")
     
-    kernel_filename = log_filename[:-4] + ".cc"
-    grid, block = parse_launch_config(tir)
-    launch_config_as_comment = "//"+"_".join(map(lambda x: str(x), grid + block)) + "\n"
-    param = "//"+"_".join([str(N), str(CI), str(H), str(W), str(KH), str(strides), str(padding)]) + "\n"
-    for_nnfusion = "//dim3 grid(" + ", ".join(map(lambda x: str(x), grid)) + ");\n" + "//dim3 block(" + ", ".join(map(lambda x: str(x), block)) + ");\n"
-    with open(kernel_filename, "w") as f:
-        f.write(launch_config_as_comment + param + for_nnfusion + source_code)
+    #kernel_filename = log_filename[:-4] + ".cc"
+    #grid, block = parse_launch_config(tir)
+    #launch_config_as_comment = "//"+"_".join(map(lambda x: str(x), grid + block)) + "\n"
+    #param = "//"+"_".join([str(N), str(CI), str(H), str(W), str(KH), str(strides), str(padding)]) + "\n"
+    #for_nnfusion = "//dim3 grid(" + ", ".join(map(lambda x: str(x), grid)) + ");\n" + "//dim3 block(" + ", ".join(map(lambda x: str(x), block)) + ");\n"
+    #with open(kernel_filename, "w") as f:
+    #    f.write(launch_config_as_comment + param + for_nnfusion + source_code)
     
     print("best runtime: ", get(log_filename)[0] * 1000)
     print("compilation time: ", get1(log_filename))
