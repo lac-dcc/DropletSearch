@@ -47,22 +47,22 @@ def search_depthwise_conv2d_nchw_configs(N, CI, H, W, KH, KW, strides, padding, 
     print(log_filename)
     print("\nBest config:")
     print(best_config)
-    with dispatch_context:
-        with tvm.target.Target('cuda'):
-            s, arg_bufs = task.instantiate(best_config)
-            tir = str(tvm.lower(s, arg_bufs, simple_mode=True))
-            func = tvm.build(s, arg_bufs, 'cuda', name='depthwise')
-            source_code = func.imported_modules[0].get_source()
-            kernel_filename = log_filename[:-4] + ".cc"
-            grid, block = parse_launch_config(tir)
-            launch_config_as_comment = "//"+"_".join(map(lambda x: str(x), grid + block)) + "\n"
-            param = "//"+"_".join([str(N), str(CI), str(H), str(W), str(KH), str(strides), str(padding)]) + "\n"
-            for_nnfusion = "//dim3 grid(" + ", ".join(map(lambda x: str(x), grid)) + ");\n" + "//dim3 block(" + ", ".join(map(lambda x: str(x), block)) + ");\n"
-            with open(kernel_filename, "w") as f:
-                f.write(launch_config_as_comment + param + for_nnfusion + source_code)
-            
-            print("best runtime: ", get(log_filename)[0] * 1000)
-            print("compilation time: ", get1(log_filename))
+    #with dispatch_context:
+    #    with tvm.target.Target('cuda'):
+    #        s, arg_bufs = task.instantiate(best_config)
+    #        tir = str(tvm.lower(s, arg_bufs, simple_mode=True))
+    #        func = tvm.build(s, arg_bufs, 'cuda', name='depthwise')
+    #        source_code = func.imported_modules[0].get_source()
+    #        kernel_filename = log_filename[:-4] + ".cc"
+    #        grid, block = parse_launch_config(tir)
+    #        launch_config_as_comment = "//"+"_".join(map(lambda x: str(x), grid + block)) + "\n"
+    #        param = "//"+"_".join([str(N), str(CI), str(H), str(W), str(KH), str(strides), str(padding)]) + "\n"
+    #        for_nnfusion = "//dim3 grid(" + ", ".join(map(lambda x: str(x), grid)) + ");\n" + "//dim3 block(" + ", ".join(map(lambda x: str(x), block)) + ");\n"
+    #        with open(kernel_filename, "w") as f:
+    #            f.write(launch_config_as_comment + param + for_nnfusion + source_code)
+    #        
+    print("best runtime: ", get(log_filename)[0] * 1000)
+    print("compilation time: ", get1(log_filename))
 
 def main():
     N, CI, H, W, KH, KW, strides, dilation = [int(s) for s in sys.argv[1:9]]

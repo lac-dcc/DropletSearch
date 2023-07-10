@@ -13,8 +13,8 @@ from utils.parse_launch_config import parse_launch_config
 from utils.get_best_config import get, get1
 from utils.matmul_cuda import execute
 
-logging.getLogger('autotvm').setLevel(logging.DEBUG)
-logging.getLogger('autotvm').addHandler(logging.StreamHandler(sys.stdout))
+#logging.getLogger('autotvm').setLevel(logging.DEBUG)
+#logging.getLogger('autotvm').addHandler(logging.StreamHandler(sys.stdout))
 
 def get_log_filename(M, K, N, path):
     return os.path.join(path, "matmul_{0}_{1}_{2}.log".format(M, K, N))

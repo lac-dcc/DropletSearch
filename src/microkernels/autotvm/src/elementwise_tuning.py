@@ -106,9 +106,9 @@ def tune_injective(t, shape, n_trial=1000):
         evaluator = func.time_evaluator(func.entry_name, dev, number=1000)
         print("best runtime: %.10f" % (evaluator(a_tvm, b_tvm).mean * 1000))
 
-    print("Lowered TIR:")
-    print(tvm.lower(s, arg_bufs, simple_mode=True))
-    print(func.imported_modules[0].get_source())  # print kernel code
+    #print("Lowered TIR:")
+    #print(tvm.lower(s, arg_bufs, simple_mode=True))
+    #print(func.imported_modules[0].get_source())  # print kernel code
     
 def main():
     shape = []

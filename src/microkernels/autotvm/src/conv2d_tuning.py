@@ -18,8 +18,8 @@ from tvm.topi.utils import traverse_inline
 
 
 # logging config (for printing tuning log to screen)
-logging.getLogger("autotvm").setLevel(logging.DEBUG)
-logging.getLogger("autotvm").addHandler(logging.StreamHandler(sys.stdout))
+#logging.getLogger("autotvm").setLevel(logging.DEBUG)
+#logging.getLogger("autotvm").addHandler(logging.StreamHandler(sys.stdout))
 
 op1, op2 = None, None
 
@@ -74,7 +74,7 @@ def tune_conv2d_nchw(N, CI, H, W, CO, KH, KW, strides, padding, path, n_trial=10
          "conv2d_nchw.cuda", args=(data, kernel, strides, padding, 1, "float32"), target="cuda"
     )
     print(task.config_space)
-    
+
 
     # Use local gpu, measure 10 times for every config to reduce variance
     # The timeout of compiling a program is 10 seconds, the timeout for running is 4 seconds
@@ -108,44 +108,44 @@ def tune_conv2d_nchw(N, CI, H, W, CO, KH, KW, strides, padding, path, n_trial=10
     print("\nBest config:")
     print(best_config)
 
-    with dispatch_context:
-        with tvm.target.Target('cuda'):
-            s, arg_bufs = task.instantiate(best_config)
-            print(arg_bufs)
-            tir = str(tvm.lower(s, arg_bufs, simple_mode=True))
-            func = tvm.build(s, arg_bufs, 'cuda', name='conv')
-            
-            # dev = tvm.cuda()
-            # a_np = np.random.uniform(size=(N, CI, H, W)).astype(np.float32)
-            # b_np = np.random.uniform(size=(CO, CI, KH, KW)).astype(np.float32)
-            # c_np = np.random.uniform(size=tuple([int(c) for c in C.shape])).astype(np.float32)
-
-            # a_tvm = tvm.nd.array(a_np, device=dev)
-            # b_tvm = tvm.nd.array(b_np, device=dev)
-            # c_tvm = tvm.nd.array(c_np, device=dev)
-            
-            # func(a_tvm, b_tvm, c_tvm)
-            # evaluator = func.time_evaluator(func.entry_name, dev, number=1000)
-            # print("Time cost of this operator: %.10f" % evaluator(a_tvm, b_tvm, c_tvm).mean)
-
-            source_code = func.imported_modules[0].get_source()
-            # kernel_filename = log_filename[:-4] + ".cc"
-            kernel_filename = log_filename[:-4]
-            # if op1 is not None:
-            #     kernel_filename = kernel_filename + "_" + op1
-            # if op2 is not None:
-            #     kernel_filename = kernel_filename + "_" + op2
-            kernel_filename = kernel_filename + ".cc"
-
-            grid, block = parse_launch_config(tir)
-            launch_config_as_comment = "//"+"_".join(map(lambda x: str(x), grid + block)) + "\n"
-            param = "//"+"_".join([str(N), str(CI), str(H), str(W), str(CO), str(KH), str(strides), str(padding)]) + "\n"
-            for_nnfusion = "//dim3 grid(" + ", ".join(map(lambda x: str(x), grid)) + ");\n" + "//dim3 block(" + ", ".join(map(lambda x: str(x), block)) + ");\n"
-            with open(kernel_filename, "w") as f:
-                f.write(launch_config_as_comment + param + for_nnfusion + source_code)
-            
-            print("best runtime: ", get(log_filename)[0] * 1000)
-            print("compilation time: ", get1(log_filename))
+    #with dispatch_context:
+    #    with tvm.target.Target('cuda'):
+    #        s, arg_bufs = task.instantiate(best_config)
+    #        print(arg_bufs)
+    #        tir = str(tvm.lower(s, arg_bufs, simple_mode=True))
+    #        func = tvm.build(s, arg_bufs, 'cuda', name='conv')
+    #        
+    #        # dev = tvm.cuda()
+    #        # a_np = np.random.uniform(size=(N, CI, H, W)).astype(np.float32)
+    #        # b_np = np.random.uniform(size=(CO, CI, KH, KW)).astype(np.float32)
+    #        # c_np = np.random.uniform(size=tuple([int(c) for c in C.shape])).astype(np.float32)
+    #
+    #        # a_tvm = tvm.nd.array(a_np, device=dev)
+    #        # b_tvm = tvm.nd.array(b_np, device=dev)
+    #        # c_tvm = tvm.nd.array(c_np, device=dev)
+    #        
+    #        # func(a_tvm, b_tvm, c_tvm)
+    #        # evaluator = func.time_evaluator(func.entry_name, dev, number=1000)
+    #        # print("Time cost of this operator: %.10f" % evaluator(a_tvm, b_tvm, c_tvm).mean)
+    #
+    #        source_code = func.imported_modules[0].get_source()
+    #        # kernel_filename = log_filename[:-4] + ".cc"
+    #        kernel_filename = log_filename[:-4]
+    #        # if op1 is not None:
+    #        #     kernel_filename = kernel_filename + "_" + op1
+    #        # if op2 is not None:
+    #        #     kernel_filename = kernel_filename + "_" + op2
+    #        kernel_filename = kernel_filename + ".cc"
+    #
+    #        grid, block = parse_launch_config(tir)
+    #        launch_config_as_comment = "//"+"_".join(map(lambda x: str(x), grid + block)) + "\n"
+    #        param = "//"+"_".join([str(N), str(CI), str(H), str(W), str(CO), str(KH), str(strides), str(padding)]) + "\n"
+    #        for_nnfusion = "//dim3 grid(" + ", ".join(map(lambda x: str(x), grid)) + ");\n" + "//dim3 block(" + ", ".join(map(lambda x: str(x), block)) + ");\n"
+    #        with open(kernel_filename, "w") as f:
+    #            f.write(launch_config_as_comment + param + for_nnfusion + source_code)
+    #        
+    print("best runtime: ", get(log_filename)[0] * 1000)
+    print("compilation time: ", get1(log_filename))
 
 def main():
     N, CI, H, W, CO, KH, KW, strides, dilation = [int(s) for s in sys.argv[1:10]]
