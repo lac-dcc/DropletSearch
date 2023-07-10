@@ -17,7 +17,8 @@ RUN apt-get install -y gcc g++ graphviz vim python3 python3-pip python3-dev auto
     python3-setuptools
 
 RUN pip3 install numpy==1.20.3 decorator scipy pytest psutil typing_extensions tornado cloudpickle \ 
-    'xgboost<1.6.0' synr mxnet transformers==3.0 torch==1.13 tensorflow==2.13.0 tensorrt==8.5.3.1
+    'xgboost<1.6.0' synr mxnet 
+RUN pip3 install transformers==3.0 torch==1.13 tensorflow==2.13.0 tensorrt<=8.5.2
 
 ########################################### COPY HAMSA ##################################################
 RUN cd $HOME && git clone https://github.com/lac-dcc/garkain 
