@@ -1,4 +1,4 @@
-python3 src/depthwise.py 128 84 83 83 5 2 1 SAME 10000 #> log/depthwise/depthwise_0.log 2>&1
+python3 src/depthwise.py 128 84 83 83 5 2 1 SAME 1000 #> log/depthwise/depthwise_0.log 2>&1
 #python depthwise.py 128 42 83 83 5 1 1 SAME 10000 > log/depthwise/depthwise_1.log 2>&1
 #python depthwise.py 128 336 21 21 5 1 1 SAME 100000 > log/depthwise/depthwise_2.log 2>&1
 #python depthwise.py 128 42 165 165 5 2 1 SAME 10000 > log/depthwise/depthwise_3.log 2>&1

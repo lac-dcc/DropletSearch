@@ -89,10 +89,12 @@ if __name__ == '__main__':
                                      min_repeat_ms=500,
                                      timeout=config.runner_timeout, enable_cpu_cache_flush = flush)
     
+    begin_time = time.time()
     measure_option = autotvm.measure_option(
                 builder = autotvm.LocalBuilder(timeout=config.build_timeout),
                 runner = runner
             )  
+    end_time = time.time() - begin_time
     cases = []
     for i in range(args.start_id, min(args.end_id + 1, len(config.cases))):
         if i >= 1:
@@ -105,5 +107,6 @@ if __name__ == '__main__':
         cases.append([case, latency])
     for tup in cases:
         print("Case %s, latency %f ms."%(str(tup[0]), tup[1]))
+    print("search time: ", end_time)
 
 
