@@ -7,5 +7,5 @@
 declare THIS_SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 echo "Build CUDA container"
-docker build -t roller/cuda:10.2-cudnn7-devel-ubuntu16.04 -f $THIS_SCRIPT_DIR/../dockerfile/nnfusion_cuda-10.2.dockerfile .
-echo "Built CUDA image: roller/cuda:10.2-cudnn7-devel-ubuntu16.04"
+docker build -t roller/cuda:10.2-cudnn7-devel-ubuntu18.04 -f $THIS_SCRIPT_DIR/../dockerfile/nnfusion_cuda-10.2.dockerfile .
+echo "Built CUDA image: roller/cuda:10.2-cudnn7-devel-ubuntu18.04"
