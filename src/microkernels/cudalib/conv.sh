@@ -48,4 +48,4 @@
 # python conv.py 1024 1024 14 14 2048 1 1 2 1 VALID > log/conv/conv_91.log 2>&1
 # python conv.py 2048 1024 14 14 2048 1 1 2 1 VALID > log/conv/conv_92.log 2>&1
 # python conv.py 4096 1024 14 14 2048 1 1 2 1 VALID > log/conv/conv_93.log 2>&1
-python conv.py 1024 256 14 14 1024 1 1 2 1 VALID #> log/conv/conv_94.log 2>&1
+python src/conv.py 1024 256 14 14 1024 1 1 2 1 VALID #> log/conv/conv_94.log 2>&1
