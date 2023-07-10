@@ -20,8 +20,8 @@ if __name__ == "__main__":
     flags.DEFINE_integer("n", N, "n")
     flags.DEFINE_integer("iter", 10, "num of iterations")
     FLAGS = flags.FLAGS
-    tf.enable_eager_execution()
-    print('is eager mode: ',tf.executing_eagerly())
+    #tf.enable_eager_execution()
+    #print('is eager mode: ',tf.executing_eagerly())
     a = tf.ones([FLAGS.m, FLAGS.k], tf.float32)
     b = tf.ones([FLAGS.k, FLAGS.n], tf.float32)
     t = tf.reduce_sum(b).numpy()
