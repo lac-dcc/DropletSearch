@@ -4,9 +4,9 @@ import time
 from tensorflow.python.framework import graph_util
 import sys
 
-flags = tf.flags
-logging = tf.logging
-logging.set_verbosity(tf.logging.ERROR)
+flags = tf.compat.v1.flags
+#logging = tf.logging
+#logging.set_verbosity(tf.logging.ERROR)
 
 if __name__ == "__main__":
     if len(sys.argv) == 10:
@@ -29,14 +29,14 @@ if __name__ == "__main__":
     flags.DEFINE_integer("D", D, "D")
     flags.DEFINE_string("P", P, "P")
     FLAGS = flags.FLAGS
-    tf.enable_eager_execution()
-    print('is eager mode: ',tf.executing_eagerly())
+    #tf.enable_eager_execution()
+    #print('is eager mode: ',tf.executing_eagerly())
     a = tf.ones([FLAGS.N, FLAGS.C, FLAGS.H, FLAGS.W], tf.float32)
     b = tf.ones([FLAGS.K, FLAGS.K, FLAGS.C, 1], tf.float32)
     t = tf.reduce_sum(b).numpy()
     st = time.time()
     for i in range(repeat_time):
-        c = tf.nn.depthwise_conv2d(input=a, filter=b, strides=[1, 1, FLAGS.S, FLAGS.S], padding=FLAGS.P, data_format='NCHW', rate=[FLAGS.D, FLAGS.D])
+        c = tf.nn.depthwise_conv2d(input=a, filter=b, strides=[1, 1, FLAGS.S, FLAGS.S], padding=FLAGS.P, data_format='NHWC')
     x = tf.reduce_sum(c)
     _ = x.numpy()
     ed = time.time()

@@ -4,9 +4,9 @@ import time
 from tensorflow.python.framework import graph_util
 import sys
 
-flags = tf.flags
-logging = tf.logging
-logging.set_verbosity(tf.logging.ERROR)
+flags = tf.compat.v1.flags
+#logging = tf.logging
+#logging.set_verbosity(tf.logging.ERROR)
 C = 1024
 
 if __name__ == "__main__":
@@ -17,8 +17,8 @@ if __name__ == "__main__":
     flags.DEFINE_integer("N", N, "N")
     flags.DEFINE_integer("C", C, "C")
     FLAGS = flags.FLAGS
-    tf.enable_eager_execution()
-    print('is eager mode: ',tf.executing_eagerly())
+    #tf.enable_eager_execution()
+    #print('is eager mode: ',tf.executing_eagerly())
     a = tf.ones([FLAGS.N, FLAGS.C], tf.float32)
     t = tf.reduce_sum(a).numpy()
     st = time.time()
