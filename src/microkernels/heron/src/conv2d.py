@@ -78,8 +78,6 @@ test_shapes = [
 
 ]
 
-
-
 def run_cuda():
     global RUN_CONFIG
     batch, beg, num, dtype = RUN_CONFIG
