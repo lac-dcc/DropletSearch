@@ -5,8 +5,8 @@ from tensorflow.python.framework import graph_util
 import sys
 
 flags = tf.flags
-logging = tf.logging
-logging.set_verbosity(tf.logging.ERROR)
+#logging = tf.logging
+#logging.set_verbosity(tf.logging.ERROR)
 
 if __name__ == "__main__":
     if len(sys.argv) == 10:
