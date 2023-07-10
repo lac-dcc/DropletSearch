@@ -10,9 +10,10 @@ flags = tf.compat.v1.flags
 C = 1024
 
 if __name__ == "__main__":
-    if len(sys.argv) == 3:
+    if len(sys.argv) == 2:
         N = int(sys.argv[1])
-        repeat_time = int(sys.argv[2])
+    
+    repeat_time = 1000
     print("N, C, repeat_time:", N, C, repeat_time)
     flags.DEFINE_integer("N", N, "N")
     flags.DEFINE_integer("C", C, "C")
