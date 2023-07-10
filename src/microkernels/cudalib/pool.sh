@@ -1,4 +1,4 @@
-python pool.py 128 168 83 83 1 2 VALID 100000 #> log/pool/pool_0.log 2>&1
+python pool.py 128 168 83 83 1 2 VALID 1000 #> log/pool/pool_0.log 2>&1
 #python pool.py 128 672 21 21 3 2 SAME 100000 > log/pool/pool_1.log 2>&1
 #python pool.py 128 42 83 83 3 1 SAME 10000 > log/pool/pool_2.log 2>&1
 #python pool.py 128 1008 42 42 1 2 VALID 10000 > log/pool/pool_3.log 2>&1
