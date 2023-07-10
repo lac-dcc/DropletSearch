@@ -36,7 +36,7 @@ if __name__ == "__main__":
     t = tf.reduce_sum(b).numpy()
     st = time.time()
     for i in range(repeat_time):
-        c = tf.nn.depthwise_conv2d(input=a, filter=b, strides=FLAGS.S, padding=FLAGS.P, data_format='NHWC')
+        c = tf.nn.depthwise_conv2d(input=a, filter=b, strides=[1, 1, FLAGS.S, FLAGS.S], padding=FLAGS.P, data_format='NHWC')
     x = tf.reduce_sum(c)
     _ = x.numpy()
     ed = time.time()
