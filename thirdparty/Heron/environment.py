@@ -7,8 +7,6 @@ from Heron.schedule.sched_op import get_op_methods
 from .tuner import *
 from tvm.autotvm.measure.measure import create_measure_batch, MeasureInput
 
-from tvm.autotvm.tuner import XGBTuner, GATuner, RandomTuner, GridSearchTuner, DropletTuner
-
 class Env:
     def __init__(self, measure_option, config):
         self.config = config
@@ -86,8 +84,6 @@ class Env:
        #    self.tuner = ConstrainedRandomWalkerSATuner(self.config)
         elif self.config.opt_method == 'SA':
             self.tuner = RandomWalkSATuner(self.config)
-        elif self.config.opt_method == "Droplet":
-            self.tuner = DropletTuner(self.config)
         else:
             raise ValueError('Unsupportted opt method')
         if self.config.use_cost_model:
