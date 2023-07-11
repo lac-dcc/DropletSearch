@@ -94,7 +94,7 @@ def tune_injective(t, shape, path, n_trial=1000):
         num_measure_trials=n_trial,  # change this to 1000 to achieve the best performance
         runner=measure_ctx.runner,
         measure_callbacks=[auto_scheduler.RecordToFile(log_filename)],
-        verbose=1,
+        verbose=0,
     )
 
     # Run auto-tuning (search)

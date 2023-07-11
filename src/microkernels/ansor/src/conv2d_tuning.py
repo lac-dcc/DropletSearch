@@ -66,7 +66,7 @@ def tune_conv2d_nchw(N, CI, H, W, CO, KH, KW, strides, padding, path, n_trial=10
         num_measure_trials=n_trial,  # change this to 1000 to achieve the best performance
         runner=measure_ctx.runner,
         measure_callbacks=[auto_scheduler.RecordToFile(log_filename)],
-        verbose=2,
+        verbose=0,
     )
 
     # Run auto-tuning (search)
