@@ -69,8 +69,6 @@ def tune_injective(t, shape, n_trial=1000):
         op = tvm_injective_sigmoid_tune_op
     elif t == "relu":
         op = tvm_injective_relu_tune_op
-    else:
-        raise ValueError("unrecognized type: " + t)
     
     with tvm.target.Target("cuda"):
         s, arg_bufs = op(*shape)
@@ -88,40 +86,32 @@ def tune_injective(t, shape, n_trial=1000):
     if t == "add" or t == "mul":
         func(a_tvm, b_tvm, c_tvm)
         evaluator = func.time_evaluator(func.entry_name, dev, number=1000)
-        print("best runtime: %.10f" % (evaluator(a_tvm, b_tvm, c_tvm).mean * 1000))
+        print("Time cost of this operator: %.10f" % evaluator(a_tvm, b_tvm, c_tvm).mean)
     elif t == "biasadd":
         b_np = np.random.uniform(size=shape[1:]).astype(np.float32)
         b_tvm = tvm.nd.array(b_np, device=dev)
         func(a_tvm, b_tvm, c_tvm)
         evaluator = func.time_evaluator(func.entry_name, dev, number=1000)
-        print("best runtime: %.10f" % (evaluator(a_tvm, b_tvm, c_tvm).mean * 1000))
+        print("Time cost of this operator: %.10f" % evaluator(a_tvm, b_tvm, c_tvm).mean)
     elif t == "transpose":
         b_np = np.random.uniform(size=(shape[1], shape[0])).astype(np.float32)
         b_tvm = tvm.nd.array(b_np, device=dev)
         func(a_tvm, b_tvm)
         evaluator = func.time_evaluator(func.entry_name, dev, number=1000)
-        print("best runtime: %.10f" % (evaluator(a_tvm, b_tvm).mean * 1000))
+        print("Time cost of this operator: %.10f" % evaluator(a_tvm, b_tvm).mean)
     else:
         func(a_tvm, b_tvm)
         evaluator = func.time_evaluator(func.entry_name, dev, number=1000)
-        print("best runtime: %.10f" % (evaluator(a_tvm, b_tvm).mean * 1000))
+        print("Time cost of this operator: %.10f" % evaluator(a_tvm, b_tvm).mean)
 
     #print("Lowered TIR:")
     #print(tvm.lower(s, arg_bufs, simple_mode=True))
     #print(func.imported_modules[0].get_source())  # print kernel code
     
 def main():
-    shape = []
-    path = ""
-    for s in sys.argv[2:]:
-        try:
-            d = int(s)
-            shape.append(d)
-        except ValueError:
-            path = s
-    shape = tuple(shape)
+    shape = tuple([int(s) for s in sys.argv[2:]])
     t = sys.argv[1]
-    print(t, shape, path)
+    print(t, shape)
     tune_injective(t, shape)
 
 start_time = time.time()
