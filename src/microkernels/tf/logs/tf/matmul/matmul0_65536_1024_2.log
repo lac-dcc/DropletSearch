@@ -1,7 +1,0 @@
-2023-07-09 17:14:29.099614: I tensorflow/core/platform/cpu_feature_guard.cc:182] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
-To enable the following instructions: AVX2 FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
-2023-07-09 17:14:29.937318: W tensorflow/compiler/tf2tensorrt/utils/py_utils.cc:38] TF-TRT Warning: Could not find TensorRT
-Traceback (most recent call last):
-  File "./src/matmul.py", line 7, in <module>
-    flags = tf.flags
-AttributeError: module 'tensorflow' has no attribute 'flags'
