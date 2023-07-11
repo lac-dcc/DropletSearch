@@ -1,0 +1,15 @@
+128 84 83 83 5 5 2 SAME 1 log
+ConfigSpace (len=3932160, range_length=3932160, space_map=
+   0 tile_f: Split(policy=factors, product=84, num_outputs=4) len=160
+   1 tile_y: Split(policy=factors, product=42, num_outputs=4) len=64
+   2 tile_x: Split(policy=factors, product=42, num_outputs=4) len=64
+   3 auto_unroll_max_step: OtherOption([0, 256, 1500]) len=3
+   4 unroll_explicit: OtherOption([0, 1]) len=2
+)
+log/depthwise_128_84_83_83_5_5_2_SAME.log
+
+Best config:
+[('tile_f', [-1, 1, 1, 1]), ('tile_y', [-1, 2, 3, 7]), ('tile_x', [-1, 1, 21, 2]), ('auto_unroll_max_step', 1500), ('unroll_explicit', 1)],None,3644000
+best runtime:  0.44012671929824565
+compilation time: 3404.265629053116
+compilation time:  (inf, 0)

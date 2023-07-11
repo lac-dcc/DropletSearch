@@ -1,0 +1,11 @@
+128 128 28 28 128 3 3 1 SAME log
+ConfigSpace (len=36864000, range_length=36864000, space_map=
+   0 tile_f: Split(policy=factors, product=128, num_outputs=4) len=120
+   1 tile_y: Split(policy=factors, product=28, num_outputs=4) len=40
+   2 tile_x: Split(policy=factors, product=28, num_outputs=4) len=40
+   3 tile_rc: Split(policy=factors, product=128, num_outputs=2) len=8
+   4 tile_ry: Split(policy=factors, product=3, num_outputs=2) len=2
+   5 tile_rx: Split(policy=factors, product=3, num_outputs=2) len=2
+   6 auto_unroll_max_step: OtherOption([0, 512, 1500]) len=3
+   7 unroll_explicit: OtherOption([0, 1]) len=2
+)

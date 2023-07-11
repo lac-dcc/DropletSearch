@@ -1,0 +1,6 @@
+avg 128 168 83 83 1 2 VALID
+ConfigSpace (len=1, range_length=1, space_map=
+)
+log/avg_pooling_128_168_83_83_1_1_2_VALID.log
+best runtime: 0.5952455900
+compilation time: 2.325469493865967
