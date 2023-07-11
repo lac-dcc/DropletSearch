@@ -37,7 +37,7 @@ def search_matmul_config(batch, in_dim, out_dim, path, tc=True, n_trial=1000):
     
     measure_option = autotvm.measure_option(
         builder=autotvm.LocalBuilder(),
-        runner=autotvm.LocalRunner(min_repeat_ms=100, timeout=200)
+        runner=autotvm.LocalRunner(min_repeat_ms=100, timeout=200, number=2, repeat=5)
     )
 
     log_filename = get_log_filename(batch, in_dim, out_dim, path)

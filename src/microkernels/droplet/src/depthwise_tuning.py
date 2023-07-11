@@ -32,7 +32,7 @@ def search_depthwise_conv2d_nchw_configs(N, CI, H, W, KH, KW, strides, padding, 
 
     measure_option = autotvm.measure_option(
         builder=autotvm.LocalBuilder(),
-        runner=autotvm.LocalRunner(repeat=1, min_repeat_ms=100, timeout=200)
+        runner=autotvm.LocalRunner(number=2, repeat=5, min_repeat_ms=100, timeout=200)
     )
 
     tuner = autotvm.tuner.DropletTuner(task)

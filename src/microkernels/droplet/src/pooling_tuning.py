@@ -37,7 +37,7 @@ def tune_pool(pool_type, N, CI, H, W, KH, KW, strides, padding, path, n_trial=10
 
     measure_option = autotvm.measure_option(
         builder=autotvm.LocalBuilder(),
-        runner=autotvm.LocalRunner(repeat=1, min_repeat_ms=100, timeout=200),
+        runner=autotvm.LocalRunner(number=2, repeat=5, min_repeat_ms=100, timeout=200),
     )
 
     with tvm.target.Target("cuda"):
