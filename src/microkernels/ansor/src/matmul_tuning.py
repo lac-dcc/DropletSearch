@@ -53,16 +53,16 @@ def search_matmul_config(batch, in_dim, out_dim, path, n_trial=1000):
         print("best runtime: ", 0)
         print("compilation time: ", 0)
         exit(0)
-    tir = str(tvm.lower(sch, args, simple_mode=True))
-    source_code = task.print_best(log_filename, print_mode="cuda")
+    #tir = str(tvm.lower(sch, args, simple_mode=True))
+    #source_code = task.print_best(log_filename, print_mode="cuda")
     
-    kernel_filename = log_filename[:-4] + ".cc"
-    grid, block = parse_launch_config(tir)
-    launch_config_as_comment = "//"+"_".join(map(lambda x: str(x), grid + block)) + "\n"
-    param = "//"+"_".join([str(batch), str(in_dim), str(out_dim)]) + "\n"
-    for_nnfusion = "//dim3 grid(" + ", ".join(map(lambda x: str(x), grid)) + ");\n" + "//dim3 block(" + ", ".join(map(lambda x: str(x), block)) + ");\n"
-    with open(kernel_filename, "w") as f:
-        f.write(launch_config_as_comment + param + for_nnfusion + source_code)
+    #kernel_filename = log_filename[:-4] + ".cc"
+    #grid, block = parse_launch_config(tir)
+    #launch_config_as_comment = "//"+"_".join(map(lambda x: str(x), grid + block)) + "\n"
+    #param = "//"+"_".join([str(batch), str(in_dim), str(out_dim)]) + "\n"
+    #for_nnfusion = "//dim3 grid(" + ", ".join(map(lambda x: str(x), grid)) + ");\n" + "//dim3 block(" + ", ".join(map(lambda x: str(x), block)) + ");\n"
+    #with open(kernel_filename, "w") as f:
+    #    f.write(launch_config_as_comment + param + for_nnfusion + source_code)
     
     print("best runtime: ", get(log_filename)[0] * 1000)
     print("compilation time: ", get1(log_filename))
