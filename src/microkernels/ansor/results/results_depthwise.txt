@@ -1,0 +1,7 @@
+
+128 84 83 83 5 5 2 SAME 1 log
+948326400.0
+Get devices for measurement successfully!
+best runtime:  0.46295800000000004
+compilation time: 3880.0843079999995
+compilation time:  (inf, 0)

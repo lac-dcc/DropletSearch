@@ -1,0 +1,5 @@
+(128, 512, 1024) axis: 2
+Get devices for measurement successfully!
+best runtime:  0.31243299999999996
+compilation time: 161.24071110000006
+compilation time:  (inf, 0)

@@ -1,0 +1,7 @@
+
+relu (1024, 1024) 
+Get devices for measurement successfully!
+
+best runtime:  0.012682599999999999
+compilation time: 10.754038
+compilation time:  (inf, 0)

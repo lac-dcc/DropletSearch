@@ -1,0 +1,6 @@
+
+avg 128 168 83 83 1 2 VALID log
+Get devices for measurement successfully!
+best runtime:  0.9610270000000001
+compilation time: 4314.024661000005
+compilation time:  (inf, 0)
