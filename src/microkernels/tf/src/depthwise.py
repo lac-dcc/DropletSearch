@@ -32,7 +32,7 @@ if __name__ == "__main__":
     FLAGS = flags.FLAGS
     #tf.enable_eager_execution()
     #print('is eager mode: ',tf.executing_eagerly())
-    a = tf.ones([FLAGS.N, FLAGS.C, FLAGS.H, FLAGS.W], tf.float32)
+    a = tf.ones([FLAGS.N, FLAGS.H, FLAGS.W, FLAGS.C], tf.float32)
     b = tf.ones([FLAGS.K, FLAGS.K, FLAGS.C, 1], tf.float32)
     t = tf.reduce_sum(b).numpy()
     st = time.time()

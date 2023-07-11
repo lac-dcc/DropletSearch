@@ -1,0 +1,2 @@
+N, C, H, W, F, K, S, D, P, repeat_time: 128 128 28 28 128 3 1 1 SAME 1000
+2.0097835063934326 ms on avg

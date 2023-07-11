@@ -9,7 +9,8 @@ flags = tf.compat.v1.flags
 #logging.set_verbosity(tf.logging.ERROR)
 
 if __name__ == "__main__":
-    if len(sys.argv) == 12:
+    repeat_time = 1000
+    if len(sys.argv) == 11:
         N = int(sys.argv[1])
         C = int(sys.argv[2])
         H = int(sys.argv[3])
@@ -23,7 +24,6 @@ if __name__ == "__main__":
             S = int(sys.argv[8])
         D = int(sys.argv[9])
         P = str(sys.argv[10])
-        repeat_time = int(sys.argv[11])
     print("N, C, H, W, F, K, S, D, P, repeat_time:", N, C, H, W, F, K, S, D, P, repeat_time)
     flags.DEFINE_integer("N", N, "N")
     flags.DEFINE_integer("C", C, "C")
