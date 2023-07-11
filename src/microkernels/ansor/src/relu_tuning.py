@@ -101,7 +101,7 @@ def tune_injective(t, shape, path, n_trial=1000):
     #if not path:
     task.tune(tune_option)
     # Apply the best schedule
-    sch, args = task.apply_best(log_filename)
+    #sch, args = task.apply_best(log_filename)
 
     #tir = str(tvm.lower(sch, args, simple_mode=True))
     #source_code = task.print_best(log_filename, print_mode="cuda")
