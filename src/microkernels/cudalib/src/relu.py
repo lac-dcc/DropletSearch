@@ -8,7 +8,7 @@ flags = tf.compat.v1.flags
 #logging = tf.logging
 #logging.set_verbosity(tf.logging.ERROR)
 C = 1024
-repeat_time = 10
+repeat_time = 1000
 
 if __name__ == "__main__":
     if len(sys.argv) == 2:

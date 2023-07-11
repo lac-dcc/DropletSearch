@@ -9,7 +9,7 @@ flags = tf.compat.v1.flags
 #logging.set_verbosity(tf.logging.ERROR)
 
 if __name__ == "__main__":
-    repeat_time = 10
+    repeat_time = 1000
     if len(sys.argv) == 11:
         N = int(sys.argv[1])
         C = int(sys.argv[2])

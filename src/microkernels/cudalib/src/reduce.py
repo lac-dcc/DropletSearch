@@ -15,7 +15,7 @@ K_list = [True, True, False, True]
 if __name__ == "__main__":
     if len(sys.argv) == 3:
         id = int(sys.argv[1])
-        N = S_list[id][0]
+        N = S_list[id][0] 
         C = S_list[id][1]
         if id != 1:
             H = S_list[id][2]
