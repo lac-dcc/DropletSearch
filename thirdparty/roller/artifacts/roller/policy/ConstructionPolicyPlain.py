@@ -186,7 +186,7 @@ class ConstructionPolicyPlain(PolicyBase):
 
         # small global memory database
         self.small_glbmem_db = SmallGlbmemDB()
-        glbmem_lookup_filename = 'policy/glbmem_small_lookup.csv'
+        glbmem_lookup_filename = '/home/canesche/git/garkain/thirdparty/roller/artifacts/roller/policy/glbmem_small_lookup.csv'
         with open(glbmem_lookup_filename, 'r') as fin:
             glbmem_lookup_str = fin.readlines()
             fin.close()  
@@ -198,7 +198,7 @@ class ConstructionPolicyPlain(PolicyBase):
         
         # computation database
         self.compute_db = ComputeDB()
-        compute_filename = 'policy/basicbuildingblk_compute_mm_v2.csv'
+        compute_filename = '/home/canesche/git/garkain/thirdparty/roller/artifacts/roller/policy/basicbuildingblk_compute_mm_v2.csv'
         with open(compute_filename, 'r') as fin:
             compute_db_str = fin.readlines()
             fin.close()
