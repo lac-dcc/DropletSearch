@@ -9,7 +9,7 @@ ConfigSpace (len=3932160, range_length=3932160, space_map=
 log/depthwise_128_84_83_83_5_5_2_SAME.log
 
 Best config:
-[('tile_f', [-1, 1, 2, 1]), ('tile_y', [-1, 21, 1, 1]), ('tile_x', [-1, 1, 42, 1]), ('auto_unroll_max_step', 1500), ('unroll_explicit', 1)],None,3544012
-best runtime:  0.46759771875000006
-compilation time: 2490.3047018051147
+[('tile_f', [-1, 1, 1, 1]), ('tile_y', [-1, 3, 7, 2]), ('tile_x', [-1, 7, 6, 1]), ('auto_unroll_max_step', 1500), ('unroll_explicit', 1)],None,3456320
+best runtime:  0.4478234844444445
+compilation time: 5667.767816066742
 compilation time:  (inf, 0)
