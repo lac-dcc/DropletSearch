@@ -1,3 +1,3 @@
-relu (1024, 1024)
-Time cost of this operator: 0.0000098447
-compilation time: 0.44066643714904785
+relu (4096, 4096)
+Time cost of this operator: 0.0001687880
+compilation time: 1.0780107975006104

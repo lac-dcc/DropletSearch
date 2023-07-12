@@ -1,2 +1,2 @@
-N, C, repeat_time: 1024 1024 1000
-0.01747894287109375 ms on avg
+N, C, repeat_time: 4096 1024 1000
+0.043677330017089844 ms on avg
