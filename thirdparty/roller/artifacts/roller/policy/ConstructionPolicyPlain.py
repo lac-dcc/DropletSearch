@@ -167,7 +167,7 @@ class ConstructionPolicyPlain(PolicyBase):
         
         # active block per sm database
         self.activeblock_db = ActiveBlockDB()
-        activeblock_filename = 'policy/activeblock_matmul.csv'
+        activeblock_filename = '/home/canesche/git/garkain/thirdparty/roller/artifacts/roller/policy/activeblock_matmul.csv'
         with open(activeblock_filename, 'r') as fin:
             activeblock_db_str = fin.readlines()
             fin.close()
