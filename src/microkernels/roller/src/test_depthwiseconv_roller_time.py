@@ -259,7 +259,7 @@ if __name__ == "__main__":
         S = S[0]
 
     op = DepthwiseConvOp(N, C, K, S, H, W, D, P)
-    arch = V100()
+    arch = RTX3080()
 
     Tiling_Policy = ConstructionPolicyPlain(op, arch, saxis_names, raxis_names)
     

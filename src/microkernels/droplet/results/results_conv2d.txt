@@ -14,5 +14,5 @@ log/conv2d_128_128_28_28_128_3_3_1_SAME.log
 Best config:
 [('tile_f', [-1, 2, 8, 2]), ('tile_y', [-1, 1, 14, 1]), ('tile_x', [-1, 2, 1, 14]), ('tile_rc', [-1, 8]), ('tile_ry', [-1, 3]), ('tile_rx', [-1, 3]), ('auto_unroll_max_step', 512), ('unroll_explicit', 1)],None,29939455
 best runtime:  2.1255679423076925
-compilation time: 14628.410747766495
+compilation time: 1462.8410747766495
 compilation time:  (inf, 0)

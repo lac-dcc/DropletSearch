@@ -245,7 +245,7 @@ if __name__ == "__main__":
         S = S[0]
 
     op = Pooling2dOp(N, C, K, S, H, W, 1, P)
-    arch = V100()
+    arch = RTX3080()
 
     Tiling_Policy = ConstructionPolicyPlain(op, arch, saxis_names, raxis_names, smem_tiling=do_smem_tiling)
 

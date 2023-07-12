@@ -155,7 +155,7 @@ if __name__ == "__main__":
     t0 = time.time()
     spatial_len, reduce_len = fused_axis(Dims, Reduced)
     op = ReduceOp(spatial_len, reduce_len)
-    arch = V100(True)
+    arch = RTX3080(True)
     A, C = reduce_layer(spatial_len, reduce_len)
 
     s = te.create_schedule(C.op)

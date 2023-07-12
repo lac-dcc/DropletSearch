@@ -1,5 +1,6 @@
 from arch import *
 from op import *
+from Constrution import *
 from config import Schedule
 import codegen.op_impl.codegen
 from codegen.op_impl.codegen import *
@@ -368,7 +369,7 @@ if __name__ == "__main__":
     NN = N * HO * WO
 
     op = ImplicitGemmOpV1(N, C, F, K, S, H, W, D, P)
-    arch = V100()
+    arch = RTX3080()
 
     Tiling_Policy = ConstructionPolicyV2(op, arch, saxis_names, raxis_names)
 

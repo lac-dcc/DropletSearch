@@ -250,7 +250,7 @@ if __name__ == "__main__":
         op = sys.argv[1]
         shape = tuple([int(s) for s in sys.argv[2:]])
     print(op, shape)
-    arch = V100(True)
+    arch = RTX3080(True)
 
     EleOP = None
     layer = None
