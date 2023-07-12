@@ -1,6 +1,6 @@
 from config import *
 from cost_model import *
-from .policy import *
+from policy import *
 import math
 import numpy
 import copy

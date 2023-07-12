@@ -1,6 +1,6 @@
 from .Arch import *
 
-class V100(Arch):
+class RTX3080(Arch):
     # compute 7.0
     def __init__(self, para_opt = True):
         super().__init__()
