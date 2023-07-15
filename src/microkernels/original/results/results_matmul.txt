@@ -1,0 +1,21 @@
+16 1024 1024 log
+Using tensorcore
+dense_tensorcore.cuda
+ConfigSpace (len=15552, range_length=15552, space_map=
+   0 block_row_warps: OtherOption([1, 2, 4]) len=3
+   1 block_col_warps: OtherOption([1, 2, 4]) len=3
+   2 warp_row_tiles: OtherOption([1, 2, 4]) len=3
+   3 warp_col_tiles: OtherOption([1, 2, 4]) len=3
+   4 chunk: OtherOption([1, 2, 4, 8]) len=4
+   5 offset: OtherOption([0, 8]) len=2
+   6 offsetCS: OtherOption([0, 8]) len=2
+   7 vec: OtherOption([1, 2, 4, 8]) len=4
+   8 wmma_m: OtherOption([16, 8, 32]) len=3
+)
+log/matmul_16_1024_1024.log
+
+Best config:
+[('block_row_warps', 1), ('block_col_warps', 1), ('warp_row_tiles', 1), ('warp_col_tiles', 1), ('chunk', 4), ('offset', 8), ('offsetCS', 0), ('vec', 8), ('wmma_m', 16)],None,4374
+best runtime:  0.005768670489064399
+compilation time: 150.09933805465698
+compilation time:  (inf, 0)
