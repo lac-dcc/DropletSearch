@@ -1,46 +1,4 @@
-----------------------------------------------------------------------
-------------------------------  [ Search ]
-----------------------------------------------------------------------
-Generate Sketches		#s: 1
-Sample Iter: 5	#Pop: 1	#Target: 50	fail_ct: 10239	Time elapsed: 1.28
-#Target has been reduced to 25 due to too many failures or duplications
-Sample Iter: 10	#Pop: 1	#Target: 25	fail_ct: 20479	Time elapsed: 2.53
-#Target has been reduced to 12 due to too many failures or duplications
-Sample Iter: 15	#Pop: 1	#Target: 12	fail_ct: 30719	Time elapsed: 3.80
-#Target has been reduced to 6 due to too many failures or duplications
-Sample Iter: 20	#Pop: 1	#Target: 6	fail_ct: 40959	Time elapsed: 5.07
-#Target has been reduced to 3 due to too many failures or duplications
-Sample Iter: 25	#Pop: 1	#Target: 3	fail_ct: 51199	Time elapsed: 6.33
-#Target has been reduced to 1 due to too many failures or duplications
-Sample Initial Population	#s: 1	fail_ct: 53247	Time elapsed: 6.59
-GA Iter: 0	Max score: 0.8496	Min score: 0.8496	#Pop: 1	#M+: 0	#M-: 0
-GA Iter: 4	Max score: 0.8496	Min score: 0.0470	#Pop: 7	#M+: 1363	#M-: 153
-EvolutionarySearch		#s: 7	Time elapsed: 0.93
-----------------------------------------------------------------------
-------------------------------  [ Measure ]
-----------------------------------------------------------------------
-----------------------------------------------------------------------
-------------------------------  [ Train cost model ]
-----------------------------------------------------------------------
-Time elapsed for training: 0.10 s
-----------------------------------------------------------------------
-------------------------------  [ Search ]
-----------------------------------------------------------------------
-Sample Initial Population	#s: 1	fail_ct: 2047	Time elapsed: 0.26
-GA Iter: 0	Max score: N/A	Min score: N/A	#Pop: 0	#M+: 0	#M-: 0
-GA Iter: 4	Max score: N/A	Min score: N/A	#Pop: 0	#M+: 1362	#M-: 151
-EvolutionarySearch		#s: 0	Time elapsed: 0.92
-----------------------------------------------------------------------
-------------------------------  [ Search ]
-----------------------------------------------------------------------
-Sample Initial Population	#s: 1	fail_ct: 2047	Time elapsed: 0.25
-GA Iter: 0	Max score: N/A	Min score: N/A	#Pop: 0	#M+: 0	#M-: 0
-GA Iter: 4	Max score: N/A	Min score: N/A	#Pop: 0	#M+: 1361	#M-: 157
-EvolutionarySearch		#s: 0	Time elapsed: 0.92
-It seems all candidates in the search space have been measured.
-----------------------------------------------------------------------
-------------------------------  [ Done ]
-----------------------------------------------------------------------
+
 relu (4096, 4096) 
 Get devices for measurement successfully!
 best runtime:  0.172651
