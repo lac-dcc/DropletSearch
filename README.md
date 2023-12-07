@@ -1,12 +1,12 @@
 <div align="center">
-    <h1> Garkain </h1>
+    <h1> Droplet Search </h1>
     <div style="font-style: italic">
-        Garkain is a design of a space search algorithm (droplet search) in compiler optimization space.
+    Droplet Search is a technique to optimize machine learning kernels, based on the coordiante descent algorithm. To know more about it, you can take a look into [this paper](https://homepages.dcc.ufmg.br/~michaelcanesche/paper/droplet_paper.pdf).
     </div>
 </div>
 
 <p align="center">
-  <img alt="logo" src="./docs/garkain.webp" width="30%" height="auto"/>
+  <img alt="logo" src="./docs/DropletSearch.jpg" width="30%" height="auto"/>
 </p>
 
 <p align="center">
