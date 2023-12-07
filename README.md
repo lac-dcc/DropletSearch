@@ -1,7 +1,7 @@
 <div align="center">
     <h1> Droplet Search </h1>
     <div style="font-style: italic">
-    Droplet Search is a technique to optimize machine learning kernels, based on the coordiante descent algorithm. To know more about it, you can take a look into [this paper](https://homepages.dcc.ufmg.br/~michaelcanesche/paper/droplet_paper.pdf).
+    Droplet Search is a technique to optimize machine learning kernels, based on the coordiante descent algorithm. To know more about it, you can take a look into <a href="https://homepages.dcc.ufmg.br/~michaelcanesche/paper/droplet_paper.pdf">this paper</a>.
     </div>
 </div>
 
