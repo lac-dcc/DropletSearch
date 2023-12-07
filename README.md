@@ -6,7 +6,7 @@
 </div>
 
 <p align="center">
-  <img alt="logo" src="./docs/DropletSearch.jpg" width="30%" height="auto"/>
+  <img alt="logo" src="./docs/DropletSearch.png" width="30%" height="auto"/>
 </p>
 
 <p align="center">
