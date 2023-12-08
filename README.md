@@ -1,9 +1,6 @@
-<div align="center">
-    <h1> Droplet Search </h1>
-    <div style="font-style: italic">
-    Droplet Search is a technique to optimize machine learning kernels, based on the coordiante descent algorithm. To know more about it, you can take a look into <a href="https://homepages.dcc.ufmg.br/~michaelcanesche/paper/droplet_paper.pdf">this paper</a>.
-    </div>
-</div>
+# Droplet Search
+
+Droplet Search is a technique to optimize machine learning kernels, based on the coordinate descent algorithm. To know more about it, you can take a look into [this paper](https://homepages.dcc.ufmg.br/~michaelcanesche/paper/droplet_paper.pdf)<a href="">.
 
 <p align="center">
   <img alt="logo" src="./docs/DropletSearch.png" width="30%" height="auto"/>
@@ -35,10 +32,6 @@
 
 TODO: introduction text here
 
-<p align="center">
-<img alt="examples of classifications" src="./docs/figs/droplet_maps.png" width="100%" height="auto"/>
-</p>
-
 ---
 <a id="getting-started"></a>
 
@@ -57,7 +50,7 @@ You need to install the following packages to run this project:
 
 ###  **Setup**
 
-TODO: setup under construction.
+We developed a dockerfile with the experiments and all requirements installed. Instructions for running docker can be found at this [link](https://github.com/lac-dcc/DropletSearch/tree/main/docker).
 
 <a id="running"></a>
 
@@ -81,6 +74,6 @@ TODO: Under construction.
 
 This framework is used in the following published papers:
 
-TODO: in submission the paper.
+TODO: in submission of the paper.
 
 
