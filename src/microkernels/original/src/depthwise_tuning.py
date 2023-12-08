@@ -27,8 +27,7 @@ def search_depthwise_conv2d_nchw_configs(N, CI, H, W, KH, KW, strides, padding, 
     kernel = te.placeholder(filter_shape, name='kernel', dtype="float32")
 
     task = autotvm.task.create("depthwise_conv2d_nchw.cuda", args=(data, kernel, strides, padding, 1, "float32"), target='cuda')
-    # print(task.config_space)
-    print(task.config_space)
+    #print(task.config_space)
 
     measure_option = autotvm.measure_option(
         builder=autotvm.LocalBuilder(),

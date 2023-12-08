@@ -168,6 +168,6 @@ def main():
             path = arg
     # print(get_log_filename(N, CI, H, W, CO, KH, KW, strides, padding, path))
     print(N, CI, H, W, CO, KH, KW, strides, padding, path)
-    tune_conv2d_nchw(N, CI, H, W, CO, KH, KW, strides, padding, path, n_trial=1)
+    tune_conv2d_nchw(N, CI, H, W, CO, KH, KW, strides, padding, path, n_trial=5)
 
 main()

@@ -33,7 +33,7 @@ def tune_pool(pool_type, N, CI, H, W, KH, KW, strides, padding, path, n_trial=10
     task = autotvm.task.create(
          "pool2d_nchw.cuda", args=(pool_type, N, CI, H, W, KH, KW, strides, padding), target="cuda"
     )
-    print(task.config_space)
+    #print(task.config_space)
 
     measure_option = autotvm.measure_option(
         builder=autotvm.LocalBuilder(),
@@ -53,7 +53,7 @@ def tune_pool(pool_type, N, CI, H, W, KH, KW, strides, padding, path, n_trial=10
 
     func(a_tvm, b_tvm)
     evaluator = func.time_evaluator(func.entry_name, dev, number=400)
-    print(log_filename)
+    #print(log_filename)
     print("best runtime: %.10f" % (evaluator(a_tvm, b_tvm).mean * 1000))
     #tir = str(tvm.lower(s, arg_bufs, simple_mode=True))
     #source_code = func.imported_modules[0].get_source()
