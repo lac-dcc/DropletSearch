@@ -42,4 +42,3 @@ if __name__ == "__main__":
     _ = x.numpy()
     ed = time.time()
     print("{} ms on avg".format((ed-st)*1000.0/repeat_time))
-    pass

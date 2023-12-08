@@ -45,7 +45,7 @@ def search_depthwise_conv2d_nchw_configs(N, CI, H, W, KH, KW, strides, padding, 
     dispatch_context = autotvm.apply_history_best(log_filename)
     best_config = dispatch_context.query(task.target, task.workload)
     #print(log_filename)
-    print("\nBest config:")
+    #print("\nBest config:")
     #print(best_config)
     #with dispatch_context:
     #    with tvm.target.Target('cuda'):

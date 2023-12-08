@@ -58,8 +58,8 @@ def search_matmul_config(batch, in_dim, out_dim, path, tc=True, n_trial=1000):
         exit(0)
         
     #print(log_filename)
-    print("\nBest config:")
-    print(best_config)
+    #print("\nBest config:")
+    #print(best_config)
     #with dispatch_context:
     #    with tvm.target.Target('cuda'):
     #        s, arg_bufs = task.instantiate(best_config)
