@@ -74,6 +74,6 @@ def main():
     print(pool_type, N, CI, H, W, K, strides, padding)
     tune_pool(pool_type, N, CI, H, W, K, K, strides, padding, path, n_trial=1)
 
-start_time = time.time()
+#start_time = time.time()
 main()
-print("compilation time: %s" % (time.time() - start_time))
+#print("compilation time: %s" % (time.time() - start_time))

@@ -114,6 +114,6 @@ def main():
     print(t, shape)
     tune_injective(t, shape, n_trial=1)
 
-start_time = time.time()
+#start_time = time.time()
 main()
-print("compilation time: %s" % (time.time() - start_time))
+#print("compilation time: %s" % (time.time() - start_time))
