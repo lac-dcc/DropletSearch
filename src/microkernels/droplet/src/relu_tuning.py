@@ -111,7 +111,7 @@ def tune_injective(t, shape, n_trial=1000):
 def main():
     shape = tuple([int(s) for s in sys.argv[2:]])
     t = sys.argv[1]
-    #print(t, shape)
+    print(t, shape)
     tune_injective(t, shape)
 
 start_time = time.time()

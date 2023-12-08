@@ -59,7 +59,7 @@ def main():
     if axis + 1 < len(shape):
         axis = tuple([x for x in range(axis, len(shape))])
     
-    #print(shape, "axis:", axis)
+    print(shape, "axis:", axis)
     tune_reduction(shape, axis)
 
 start_time = time.time()

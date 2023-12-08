@@ -71,7 +71,7 @@ def main():
     pool_type = sys.argv[1]
     padding = sys.argv[8]
     path = sys.argv[9] if len(sys.argv) == 10 else ""
-    #print(pool_type, N, CI, H, W, K, strides, padding)
+    print(pool_type, N, CI, H, W, K, strides, padding)
     tune_pool(pool_type, N, CI, H, W, K, K, strides, padding, path)
 
 start_time = time.time()

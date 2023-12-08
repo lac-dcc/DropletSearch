@@ -81,7 +81,7 @@ def search_matmul_config(batch, in_dim, out_dim, path, tc=True, n_trial=1000):
 def main():
     batch, in_dim, out_dim = [int(s) for s in sys.argv[1:4]]
     path = sys.argv[4] if len(sys.argv) == 5 else ""
-    #print(batch, in_dim, out_dim, path)
+    print(batch, in_dim, out_dim, path)
     search_matmul_config(batch, in_dim, out_dim, path)
 
 main()

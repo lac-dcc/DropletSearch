@@ -34,7 +34,7 @@ def search_depthwise_conv2d_nchw_configs(N, CI, H, W, KH, KW, strides, padding, 
         runner=autotvm.LocalRunner(repeat=1, min_repeat_ms=100, timeout=200)
     )
 
-    tuner = autotvm.tuner.XGBTuner(task)
+    tuner = autotvm.tuner.GridSearchTuner(task)
     # n_trial = min(n_trial, len(task.config_space))
     
     tuner.tune(n_trial=n_trial, measure_option=measure_option,

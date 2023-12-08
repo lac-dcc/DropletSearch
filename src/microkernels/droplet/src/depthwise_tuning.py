@@ -68,7 +68,7 @@ def main():
     N, CI, H, W, KH, KW, strides, dilation = [int(s) for s in sys.argv[1:9]]
     padding = sys.argv[9]
     path = sys.argv[10] if len(sys.argv) == 11 else ""
-    #print(N, CI, H, W, KH, KW, strides, padding, dilation, path)
+    print(N, CI, H, W, KH, KW, strides, padding, dilation, path)
 
     search_depthwise_conv2d_nchw_configs(N, CI, H, W, KH, KW, strides, padding, path)
 

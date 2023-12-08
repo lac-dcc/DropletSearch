@@ -86,7 +86,7 @@ def tune_conv2d_nchw(N, CI, H, W, CO, KH, KW, strides, padding, path, n_trial=10
     # Begin tuning, log records to file `conv2d.log`
     # During tuning we will also try many invalid configs, so you are expected to
     # see many error reports. As long as you can see non-zero GFLOPS, it is okay.
-    tuner = autotvm.tuner.XGBTuner(task)
+    tuner = autotvm.tuner.GridSearchTuner(task)
     # n_trial = min(n_trial, len(task.config_space))
     
     tuner.tune(

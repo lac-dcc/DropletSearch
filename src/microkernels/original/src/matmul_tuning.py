@@ -42,7 +42,7 @@ def search_matmul_config(batch, in_dim, out_dim, path, tc=True, n_trial=1000):
 
     log_filename = get_log_filename(batch, in_dim, out_dim, path)
 
-    tuner = autotvm.tuner.XGBTuner(task)
+    tuner = autotvm.tuner.GridSearchTuner(task)
     # n_trial = min(n_trial, len(task.config_space))
     
     tuner.tune(n_trial=n_trial, measure_option=measure_option, callbacks=[autotvm.callback.log_to_file(log_filename)])
