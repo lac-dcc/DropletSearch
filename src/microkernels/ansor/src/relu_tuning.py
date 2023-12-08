@@ -115,7 +115,7 @@ def tune_injective(t, shape, path, n_trial=1000):
     #    f.write(launch_config_as_comment + param + for_nnfusion + source_code)
 
     print("best runtime: ", get(log_filename)[0] * 1000)
-    print("compilation time: ", get1(log_filename))
+    get1(log_filename)
 
 def main():
     shape = []

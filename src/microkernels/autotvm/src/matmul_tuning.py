@@ -29,11 +29,11 @@ def search_matmul_config(batch, in_dim, out_dim, path, tc=True, n_trial=1000):
         schedule = "dense_tensorcore.cuda"
         data = te.placeholder((batch, in_dim), name='A', dtype="float16")
         weight = te.placeholder((in_dim, out_dim), name='B', dtype="float16")
-        print("Using tensorcore")
-    print(schedule)
+        #print("Using tensorcore")
+    #print(schedule)
 
     task = autotvm.task.create(schedule, args=(data, weight), target='cuda')
-    print(task.config_space)
+    #print(task.config_space)
     
     measure_option = autotvm.measure_option(
         builder=autotvm.LocalBuilder(),
@@ -57,9 +57,9 @@ def search_matmul_config(batch, in_dim, out_dim, path, tc=True, n_trial=1000):
         print("compilation time: ", 0)
         exit(0)
         
-    print(log_filename)
-    print("\nBest config:")
-    print(best_config)
+    #print(log_filename)
+    #print("\nBest config:")
+    #print(best_config)
     #with dispatch_context:
     #    with tvm.target.Target('cuda'):
     #        s, arg_bufs = task.instantiate(best_config)
@@ -76,7 +76,7 @@ def search_matmul_config(batch, in_dim, out_dim, path, tc=True, n_trial=1000):
     #            f.write(launch_config_as_comment + param + for_nnfusion + source_code)
             
     print("best runtime: ", get(log_filename)[0] * 1000)
-    print("compilation time: ", get1(log_filename))
+    get1(log_filename)
 
 def main():
     batch, in_dim, out_dim = [int(s) for s in sys.argv[1:4]]

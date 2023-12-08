@@ -35,7 +35,7 @@ def search_depthwise_conv2d_nchw_configs(N, CI, H, W, KH, KW, strides, padding, 
     task = auto_scheduler.SearchTask(
         func=depthwise_conv2d_layer, args=(N, CI, H, W, KH, KW, strides, padding), target=target
     )
-    print(task.compute_dag.flop_ct)
+    #print(task.compute_dag.flop_ct)
 
     measure_ctx = auto_scheduler.LocalRPCMeasureContext(min_repeat_ms=300)
     tune_option = auto_scheduler.TuningOptions(
@@ -61,7 +61,7 @@ def search_depthwise_conv2d_nchw_configs(N, CI, H, W, KH, KW, strides, padding, 
     #    f.write(launch_config_as_comment + param + for_nnfusion + source_code)
     
     print("best runtime: ", get(log_filename)[0] * 1000)
-    print("compilation time: ", get1(log_filename))
+    get1(log_filename)
     
 def main():
     N, CI, H, W, KH, KW, strides, dilation = [int(s) for s in sys.argv[1:9]]
