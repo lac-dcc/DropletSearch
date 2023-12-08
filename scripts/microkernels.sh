@@ -10,5 +10,7 @@ TOOL=(
 
 output_results="results/"
 for ((j = 0; j < ${#TOOL[@]}; j++)); do
-    bash src/microkernels/${TOOL[j]}/run.sh
+    cd src/microkernels/${TOOL[j]}
+    bash run.sh
+    cd -
 done
