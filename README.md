@@ -1,12 +1,9 @@
 # Droplet Search
 
-Droplet Search is a technique to optimize machine learning kernels, based on the coordinate descent algorithm. To know more about it, you can take a look into [this paper](https://homepages.dcc.ufmg.br/~michaelcanesche/paper/droplet_paper.pdf)<a href="">.
+Droplet Search is a technique to optimize machine learning kernels, based on the coordinate descent algorithm. To know more about it, you can take a look into [this paper](https://homepages.dcc.ufmg.br/~michaelcanesche/paper/droplet_paper.pdf).
 
 <p align="center">
-  <img alt="logo" src="./docs/DropletSearch.png" width="30%" height="auto"/>
-</p>
-
-<p align="center">
+  <img alt="logo" src="./docs/DropletSearch.png" width="30%" height="auto"/><br>
   <a href="https://github.com/lac-dcc/garkain/blob/main/LICENSE"><img src="https://img.shields.io/badge/license-GPL%203.0%20only-green?style=for-the-badge" alt="License: GPL v3"></a>
   <a href="https://github.com/PyCQA/pylint"><img src="https://img.shields.io/badge/linting-pylint-yellowgreen?style=for-the-badge" alt="Linting: Pylint"></a>
   <a href="https://github.com/lac-dcc/garkain/commits/main">
@@ -30,7 +27,7 @@ Droplet Search is a technique to optimize machine learning kernels, based on the
 
 ## **Introduction**
 
-TODO: introduction text here
+Droplet is already [merge](https://github.com/apache/tvm/pull/14683) on Apache TVM since the version 0.13.0. This repository is used as an artifact for the paper.
 
 ---
 <a id="getting-started"></a>
@@ -50,14 +47,36 @@ You need to install the following packages to run this project:
 
 ###  **Setup**
 
-We developed a dockerfile with the experiments and all requirements installed. Instructions for running docker can be found at this [link](https://github.com/lac-dcc/DropletSearch/tree/main/docker).
+We developed a dockerfile with the experiments and all requirements installed. We recommend using this solution if you want to compare it with our solution. Below, for each architecture supported, is present how to build the docker.
+
+```
+bash scripts/build_docker.sh <ARCH>
+```
+
+Where ```<ARCH>``` can be x86, arm, or cuda.
 
 <a id="running"></a>
 
 ### **Running**
-Now, you can run the following command line:
+You can run the docker following command line:
 
-TODO: script under contruction.
+```bash
+bash scripts/run_docker.sh <ARCH>
+```
+
+Where ```<ARCH>``` can be x86, arm, or cuda.
+
+To execute the neural networks models like resnet18, inside of docker, execute the following script:
+
+```bash
+TODO
+```
+
+To execute microkernels (Appendix), you must use the following script:
+
+```bash
+TODO
+```
 
 ---
 <a id="structure"></a>
@@ -65,7 +84,19 @@ TODO: script under contruction.
 ## Structure
 The repository has the following organization:
 
-TODO: Under construction.
+```bash
+|-- data: "Place which your data will be save for default"
+|-- docker: "Scripts for build the docker"
+|-- docs: "Repository documentation"
+|-- scripts: "Scripts for build the docker and generate some images"
+|-- src: "Script to extract a program representation and convert CSV to Numpy"
+|-- src: "Jupyter notebooks"
+    |-- handmade: "Extra experiments using the droplet to verify how the space search works"
+    |-- microkernels: "Python scripts to run microkernel presents in the paper"
+    |-- tvm: "Python scripts to run NN models presents in the paper"
+|-- thirdparty: "Third-party code for comparison with our experiments."
+```
+
 
 ---
 <a id="technical-report"></a>
@@ -74,6 +105,6 @@ TODO: Under construction.
 
 This framework is used in the following published papers:
 
+```bash
 TODO: in submission of the paper.
-
-
+```
