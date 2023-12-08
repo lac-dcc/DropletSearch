@@ -66,10 +66,19 @@ bash scripts/run_docker.sh <ARCH>
 
 Where ```<ARCH>``` can be x86, arm, or cuda.
 
-To execute the neural networks models like resnet18, inside of docker, execute the following script:
+To execute the neural networks models (Figure 11), inside of docker, execute the following script:
 
 ```bash
-TODO
+bash scripts/cnn_models.sh <ARCH>
+```
+
+To measure the trials each benchmark (Figure 12)
+```bash
+bash scripts/droplet_pvalue.sh <ARCH>
+```
+
+```bash
+bash scripts/cnn_models.sh <ARCH>
 ```
 
 To execute microkernels (Appendix), you must use the following script:

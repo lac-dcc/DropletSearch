@@ -29,6 +29,7 @@ RUN cd $HOME/tvm && mkdir -p build && \
     wget https://raw.githubusercontent.com/lac-dcc/DropletSearch/main/docker/cuda/config.cmake && \
     wget https://raw.githubusercontent.com/lac-dcc/DropletSearch/main/docker/droplet_algorithm/__init__.py && \
     wget https://raw.githubusercontent.com/lac-dcc/DropletSearch/main/docker/droplet_algorithm/droplet_turner.py && \
+    wget https://raw.githubusercontent.com/lac-dcc/DropletSearch/main/docker/droplet_algorithm/droplet_turner_one_thread.py && \
     mv config.cmake $HOME/tvm/build && \
     mv *.py $HOME/tvm/python/tvm/autotvm/tuner/ && \ 
     cd build && cmake .. && make -j4 
