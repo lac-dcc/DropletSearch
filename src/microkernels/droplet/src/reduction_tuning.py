@@ -28,7 +28,7 @@ def tune_reduction(shape, axis, keep_dim=False, n_trial=1000):
         if isinstance(axis, tuple) and i in axis:
             continue
         out_shape.append(shape[i])
-    print(out_shape)
+    #print(out_shape)
 
     dev = tvm.cuda()
     a_np = np.random.uniform(size=shape).astype(np.float32)
@@ -59,7 +59,7 @@ def main():
     if axis + 1 < len(shape):
         axis = tuple([x for x in range(axis, len(shape))])
     
-    print(shape, "axis:", axis)
+    #print(shape, "axis:", axis)
     tune_reduction(shape, axis)
 
 start_time = time.time()

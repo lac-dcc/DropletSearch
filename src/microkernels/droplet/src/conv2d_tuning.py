@@ -73,8 +73,7 @@ def tune_conv2d_nchw(N, CI, H, W, CO, KH, KW, strides, padding, path, n_trial=10
     task = autotvm.task.create(
          "conv2d_nchw.cuda", args=(data, kernel, strides, padding, 1, "float32"), target="cuda"
     )
-    print(task.config_space)
-
+    #print(task.config_space)
 
     # Use local gpu, measure 10 times for every config to reduce variance
     # The timeout of compiling a program is 10 seconds, the timeout for running is 4 seconds
@@ -104,9 +103,9 @@ def tune_conv2d_nchw(N, CI, H, W, CO, KH, KW, strides, padding, path, n_trial=10
         print("best runtime: ", 0)
         print("compilation time: ", 0)
         exit(0)
-    print(log_filename)
-    print("\nBest config:")
-    print(best_config)
+    #print(log_filename)
+    #print("\nBest config:")
+    #print(best_config)
 
     #with dispatch_context:
     #    with tvm.target.Target('cuda'):
@@ -145,7 +144,7 @@ def tune_conv2d_nchw(N, CI, H, W, CO, KH, KW, strides, padding, path, n_trial=10
     #            f.write(launch_config_as_comment + param + for_nnfusion + source_code)
     #        
     print("best runtime: ", get(log_filename)[0] * 1000)
-    print("compilation time: ", get1(log_filename))
+    get1(log_filename)
 
 def main():
     N, CI, H, W, CO, KH, KW, strides, dilation = [int(s) for s in sys.argv[1:10]]
@@ -167,7 +166,7 @@ def main():
         else:
             path = arg
     # print(get_log_filename(N, CI, H, W, CO, KH, KW, strides, padding, path))
-    print(N, CI, H, W, CO, KH, KW, strides, padding, path)
+    #print(N, CI, H, W, CO, KH, KW, strides, padding, path)
     tune_conv2d_nchw(N, CI, H, W, CO, KH, KW, strides, padding, path)
 
 main()
