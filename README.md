@@ -66,26 +66,23 @@ bash scripts/run_docker.sh <ARCH>
 
 Where ```<ARCH>``` can be x86, arm, or cuda.
 
-To execute the neural networks models (Figure 11), inside of docker, execute the following script:
+To execute the neural networks models (Figure 11):
 
 ```bash
 bash scripts/cnn_models.sh <ARCH>
 ```
 
-To measure the trials each benchmark (Figure 12)
+To measure the impact of the p-value in droplet (Figure 12):
 ```bash
 bash scripts/droplet_pvalue.sh <ARCH>
-```
-
-```bash
-bash scripts/cnn_models.sh <ARCH>
 ```
 
 To execute microkernels (Appendix), you must use the following script:
 
 ```bash
-TODO
+bash scripts/microkernels.sh
 ```
+
 
 ---
 <a id="structure"></a>
@@ -94,7 +91,7 @@ TODO
 The repository has the following organization:
 
 ```bash
-|-- data: "Place which your data will be save for default"
+|-- results: "Place which your data will be save for default"
 |-- docker: "Scripts for build the docker"
 |-- docs: "Repository documentation"
 |-- scripts: "Scripts for build the docker and generate some images"

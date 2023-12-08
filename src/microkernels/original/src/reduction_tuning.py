@@ -62,6 +62,6 @@ def main():
     print(shape, "axis:", axis)
     tune_reduction(shape, axis, n_trial=1)
 
-start_time = time.time()
+#start_time = time.time()
 main()
-print("compilation time: %s" % (time.time() - start_time))
+#print("compilation time: %s" % (time.time() - start_time))

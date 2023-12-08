@@ -61,7 +61,7 @@ def search_depthwise_conv2d_nchw_configs(N, CI, H, W, KH, KW, strides, padding, 
     #            f.write(launch_config_as_comment + param + for_nnfusion + source_code)
     #        
     print("best runtime: ", get(log_filename)[0] * 1000)
-    get1(log_filename)
+    #get1(log_filename)
 
 def main():
     N, CI, H, W, KH, KW, strides, dilation = [int(s) for s in sys.argv[1:9]]
