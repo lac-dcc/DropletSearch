@@ -49,7 +49,7 @@ For ***nvidia docker***, please follow this instructions: [Nvidia Container](htt
 
 ###  **Setup**
 
-We developed a dockerfile with the experiments and all requirements installed. We recommend using this solution if you want to compare it with our solution. Below, for each architecture supported, is present how to build the docker.
+We developed a dockerfile with the experiments and all requirements installed. We recommend using this solution if you want to compare it with our solution. Below, for each architecture supported, is presented how to build the docker.
 
 ```
 bash scripts/build_docker.sh <ARCH>
@@ -74,7 +74,7 @@ To execute the neural networks models (Figure 11):
 bash scripts/cnn_models.sh <ARCH>
 ```
 
-To measure the impact of the p-value in droplet (Figure 12):
+To measure the impact of the p-value in the droplet (Figure 12):
 ```bash
 bash scripts/droplet_pvalue.sh <ARCH>
 ```
@@ -93,14 +93,14 @@ bash scripts/microkernels.sh
 The repository has the following organization:
 
 ```bash
-|-- results: "Place which your data will be save for default"
-|-- docker: "Scripts for build the docker"
+|-- results: "Place which your data will be saved for the default"
+|-- docker: "Scripts for building the docker"
 |-- docs: "Repository documentation"
-|-- scripts: "Scripts for build the docker and generate some images"
+|-- scripts: "Scripts for building the docker and generating some images"
 |-- src: "Source code"
     |-- handmade: "Extra experiments using the droplet to verify how the space search works"
     |-- microkernels: "Python scripts to run microkernel presents in the paper"
-    |-- tvm: "Python scripts to run NN models presents in the paper"
+    |-- tvm: "Python scripts to run NN models presented in the paper"
 |-- thirdparty: "Third-party code for comparison with our experiments."
 ```
 
