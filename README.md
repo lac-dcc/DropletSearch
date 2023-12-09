@@ -1,6 +1,6 @@
 # Droplet Search
 
-Droplet Search is a technique to optimize machine learning kernels, based on the coordinate descent algorithm. To know more about it, you can take a look into [this paper](https://homepages.dcc.ufmg.br/~michaelcanesche/paper/droplet_paper.pdf).
+Droplet Search is a technique to optimize machine learning kernels, based on the coordinate descent algorithm. This algorithm is currently part of Apache TVM (For more details, see this <a href="https://github.com/apache/tvm/pull/14683">PR</a>). To know more about it, you can take a look into [this paper](https://homepages.dcc.ufmg.br/~michaelcanesche/paper/droplet_paper.pdf).
 
 <p align="center">
   <img alt="logo" src="./docs/DropletSearch.png" width="30%" height="auto"/><br>
