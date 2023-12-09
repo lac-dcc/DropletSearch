@@ -26,7 +26,7 @@ Droplet Search is a technique to optimize machine learning kernels, based on the
 
 ## **Introduction**
 
-Droplet is [merged](https://github.com/apache/tvm/pull/14683) on Apache TVM since version 0.13.0. This repository is used as an artifact for the paper.
+Droplet is [merged](https://github.com/apache/tvm/pull/14683) on Apache TVM since version 0.13.0. This repository is used as an artifact for the [paper](https://homepages.dcc.ufmg.br/~michaelcanesche/paper/droplet_paper.pdf).
 
 ---
 <a id="getting-started"></a>
