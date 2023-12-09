@@ -43,6 +43,8 @@ You need to install the following packages to run this project:
 * [Docker](https://www.docker.com/get-started/) and [Docker Compose](https://docs.docker.com/compose/install/) to run our experiments
 * [Python-3](https://www.python.org/downloads/) to plot the results in the project's Jupyter Notebook
 
+For ***nvidia docker***, please follow this instructions: [Nvidia Container](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html)
+
 <a id="setup"></a>
 
 ###  **Setup**

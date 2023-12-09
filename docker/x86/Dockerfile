@@ -17,21 +17,25 @@ RUN apt-get install -y gcc g++ graphviz vim python3 python3-pip python3-dev auto
     python3-setuptools
 
 RUN pip3 install numpy==1.20 decorator scipy pytest psutil typing_extensions tornado cloudpickle \ 
-    'xgboost<1.6.0' synr mxnet transformers==3.0 torch==1.7
+    'xgboost<1.6.0' synr mxnet 
+RUN pip3 install transformers==3.0 torch==1.7
 
 ########################################### COPY HAMSA ##################################################
-RUN cd $HOME && git clone https://github.com/lac-dcc/garkain 
+RUN cd $HOME && git clone https://github.com/lac-dcc/DropletSearch 
 
 ########################################### INSTALL TVM #################################################
-RUN cd $HOME && git clone -b v0.10.0 --recursive https://github.com/apache/tvm && \
-    cd tvm && mkdir -p build && \
-    cp $HOME/garkain/docker/x86/config.cmake $HOME/tvm/build && \
-    cp $HOME/garkain/docker/droplet_algorithm/*.py $HOME/tvm/python/tvm/autotvm/tuner/ && \ 
-    cd build && cmake .. && make -j4 && \
-    cd .. && sudo make cython3
+RUN cd $HOME && git clone -b v0.10.0 --recursive https://github.com/apache/tvm 
+RUN cd $HOME/tvm && mkdir -p build && \
+    wget https://raw.githubusercontent.com/lac-dcc/DropletSearch/main/docker/cuda/config.cmake && \
+    wget https://raw.githubusercontent.com/lac-dcc/DropletSearch/main/docker/droplet_algorithm/__init__.py && \
+    wget https://raw.githubusercontent.com/lac-dcc/DropletSearch/main/docker/droplet_algorithm/droplet_turner.py && \
+    wget https://raw.githubusercontent.com/lac-dcc/DropletSearch/main/docker/droplet_algorithm/droplet_turner_one_thread.py && \
+    mv config.cmake $HOME/tvm/build && \
+    mv *.py $HOME/tvm/python/tvm/autotvm/tuner/ && \ 
+    cd build && cmake .. && make -j4 
 
 RUN echo "export PYTHONPATH=/root/tvm/python:/python:" >> ~/.bashrc
 
 ########################################### WORKDIR #####################################################
-WORKDIR /root/garkain/src/tvm
+WORKDIR /root/DropletSearch/
 ENTRYPOINT ["/bin/bash"]
