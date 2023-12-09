@@ -12,7 +12,7 @@ Droplet Search is a technique to optimize machine learning kernels, based on the
   </a>
 </p>
 
-## **Contents Table**
+## **Table of Contents**
 
 * [Introduction](#introduction)
 * [Getting Started](#getting-started)
@@ -20,14 +20,13 @@ Droplet Search is a technique to optimize machine learning kernels, based on the
     * [Setup](#setup)
     * [Running](#running)
 * [Structure](#structure)
-* [Technical Report](#technical-report)
 
 ---
 <a id="introduction"></a>
 
 ## **Introduction**
 
-Droplet is already [merge](https://github.com/apache/tvm/pull/14683) on Apache TVM since the version 0.13.0. This repository is used as an artifact for the paper.
+Droplet is [merged](https://github.com/apache/tvm/pull/14683) on Apache TVM since version 0.13.0. This repository is used as an artifact for the paper.
 
 ---
 <a id="getting-started"></a>
@@ -102,16 +101,4 @@ The repository has the following organization:
     |-- microkernels: "Python scripts to run microkernel presents in the paper"
     |-- tvm: "Python scripts to run NN models presented in the paper"
 |-- thirdparty: "Third-party code for comparison with our experiments."
-```
-
-
----
-<a id="technical-report"></a>
-
-## Technical Report
-
-This framework is used in the following published papers:
-
-```bash
-TODO: in submission of the paper.
 ```
