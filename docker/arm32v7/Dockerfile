@@ -24,7 +24,7 @@ RUN cd $HOME && git clone https://github.com/lac-dcc/DropletSearch
 ########################################### INSTALL TVM #################################################
 RUN cd $HOME && git clone -b v0.10.0 --recursive https://github.com/apache/tvm 
 RUN cd $HOME/tvm && mkdir -p build && \
-    wget https://raw.githubusercontent.com/lac-dcc/DropletSearch/main/docker/cuda/config.cmake && \
+    wget https://raw.githubusercontent.com/lac-dcc/DropletSearch/main/docker/arm32v7/config.cmake && \
     wget https://raw.githubusercontent.com/lac-dcc/DropletSearch/main/docker/droplet_algorithm/__init__.py && \
     wget https://raw.githubusercontent.com/lac-dcc/DropletSearch/main/docker/droplet_algorithm/droplet_turner.py && \
     wget https://raw.githubusercontent.com/lac-dcc/DropletSearch/main/docker/droplet_algorithm/droplet_turner_one_thread.py && \

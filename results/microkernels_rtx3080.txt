@@ -1,0 +1,105 @@
+-------------------------------------------------------------------------------
+original
+matmul
+16 1024 1024 log
+best runtime:  0.017867989659160487
+conv2d
+128 128 28 28 128 3 3 1 SAME log
+best runtime:  4.1052569199999995
+depthwise
+128 84 83 83 5 5 2 SAME 1 log
+best runtime:  6.606848272727272
+compilation time: 11.672677516937256
+pooling
+avg 128 168 83 83 1 2 VALID
+best runtime: 0.5956041700
+reduce
+(128, 512, 1024) axis: 2
+[128, 512]
+best runtime: 0.3131607050
+compilation time: 1.1743450164794922
+relu
+relu (4096, 4096)
+Time cost of this operator: 0.0001680383
+-------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
+droplet
+matmul
+16 1024 1024 log
+best runtime:  0.005768670489064399
+compilation time: 803.8081810474396
+conv2d
+128 128 28 28 128 3 3 1 SAME log
+best runtime:  2.0803062549019606
+compilation time: 22346.14329791069
+depthwise
+128 84 83 83 5 5 2 SAME 1 log
+best runtime:  0.4478234844444445
+compilation time: 7853.391221046448
+pooling
+avg 128 168 83 83 1 2 VALID
+best runtime: 0.5964185700
+compilation time: 2.053861379623413
+reduce
+(128, 512, 1024) axis: 2
+best runtime: 0.3131320190
+compilation time: 1.1725594997406006
+relu
+relu (4096, 4096)
+Time cost of this operator: 0.0001680415
+compilation time: 0.9783568382263184
+-------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
+autotvm
+matmul
+16 1024 1024 log
+best runtime:  0.005765865775401069
+compilation time: 5200.645263195038
+conv2d
+128 128 28 28 128 3 3 1 SAME log
+best runtime:  1.7794815254237288
+compilation time: 3874.6665275096893
+depthwise
+128 84 83 83 5 5 2 SAME 1 log
+best runtime:  0.44012671929824565
+compilation time: 5988.474952697754
+pooling
+avg 128 168 83 83 1 2 VALID
+best runtime: 0.5958681475
+compilation time: 2.124619483947754
+reduce
+(128, 512, 1024) axis: 2
+[128, 512]
+best runtime: 0.3131258850
+compilation time: 1.1514201164245605
+relu
+relu (4096, 4096)
+Time cost of this operator: 0.0001680159
+compilation time: 0.9858603477478027
+-------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
+ansor
+matmul
+16 1024 1024 log
+best runtime:  0.012535600000000001
+compilation time: 4713.083422100009
+conv2d
+128 128 28 28 128 3 3 1 SAME log
+best runtime:  1.81956
+compilation time: 8151.984740199993
+depthwise
+128 84 83 83 5 5 2 SAME 1 log
+best runtime:  0.457503
+compilation time: 8977.473188000009
+pooling
+avg 128 168 83 83 1 2 VALID log
+best runtime:  0.9591
+compilation time: 9835.208920999983
+reduce
+(128, 512, 1024) axis: 2
+best runtime:  0.31243299999999996
+compilation time: 310.8590511
+relu
+relu (4096, 4096)
+best runtime:  0.172651
+compilation time: 20.90556
