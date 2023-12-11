@@ -18,7 +18,7 @@ RUN apt-get install -y gcc g++ graphviz vim python3 python3-pip python3-dev auto
 
 RUN pip3 install numpy==1.20 decorator scipy pytest psutil typing_extensions tornado cloudpickle \ 
     'xgboost<1.6.0' synr mxnet 
-RUN pip3 install transformers==3.0 torch==1.7
+RUN pip3 install transformers==3.0 torch==1.7 
 
 ########################################### COPY HAMSA ##################################################
 RUN cd $HOME && git clone https://github.com/lac-dcc/DropletSearch 
