@@ -1,3 +1,4 @@
+rm -rf log
 mkdir -p log
 #mkdir -p results
 echo "matmul"
