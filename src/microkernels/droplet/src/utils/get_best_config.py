@@ -37,7 +37,8 @@ def get1(filename):
             # result[0] runtime
             # result[1] error code
             # result[2] compilation time
-            current_time += result[2]
+            if result[1] == 0:
+            	current_time += result[2]
             # of.write(str(current_time) + "\n")
         print("compilation time:", current_time)
         return best_result, best_step
