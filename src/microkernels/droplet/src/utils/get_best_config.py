@@ -38,9 +38,9 @@ def get1(filename):
             # result[1] error code
             # result[2] compilation time
             if result[1] == 0:
-            	current_time += result[2]
+                current_time += result[2]
             # of.write(str(current_time) + "\n")
-        print("compilation time:", current_time)
+        print(f"compilation time: {current_time}s ({current_time/60.0} min)")
         return best_result, best_step
 
 if __name__ == "__main__":
