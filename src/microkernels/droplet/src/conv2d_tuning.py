@@ -79,7 +79,7 @@ def tune_conv2d_nchw(N, CI, H, W, CO, KH, KW, strides, padding, path, n_trial=10
     # The timeout of compiling a program is 10 seconds, the timeout for running is 4 seconds
     measure_option = autotvm.measure_option(
         builder=autotvm.LocalBuilder(),
-        runner=autotvm.LocalRunner(repeat=1, min_repeat_ms=100, timeout=200),
+        runner=autotvm.LocalRunner(repeat=1, min_repeat_ms=100, timeout=15),
     )
 
     # Begin tuning, log records to file `conv2d.log`

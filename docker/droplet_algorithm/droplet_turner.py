@@ -20,7 +20,7 @@ class DropletTuner(Tuner):
 
         # space info
         self.space = task.config_space
-        self.dims = []
+        self.dims, self.iter = [], 0
 
         for _, v in self.space.space_map.items():
             self.dims.append(len(v))
@@ -29,7 +29,7 @@ class DropletTuner(Tuner):
         start_position =  [0] * len(self.dims) if start_position == None else start_position
         self.best_choice = (-1, [0] * len(self.dims), [99999])
         self.visited = set([knob2point(start_position, self.dims)])
-        self.execution, self.total_execution, self.batch = 1, max(self.dims), 16, 
+        self.execution, self.total_execution, self.batch = 1, max(self.dims), 16
         self.count, self.pvalue, self.step = 0, pvalue, max(1, self.total_execution//20)
         self.next = [(knob2point(start_position, self.dims),start_position)] + self.speculation()
     
@@ -80,11 +80,13 @@ class DropletTuner(Tuner):
     
     def update(self, inputs, results):
         found_best_pos = False
+        count_valids = 0
         for i, (inp, res) in enumerate(zip(inputs, results)):
             try:
                 if np.mean(self.best_choice[2]) > np.mean(res.costs) and self.p_value(np.array(self.best_choice[2]), np.array(res.costs)):
                     self.best_choice = (self.next[i][0], self.next[i][1], res.costs)
                     found_best_pos = True
+                count_valids += 1
             except:
                 continue
 
@@ -93,6 +95,10 @@ class DropletTuner(Tuner):
             self.next += self.next_pos(self.search_space())
             self.execution = 1
         self.next += self.speculation() 
+        self.iter += 1
+        if count_valids == 0 and self.iter > 3:
+            self.next = []
+            print(f"Warning: early termination due to an all-invalid neighborhood after {self.iter} iterations")
 
     def has_next(self):
         return len(self.next) > 0 
