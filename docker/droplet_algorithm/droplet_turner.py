@@ -1,6 +1,7 @@
 """Tuner with droplet algorithm"""
 
 import numpy as np
+import os
 from scipy import stats
 from .tuner import Tuner
 from .model_based_tuner import knob2point
@@ -24,12 +25,13 @@ class DropletTuner(Tuner):
 
         for _, v in self.space.space_map.items():
             self.dims.append(len(v))
-        
+        if len(self.dims) == 0:
+            self.dims.append(1)
         # start position
         start_position =  [0] * len(self.dims) if start_position == None else start_position
         self.best_choice = (-1, [0] * len(self.dims), [99999])
         self.visited = set([knob2point(start_position, self.dims)])
-        self.execution, self.total_execution, self.batch = 1, max(self.dims), 16
+        self.execution, self.total_execution, self.batch = 1, max(self.dims), max(16, os.cpu_count())
         self.count, self.pvalue, self.step = 0, pvalue, max(1, self.total_execution//20)
         self.next = [(knob2point(start_position, self.dims),start_position)] + self.speculation()
     
@@ -87,7 +89,7 @@ class DropletTuner(Tuner):
                     self.best_choice = (self.next[i][0], self.next[i][1], res.costs)
                     found_best_pos = True
                 count_valids += 1
-            except:
+            except Exception as e:
                 continue
 
         self.next = self.next[self.batch:-1]
